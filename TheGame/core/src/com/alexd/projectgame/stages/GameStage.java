@@ -18,6 +18,8 @@ public class GameStage extends Stage {
     private World world;
     private Body ground;
     private Body runner;
+    private Body kinematic;
+
 
     private final float TIME_STEP = 1 / 300f;
     private float accumulator = 0f;
@@ -29,6 +31,7 @@ public class GameStage extends Stage {
         world = new World(new Vector2(0, -10), true);
         ground = createGround();
         runner = createRunner();
+        kinematic = createKinematicTest();
         renderer = new Box2DDebugRenderer();
         camera = new OrthographicCamera(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0f);
@@ -70,7 +73,7 @@ public class GameStage extends Stage {
     public Body createRunner(){
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.DynamicBody;
-        bodyDef.position.set(3, 1);
+        bodyDef.position.set(3, 3);
 
         Body body = world.createBody(bodyDef);
 
@@ -83,6 +86,22 @@ public class GameStage extends Stage {
 
 
 
+    }
+
+    public Body createKinematicTest(){
+        // might use this for moving platforms
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyType.KinematicBody;
+        bodyDef.position.set(30, 3);
+        Body body = world.createBody(bodyDef);
+
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(1f, 0.25f);
+
+        body.createFixture(shape, 0.5f);
+        body.setLinearVelocity(-1.0f, 0.0f);
+        shape.dispose();
+        return body;
     }
 
 
