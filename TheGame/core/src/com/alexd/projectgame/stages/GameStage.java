@@ -4,18 +4,20 @@ import com.alexd.projectgame.TheGame;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 /**
  * Created by Alex on 2015-04-07.
  */
 public class GameStage extends Stage {
-    // Since Box2D is in meters, 100 pixels should be 1 meter in the game. Don't know if this is right.
-    private static final int VIEWPORT_WIDTH = TheGame.APP_WIDTH / 100;
-    private static final int VIEWPORT_HEIGHT = TheGame.APP_HEIGHT / 100;
+    // Since Box2D is in meters, 50 pixels should be 1 meter in the game. Don't know if this is right.
+    private static final int VIEWPORT_WIDTH = TheGame.APP_WIDTH / 50;
+    private static final int VIEWPORT_HEIGHT = TheGame.APP_HEIGHT / 50;
 
     private World world;
     private Body ground;
+    private Body runner;
 
     private final float TIME_STEP = 1 / 300f;
     private float accumulator = 0f;
@@ -26,6 +28,7 @@ public class GameStage extends Stage {
     public GameStage(){
         world = new World(new Vector2(0, -10), true);
         ground = createGround();
+        runner = createRunner();
         renderer = new Box2DDebugRenderer();
         camera = new OrthographicCamera(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0f);
@@ -57,10 +60,28 @@ public class GameStage extends Stage {
         bodyDef.position.set(new Vector2(0, 0));
         Body body = world.createBody(bodyDef);
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(14f, 1f);
+        shape.setAsBox(25f, 2f);
         body.createFixture(shape, 0);
         shape.dispose();
         return body;
+
+    }
+
+    public Body createRunner(){
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyType.DynamicBody;
+        bodyDef.position.set(3, 1);
+
+        Body body = world.createBody(bodyDef);
+
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(0.5f, 1f);
+
+        body.createFixture(shape, 0.5f);
+        shape.dispose();
+        return body;
+
+
 
     }
 
