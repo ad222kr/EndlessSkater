@@ -1,6 +1,9 @@
 package com.alexd.projectgame.stages;
 
 import com.alexd.projectgame.TheGame;
+
+import com.alexd.projectgame.actors.GroundActor;
+import com.alexd.projectgame.actors.RunnerActor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -16,8 +19,8 @@ public class GameStage extends Stage {
     private static final int VIEWPORT_HEIGHT = TheGame.APP_HEIGHT / 50;
 
     private World world;
-    private Body ground;
-    private Body runner;
+    private GroundActor ground;
+    private RunnerActor runner;
     private Body kinematic;
 
 
@@ -29,9 +32,10 @@ public class GameStage extends Stage {
 
     public GameStage(){
         world = new World(new Vector2(0, -10), true);
-        ground = createGround();
-        runner = createRunner();
-        kinematic = createKinematicTest();
+        ground = new GroundActor(createGround());
+        runner = new RunnerActor(createRunner());
+
+        
         renderer = new Box2DDebugRenderer();
         camera = new OrthographicCamera(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0f);
