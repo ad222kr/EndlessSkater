@@ -3,6 +3,7 @@ package com.alexd.projectgame.screens;
 import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.gameobjects.Ground;
 import com.alexd.projectgame.gameobjects.Runner;
+import com.alexd.projectgame.helpers.ContactHandler;
 import com.alexd.projectgame.helpers.InputHandler;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
@@ -46,6 +47,7 @@ public class GameScreen implements Screen {
         camera.update();
 
         Gdx.input.setInputProcessor(new InputHandler(runner));
+        world.setContactListener(new ContactHandler(runner));
     }
 
     @Override

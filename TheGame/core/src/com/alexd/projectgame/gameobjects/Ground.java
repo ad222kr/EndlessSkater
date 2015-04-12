@@ -21,7 +21,7 @@ public class Ground extends GameObject {
 
     public Ground(World world){
         super(world);
-        gameObjectType = GameObjectType.RUNNER;
+        gameObjectType = GameObjectType.GROUND;
         body = createPhysicsBody();
     }
 
@@ -32,6 +32,7 @@ public class Ground extends GameObject {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(WIDTH / 2, HEIGHT / 2);
         body.createFixture(shape, DENSITY);
+        body.setUserData(this);
         shape.dispose();
         return body;
 

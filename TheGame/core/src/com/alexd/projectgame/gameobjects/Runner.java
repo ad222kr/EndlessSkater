@@ -20,13 +20,14 @@ public class Runner extends GameObject {
     private final Vector2 JUMPING_IMPULSE = new Vector2(0, 13f);
 
     /* Members */
-
+    private boolean isJumping;
 
     /* Constructor */
     public Runner(World world){
         super(world);
         gameObjectType = GameObjectType.RUNNER;
         body = createPhysicsBody();
+        isJumping = false;
 
 
     }
@@ -41,15 +42,20 @@ public class Runner extends GameObject {
         Body body = world.createBody(bodyDef);
         body.createFixture(shape, DENSITY);
         body.resetMassData();
+        body.setUserData(this);
         shape.dispose();
         return body;
     }
 
     public void jump(){
+        if (!isJumping){
+            body.applyLinearImpulse(JUMPING_IMPULSE, body.getWorldCenter(), true);
+            isJumping = true;
+        }
+    }
 
-        body.applyLinearImpulse(JUMPING_IMPULSE, body.getWorldCenter(), true);
-
-
+    public void landed(){
+        isJumping = false;
     }
 
 
