@@ -1,6 +1,6 @@
 package com.alexd.projectgame.gameobjects;
 
-import com.alexd.projectgame.enums.GameObjectType;
+import com.alexd.projectgame.helpers.GameObjectType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;

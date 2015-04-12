@@ -3,23 +3,22 @@ package com.alexd.projectgame.screens;
 import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.gameobjects.Ground;
 import com.alexd.projectgame.gameobjects.Runner;
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
+import com.alexd.projectgame.helpers.InputHandler;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 
 /**
  * Created by Alex on 2015-04-07.
  */
-public class GameScreen implements Screen, InputProcessor{
+public class GameScreen implements Screen {
 
-    private static final int VIEWPORT_WIDTH = TheGame.APP_WIDTH / 50;
-    private static final int VIEWPORT_HEIGHT = TheGame.APP_HEIGHT / 50;
+    private final int VIEWPORT_WIDTH = TheGame.APP_WIDTH / 50;
+    private final int VIEWPORT_HEIGHT = TheGame.APP_HEIGHT / 50;
+
+    private final Vector2 WORLD_GRAVITY = new Vector2(0, -10);
 
     private final float TIME_STEP = 1 / 300f;
     private float accumulator = 0f;
@@ -28,34 +27,53 @@ public class GameScreen implements Screen, InputProcessor{
     private World world;
     private Ground ground;
     private Runner runner;
+    private Body body;
 
     private OrthographicCamera camera;
     private Box2DDebugRenderer renderer;
 
 
-
-    public GameScreen(Game game){
+    public GameScreen(Game game) {
         this.game = game;
-        world = new World(new Vector2(0, -10), true);
+        world = new World(WORLD_GRAVITY, true);
         ground = new Ground(world);
         runner = new Runner(world);
+        body = createKinematicTest();
 
         renderer = new Box2DDebugRenderer();
         camera = new OrthographicCamera(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0f);
         camera.update();
+
+        Gdx.input.setInputProcessor(new InputHandler(runner));
     }
+
     @Override
     public void show() {
 
     }
 
+    public Body createKinematicTest() {
+        // might use this for moving platforms
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        bodyDef.position.set(30, 3);
+        Body body = world.createBody(bodyDef);
+
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(1f, 0.25f);
+
+        body.createFixture(shape, 0.5f);
+        body.setLinearVelocity(-5.0f, 0.0f);
+        shape.dispose();
+        return body;
+    }
 
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        camera.update();
         renderer.render(world, camera.combined);
         doStep(delta);
 
@@ -87,52 +105,14 @@ public class GameScreen implements Screen, InputProcessor{
 
     }
 
-    public void doStep(float delta){
+    public void doStep(float delta) {
         float frameTime = Math.min(delta, 0.25f);
         accumulator += frameTime;
-        while (accumulator >= TIME_STEP){
+        while (accumulator >= TIME_STEP) {
             world.step(TIME_STEP, 6, 2);
             accumulator -= TIME_STEP;
         }
+
     }
 
-    @Override
-    public boolean keyDown(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
-    }
 }

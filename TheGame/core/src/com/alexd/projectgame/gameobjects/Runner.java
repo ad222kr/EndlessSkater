@@ -1,6 +1,6 @@
 package com.alexd.projectgame.gameobjects;
 
-import com.alexd.projectgame.enums.GameObjectType;
+import com.alexd.projectgame.helpers.GameObjectType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -12,17 +12,22 @@ import com.badlogic.gdx.physics.box2d.World;
  */
 public class Runner extends GameObject {
     /* CONSTANTS */
-    private static final float X = 3f;
-    private static final float Y = 3f;
-    private static final float WIDTH = 1f;
-    private static final float HEIGHT = 2f;
-    private static final float DENSITY = 0.5f;
+    private final float X = 3f;
+    private final float Y = 3f;
+    private final float WIDTH = 1f;
+    private final float HEIGHT = 2f;
+    private final float DENSITY = 0.5f;
+    private final Vector2 JUMPING_IMPULSE = new Vector2(0, 13f);
+
+    /* Members */
+
 
     /* Constructor */
     public Runner(World world){
         super(world);
         gameObjectType = GameObjectType.RUNNER;
         body = createPhysicsBody();
+
 
     }
 
@@ -38,6 +43,13 @@ public class Runner extends GameObject {
         body.resetMassData();
         shape.dispose();
         return body;
+    }
+
+    public void jump(){
+
+        body.applyLinearImpulse(JUMPING_IMPULSE, body.getWorldCenter(), true);
+
+
     }
 
 
