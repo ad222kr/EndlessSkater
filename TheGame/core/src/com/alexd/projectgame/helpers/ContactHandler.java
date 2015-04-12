@@ -2,6 +2,7 @@ package com.alexd.projectgame.helpers;
 
 import com.alexd.projectgame.gameobjects.Ground;
 import com.alexd.projectgame.gameobjects.Runner;
+import com.alexd.projectgame.userdata.UserData;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 
@@ -10,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.*;
  */
 public class ContactHandler implements ContactListener {
     Runner runner;
+    GameObjectType type;
 
     public ContactHandler(Runner runner){
         this.runner = runner;
@@ -20,11 +22,20 @@ public class ContactHandler implements ContactListener {
         Body a = contact.getFixtureA().getBody();
         Body b = contact.getFixtureB().getBody();
 
-        if((a.getUserData() instanceof Runner && b.getUserData() instanceof Ground) ||
-                a.getUserData() instanceof Ground && b.getUserData() instanceof Runner){
+        UserData aUserData = (UserData) a.getUserData();
+        UserData bUserData = (UserData) b.getUserData();
+
+
+
+        if((aUserData.getGameObjectType() == GameObjectType.RUNNER &&
+            bUserData.getGameObjectType() == GameObjectType.GROUND)||
+            aUserData.getGameObjectType() == GameObjectType.GROUND &&
+            bUserData.getGameObjectType() == GameObjectType.RUNNER){
             runner.landed();
             Gdx.app.log("CONTACT", "bodies contact");
         }
+
+
     }
 
     @Override

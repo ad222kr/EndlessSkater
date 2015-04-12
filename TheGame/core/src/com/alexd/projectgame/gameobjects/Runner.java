@@ -1,6 +1,7 @@
 package com.alexd.projectgame.gameobjects;
 
 import com.alexd.projectgame.helpers.GameObjectType;
+import com.alexd.projectgame.userdata.RunnerData;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -13,8 +14,8 @@ import com.badlogic.gdx.physics.box2d.World;
 public class Runner extends GameObject {
     /* CONSTANTS */
     private final float X = 3f;
-    private final float Y = 3f;
-    private final float WIDTH = 1f;
+    private final float Y = 4f;
+    private final float WIDTH = 2f;
     private final float HEIGHT = 2f;
     private final float DENSITY = 0.5f;
     private final Vector2 JUMPING_IMPULSE = new Vector2(0, 13f);
@@ -25,7 +26,6 @@ public class Runner extends GameObject {
     /* Constructor */
     public Runner(World world){
         super(world);
-        gameObjectType = GameObjectType.RUNNER;
         body = createPhysicsBody();
         isJumping = false;
 
@@ -42,7 +42,7 @@ public class Runner extends GameObject {
         Body body = world.createBody(bodyDef);
         body.createFixture(shape, DENSITY);
         body.resetMassData();
-        body.setUserData(this);
+        body.setUserData(new RunnerData());
         shape.dispose();
         return body;
     }

@@ -1,6 +1,7 @@
 package com.alexd.projectgame.gameobjects;
 
 import com.alexd.projectgame.helpers.GameObjectType;
+import com.alexd.projectgame.userdata.GroundData;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -15,13 +16,12 @@ public class Ground extends GameObject {
      /* CONSTANTS */
     private static final float X = 0f;
     private static final float Y = 0f;
-    private static final float WIDTH = 50f;
-    private static final float HEIGHT = 4f;
+    private static final float WIDTH = 52f;
+    private static final float HEIGHT = 6f;
     private static final float DENSITY = 0f;
 
     public Ground(World world){
         super(world);
-        gameObjectType = GameObjectType.GROUND;
         body = createPhysicsBody();
     }
 
@@ -32,7 +32,7 @@ public class Ground extends GameObject {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(WIDTH / 2, HEIGHT / 2);
         body.createFixture(shape, DENSITY);
-        body.setUserData(this);
+        body.setUserData(new GroundData());
         shape.dispose();
         return body;
 

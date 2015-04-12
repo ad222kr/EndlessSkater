@@ -39,7 +39,7 @@ public class GameScreen implements Screen {
         world = new World(WORLD_GRAVITY, true);
         ground = new Ground(world);
         runner = new Runner(world);
-        body = createKinematicTest();
+
 
         renderer = new Box2DDebugRenderer();
         camera = new OrthographicCamera(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
@@ -59,7 +59,7 @@ public class GameScreen implements Screen {
         // might use this for moving platforms
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.KinematicBody;
-        bodyDef.position.set(30, 3);
+        bodyDef.position.set(30, 4);
         Body body = world.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
