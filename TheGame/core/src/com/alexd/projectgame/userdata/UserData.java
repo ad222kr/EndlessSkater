@@ -20,4 +20,18 @@ public abstract class UserData {
     }
 
 
+    public boolean isRunner(){
+        return gameObjectType == GameObjectType.RUNNER;
+    }
+
+    public boolean isGround(){
+        return gameObjectType == GameObjectType.GROUND;
+    }
+
+
+    public boolean isEnemy(){
+        return gameObjectType == GameObjectType.ENEMY;
+    }
+
+
 }

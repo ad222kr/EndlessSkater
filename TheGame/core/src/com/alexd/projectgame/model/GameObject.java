@@ -1,4 +1,4 @@
-package com.alexd.projectgame.gameobjects;
+package com.alexd.projectgame.model;
 
 import com.alexd.projectgame.helpers.GameObjectType;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -11,18 +11,14 @@ public abstract class GameObject {
     /* Members */
     protected World world;
     protected Body body;
-    protected GameObjectType gameObjectType;
+
 
     /* get/set */
     public Body getBody(){
         return body;
     }
 
-    public GameObjectType getGameObjectType(){
-        return gameObjectType;
-    }
-
-
+    /* Constructor */
     public GameObject (World world){
         this.world = world;
     }

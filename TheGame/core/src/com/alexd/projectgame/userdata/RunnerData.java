@@ -11,4 +11,7 @@ public class RunnerData extends UserData {
         super();
         gameObjectType = GameObjectType.RUNNER;
     }
+
+
+
 }

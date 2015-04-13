@@ -1,6 +1,5 @@
-package com.alexd.projectgame.gameobjects;
+package com.alexd.projectgame.model;
 
-import com.alexd.projectgame.helpers.GameObjectType;
 import com.alexd.projectgame.userdata.RunnerData;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -22,6 +21,9 @@ public class Runner extends GameObject {
 
     /* Members */
     private boolean isJumping;
+    private int health = 3;
+
+
 
     /* Constructor */
     public Runner(World world){
@@ -30,6 +32,11 @@ public class Runner extends GameObject {
         isJumping = false;
 
 
+    }
+
+    /* get set */
+    public int getHealth(){
+        return health;
     }
 
     /* Methods */
@@ -56,6 +63,18 @@ public class Runner extends GameObject {
 
     public void landed(){
         isJumping = false;
+    }
+
+    public void removeHealth(){
+        if (health != 0){
+            health--;
+        }
+    }
+
+    public void addHealth(){
+        if (health < 3){
+            health++;
+        }
     }
 
 

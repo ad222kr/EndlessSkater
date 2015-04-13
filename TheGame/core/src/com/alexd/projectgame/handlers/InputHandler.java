@@ -1,12 +1,7 @@
-package com.alexd.projectgame.helpers;
+package com.alexd.projectgame.handlers;
 
-import com.alexd.projectgame.gameobjects.Ground;
-import com.alexd.projectgame.gameobjects.Runner;
-import com.badlogic.gdx.Gdx;
+import com.alexd.projectgame.model.Runner;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.physics.box2d.*;
-
-import java.awt.event.ContainerListener;
 
 /**
  * Created by Alex on 2015-04-12.

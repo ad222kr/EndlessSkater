@@ -11,4 +11,6 @@ public class GroundData extends UserData{
         super();
         gameObjectType = GameObjectType.GROUND;
     }
+
+
 }

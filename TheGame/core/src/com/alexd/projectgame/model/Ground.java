@@ -1,6 +1,5 @@
-package com.alexd.projectgame.gameobjects;
+package com.alexd.projectgame.model;
 
-import com.alexd.projectgame.helpers.GameObjectType;
 import com.alexd.projectgame.userdata.GroundData;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;

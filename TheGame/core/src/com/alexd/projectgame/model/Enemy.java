@@ -1,8 +1,9 @@
-package com.alexd.projectgame.gameobjects;
+package com.alexd.projectgame.model;
 
 import com.alexd.projectgame.userdata.EnemyData;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Pool.Poolable;
 
 /**
  * Created by Alex on 2015-04-13.
@@ -15,11 +16,15 @@ public class Enemy extends GameObject {
     private final float WIDTH = 1f;
     private final float HEIGHT = 1f;
     private final float DENSITY = 0.5f;
-    private final Vector2 VELOCITY = new Vector2(-10f, 0);
+    private final Vector2 VELOCITY = new Vector2(-8f, 0);
+
+    /* Members */
+    public boolean alive;
 
     public Enemy(World world){
         super(world);
         body = createPhysicsBody();
+        alive = false;
     }
 
     private Body createPhysicsBody() {
@@ -43,4 +48,5 @@ public class Enemy extends GameObject {
 
 
     }
+
 }

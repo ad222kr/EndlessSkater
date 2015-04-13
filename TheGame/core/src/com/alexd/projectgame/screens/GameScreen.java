@@ -1,16 +1,21 @@
 package com.alexd.projectgame.screens;
 
 import com.alexd.projectgame.TheGame;
-import com.alexd.projectgame.gameobjects.Enemy;
-import com.alexd.projectgame.gameobjects.Ground;
-import com.alexd.projectgame.gameobjects.Runner;
-import com.alexd.projectgame.helpers.ContactHandler;
-import com.alexd.projectgame.helpers.InputHandler;
+import com.alexd.projectgame.model.Enemy;
+import com.alexd.projectgame.model.Ground;
+import com.alexd.projectgame.model.Runner;
+import com.alexd.projectgame.handlers.ContactHandler;
+import com.alexd.projectgame.handlers.InputHandler;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.TimeUtils;
+
+
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Alex on 2015-04-07.
@@ -29,10 +34,13 @@ public class GameScreen implements Screen {
     private World world;
     private Ground ground;
     private Runner runner;
-    private Enemy enemy;
+
 
     private OrthographicCamera camera;
     private Box2DDebugRenderer renderer;
+
+    private long lastEnemySpawnTime;
+    private float randomNumber;
 
 
     public GameScreen(Game game) {
@@ -40,7 +48,8 @@ public class GameScreen implements Screen {
         world = new World(WORLD_GRAVITY, true);
         ground = new Ground(world);
         runner = new Runner(world);
-        enemy = new Enemy(world);
+
+        spawnEnemy();
 
 
         renderer = new Box2DDebugRenderer();
@@ -52,6 +61,15 @@ public class GameScreen implements Screen {
         world.setContactListener(new ContactHandler(runner));
     }
 
+    public Enemy spawnEnemy(){
+        lastEnemySpawnTime = TimeUtils.nanoTime();
+
+        // Random number for next enemy-spawn
+        Random random = new Random();
+        randomNumber = random.nextFloat() * ((5 - 1) + 1);
+        return new Enemy(world);
+    }
+
     @Override
     public void show() {
 
@@ -61,13 +79,37 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+
+
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
         renderer.render(world, camera.combined);
+
+
+
+
+
+        if (TimeUnit.SECONDS.convert(TimeUtils.nanoTime() - lastEnemySpawnTime, TimeUnit.NANOSECONDS) > randomNumber){
+            spawnEnemy();
+            Gdx.app.log("seconds since spawn", "" + TimeUnit.SECONDS.convert(TimeUtils.nanoTime() - lastEnemySpawnTime, TimeUnit.NANOSECONDS));
+            Gdx.app.log("random", "" + randomNumber);
+            Gdx.app.log("javaHeap","" + Gdx.app.getJavaHeap());
+            Gdx.app.log("nativeHeap", "" + Gdx.app.getNativeHeap());
+        }
+
+        if(runner.getHealth() == 0){
+            game.setScreen(new GameOverScreen(game));
+        }
+
+
         doStep(delta);
 
 
+
+
     }
+
+
 
     @Override
     public void resize(int width, int height) {
@@ -91,6 +133,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+        world.dispose();
+        this.dispose();
 
     }
 

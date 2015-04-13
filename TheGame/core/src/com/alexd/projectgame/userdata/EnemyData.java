@@ -11,4 +11,6 @@ public class EnemyData extends UserData {
         super();
         gameObjectType = GameObjectType.ENEMY;
     }
+
+
 }

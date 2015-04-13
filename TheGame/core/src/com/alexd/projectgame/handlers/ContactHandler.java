@@ -1,8 +1,10 @@
-package com.alexd.projectgame.helpers;
+package com.alexd.projectgame.handlers;
 
-import com.alexd.projectgame.gameobjects.Ground;
-import com.alexd.projectgame.gameobjects.Runner;
+import com.alexd.projectgame.helpers.GameObjectType;
+import com.alexd.projectgame.model.Runner;
+import com.alexd.projectgame.screens.GameScreen;
 import com.alexd.projectgame.userdata.UserData;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 
@@ -10,15 +12,18 @@ import com.badlogic.gdx.physics.box2d.*;
  * Created by Alex on 2015-04-12.
  */
 public class ContactHandler implements ContactListener {
-    Runner runner;
+    private Runner runner;
 
 
     public ContactHandler(Runner runner){
         this.runner = runner;
+
     }
 
     @Override
     public void beginContact(Contact contact) {
+
+        /*
         Body a = contact.getFixtureA().getBody();
         Body b = contact.getFixtureB().getBody();
 
@@ -31,6 +36,19 @@ public class ContactHandler implements ContactListener {
             bUserData.getGameObjectType() == GameObjectType.RUNNER){
             runner.landed();
             Gdx.app.log("CONTACT", "bodies contact");
+        }
+        */
+
+        UserData a = (UserData) contact.getFixtureA().getBody().getUserData();
+        UserData b = (UserData) contact.getFixtureB().getBody().getUserData();
+
+        if ((a.isGround() && b.isRunner()) || (a.isRunner() && b.isGround())){
+            runner.landed();
+            Gdx.app.log("CONTACT", "bodies hit");
+        }
+
+        if ((a.isEnemy() && b.isRunner()) || (a.isRunner() && b.isEnemy())){
+            runner.removeHealth();
         }
 
 
