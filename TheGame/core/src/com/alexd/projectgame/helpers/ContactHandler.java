@@ -11,7 +11,7 @@ import com.badlogic.gdx.physics.box2d.*;
  */
 public class ContactHandler implements ContactListener {
     Runner runner;
-    GameObjectType type;
+
 
     public ContactHandler(Runner runner){
         this.runner = runner;
@@ -24,8 +24,6 @@ public class ContactHandler implements ContactListener {
 
         UserData aUserData = (UserData) a.getUserData();
         UserData bUserData = (UserData) b.getUserData();
-
-
 
         if((aUserData.getGameObjectType() == GameObjectType.RUNNER &&
             bUserData.getGameObjectType() == GameObjectType.GROUND)||

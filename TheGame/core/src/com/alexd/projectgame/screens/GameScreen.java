@@ -1,6 +1,7 @@
 package com.alexd.projectgame.screens;
 
 import com.alexd.projectgame.TheGame;
+import com.alexd.projectgame.gameobjects.Enemy;
 import com.alexd.projectgame.gameobjects.Ground;
 import com.alexd.projectgame.gameobjects.Runner;
 import com.alexd.projectgame.helpers.ContactHandler;
@@ -28,7 +29,7 @@ public class GameScreen implements Screen {
     private World world;
     private Ground ground;
     private Runner runner;
-    private Body body;
+    private Enemy enemy;
 
     private OrthographicCamera camera;
     private Box2DDebugRenderer renderer;
@@ -39,6 +40,7 @@ public class GameScreen implements Screen {
         world = new World(WORLD_GRAVITY, true);
         ground = new Ground(world);
         runner = new Runner(world);
+        enemy = new Enemy(world);
 
 
         renderer = new Box2DDebugRenderer();
@@ -55,21 +57,6 @@ public class GameScreen implements Screen {
 
     }
 
-    public Body createKinematicTest() {
-        // might use this for moving platforms
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.KinematicBody;
-        bodyDef.position.set(30, 4);
-        Body body = world.createBody(bodyDef);
-
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(1f, 0.25f);
-
-        body.createFixture(shape, 0.5f);
-        body.setLinearVelocity(-5.0f, 0.0f);
-        shape.dispose();
-        return body;
-    }
 
 
     @Override

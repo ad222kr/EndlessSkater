@@ -1,10 +1,11 @@
 package com.alexd.projectgame.userdata;
 
-import com.alexd.projectgame.gameobjects.GameObject;
+
 import com.alexd.projectgame.helpers.GameObjectType;
 
 /**
- * Created by Alex on 2015-04-13.
+ * Base class for the UserData-classe that will hold
+ * information needed by the physicsbody
  */
 public abstract class UserData {
 
