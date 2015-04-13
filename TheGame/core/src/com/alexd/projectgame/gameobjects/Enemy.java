@@ -35,7 +35,7 @@ public class Enemy extends GameObject {
         fixtureDef.shape = shape;
         fixtureDef.density = DENSITY;
         body.createFixture(fixtureDef);
-        body.resetMassData();;
+        body.resetMassData();
         body.setUserData(new EnemyData());
 
         shape.dispose();
