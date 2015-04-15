@@ -24,7 +24,7 @@ public class Ground extends GameObject {
         body = createPhysicsBody();
     }
 
-    public Body createPhysicsBody(){
+    protected Body createPhysicsBody(){
         BodyDef bodyDef = new BodyDef();
         bodyDef.position.set(new Vector2(X, Y));
         Body body = world.createBody(bodyDef);
@@ -34,6 +34,5 @@ public class Ground extends GameObject {
         body.setUserData(new GroundData());
         shape.dispose();
         return body;
-
     }
 }

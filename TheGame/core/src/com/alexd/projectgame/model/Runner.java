@@ -30,8 +30,6 @@ public class Runner extends GameObject {
         super(world);
         body = createPhysicsBody();
         isJumping = false;
-
-
     }
 
     /* get set */
@@ -40,7 +38,7 @@ public class Runner extends GameObject {
     }
 
     /* Methods */
-    private Body createPhysicsBody(){
+    protected Body createPhysicsBody(){
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(new Vector2(X, Y));

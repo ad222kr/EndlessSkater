@@ -6,10 +6,10 @@ import com.badlogic.gdx.InputProcessor;
 /**
  * Created by Alex on 2015-04-12.
  */
-public class InputHandler implements InputProcessor {
+public class GameInputHandler implements InputProcessor {
     private Runner runner;
 
-    public InputHandler(Runner runner){
+    public GameInputHandler(Runner runner){
         this.runner = runner;
     }
 

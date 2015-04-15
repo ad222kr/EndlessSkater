@@ -5,7 +5,7 @@ import com.alexd.projectgame.model.Enemy;
 import com.alexd.projectgame.model.Ground;
 import com.alexd.projectgame.model.Runner;
 import com.alexd.projectgame.handlers.ContactHandler;
-import com.alexd.projectgame.handlers.InputHandler;
+import com.alexd.projectgame.handlers.GameInputHandler;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -57,7 +57,7 @@ public class GameScreen implements Screen {
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0f);
         camera.update();
 
-        Gdx.input.setInputProcessor(new InputHandler(runner));
+        Gdx.input.setInputProcessor(new GameInputHandler(runner));
         world.setContactListener(new ContactHandler(runner));
     }
 

@@ -1,9 +1,7 @@
 package com.alexd.projectgame.screens;
 
 import com.alexd.projectgame.model.GameObject;
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -12,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 /**
  * Created by Alex on 2015-04-13.
  */
-public class GameOverScreen implements Screen {
+public class GameOverScreen implements Screen, InputProcessor {
     private SpriteBatch batch;
     private BitmapFont font;
     private Game game;
@@ -22,6 +20,7 @@ public class GameOverScreen implements Screen {
         batch = new SpriteBatch();
         font = new BitmapFont();
         font.setColor(Color.RED);
+        Gdx.input.setInputProcessor(this);
     }
     @Override
     public void show() {
@@ -62,5 +61,46 @@ public class GameOverScreen implements Screen {
         batch.dispose();
         font.dispose();
         this.dispose();
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        game.setScreen(new GameScreen(game));
+        return true;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
     }
 }

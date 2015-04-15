@@ -1,7 +1,7 @@
 package com.alexd.projectgame.model;
 
-import com.alexd.projectgame.helpers.GameObjectType;
 import com.badlogic.gdx.physics.box2d.Body;
+
 import com.badlogic.gdx.physics.box2d.World;
 
 /**
@@ -23,5 +23,6 @@ public abstract class GameObject {
         this.world = world;
     }
 
+    protected abstract Body createPhysicsBody();
 
 }

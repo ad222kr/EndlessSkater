@@ -2,9 +2,7 @@ package com.alexd.projectgame.handlers;
 
 import com.alexd.projectgame.helpers.GameObjectType;
 import com.alexd.projectgame.model.Runner;
-import com.alexd.projectgame.screens.GameScreen;
 import com.alexd.projectgame.userdata.UserData;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 
@@ -23,31 +21,20 @@ public class ContactHandler implements ContactListener {
     @Override
     public void beginContact(Contact contact) {
 
-        /*
-        Body a = contact.getFixtureA().getBody();
-        Body b = contact.getFixtureB().getBody();
-
-        UserData aUserData = (UserData) a.getUserData();
-        UserData bUserData = (UserData) b.getUserData();
-
-        if((aUserData.getGameObjectType() == GameObjectType.RUNNER &&
-            bUserData.getGameObjectType() == GameObjectType.GROUND)||
-            aUserData.getGameObjectType() == GameObjectType.GROUND &&
-            bUserData.getGameObjectType() == GameObjectType.RUNNER){
-            runner.landed();
-            Gdx.app.log("CONTACT", "bodies contact");
-        }
-        */
-
         UserData a = (UserData) contact.getFixtureA().getBody().getUserData();
         UserData b = (UserData) contact.getFixtureB().getBody().getUserData();
 
-        if ((a.isGround() && b.isRunner()) || (a.isRunner() && b.isGround())){
+        // Checks for contact between runner and ground to prevent double-jumping
+        if ((a.isExpectedType(GameObjectType.GROUND) && b.isExpectedType(GameObjectType.RUNNER))||
+             a.isExpectedType(GameObjectType.RUNNER) && b.isExpectedType(GameObjectType.GROUND)){
             runner.landed();
-            Gdx.app.log("CONTACT", "bodies hit");
         }
 
-        if ((a.isEnemy() && b.isRunner()) || (a.isRunner() && b.isEnemy())){
+        // Checks contact between enemy and runner
+        if ((a.isExpectedType(GameObjectType.RUNNER) && b.isExpectedType(GameObjectType.ENEMY)) ||
+             b.isExpectedType(GameObjectType.RUNNER) && b.isExpectedType(GameObjectType.ENEMY)){
+            Gdx.app.log("CONTACT", "" + a.isExpectedType(GameObjectType.RUNNER));
+            Gdx.app.log("CONTACT", "" + b.isExpectedType(GameObjectType.ENEMY));
             runner.removeHealth();
         }
 

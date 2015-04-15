@@ -1,6 +1,5 @@
 package com.alexd.projectgame.userdata;
 
-
 import com.alexd.projectgame.helpers.GameObjectType;
 
 /**
@@ -14,24 +13,8 @@ public abstract class UserData {
     public UserData(){
 
     }
-
-    public GameObjectType getGameObjectType(){
-        return gameObjectType;
+    
+    public boolean isExpectedType(GameObjectType type){
+        return gameObjectType == type;
     }
-
-
-    public boolean isRunner(){
-        return gameObjectType == GameObjectType.RUNNER;
-    }
-
-    public boolean isGround(){
-        return gameObjectType == GameObjectType.GROUND;
-    }
-
-
-    public boolean isEnemy(){
-        return gameObjectType == GameObjectType.ENEMY;
-    }
-
-
 }
