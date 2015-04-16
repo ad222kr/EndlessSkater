@@ -18,11 +18,25 @@ public abstract class GameObject {
         return body;
     }
 
+    public void setBody(Body body){
+        this.body = body;
+    }
+
+    public World getWorld(){
+        return world;
+    }
+
+    public void setWorld(World world){
+        this.world = world;
+    }
+
     /* Constructor */
     public GameObject (World world){
         this.world = world;
     }
 
-    protected abstract Body createPhysicsBody();
+    public GameObject () {}
+
+
 
 }

@@ -1,5 +1,6 @@
 package com.alexd.projectgame.model;
 
+import com.alexd.projectgame.helpers.PhysicsBodyHelper;
 import com.alexd.projectgame.userdata.RunnerData;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -12,11 +13,11 @@ import com.badlogic.gdx.physics.box2d.World;
  */
 public class Runner extends GameObject {
     /* CONSTANTS */
-    private final float X = 3f;
-    private final float Y = 4f;
-    private final float WIDTH = 2f;
-    private final float HEIGHT = 2f;
-    private final float DENSITY = 0.5f;
+    public static final float X = 3f;
+    public static final float Y = 4f;
+    public static final float WIDTH = 2f;
+    public static final float HEIGHT = 2f;
+    public static final float DENSITY = 0.5f;
     private final Vector2 JUMPING_IMPULSE = new Vector2(0, 13f);
 
     /* Members */
@@ -28,7 +29,7 @@ public class Runner extends GameObject {
     /* Constructor */
     public Runner(World world){
         super(world);
-        body = createPhysicsBody();
+        body = PhysicsBodyHelper.createRunner(this.world);
         isJumping = false;
     }
 
@@ -38,19 +39,7 @@ public class Runner extends GameObject {
     }
 
     /* Methods */
-    protected Body createPhysicsBody(){
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(new Vector2(X, Y));
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(WIDTH / 2, HEIGHT / 2);
-        Body body = world.createBody(bodyDef);
-        body.createFixture(shape, DENSITY);
-        body.resetMassData();
-        body.setUserData(new RunnerData());
-        shape.dispose();
-        return body;
-    }
+
 
     public void jump(){
         if (!isJumping){
