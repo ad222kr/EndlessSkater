@@ -24,6 +24,11 @@ public class Runner extends GameObject {
     private boolean isJumping;
     private int health = 3;
 
+    /* Getters & Setters */
+    public boolean getIsJumping(){
+        return isJumping;
+    }
+
 
 
     /* Constructor */

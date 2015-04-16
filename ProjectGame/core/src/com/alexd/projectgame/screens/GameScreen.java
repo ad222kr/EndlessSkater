@@ -43,6 +43,7 @@ public class GameScreen implements Screen {
     private float randomNumber;
 
 
+
     public GameScreen(Game game) {
         this.game = game;
         world = new World(WORLD_GRAVITY, true);
@@ -59,6 +60,10 @@ public class GameScreen implements Screen {
 
         Gdx.input.setInputProcessor(new GameInputHandler(runner));
         world.setContactListener(new ContactHandler(runner));
+    }
+
+    public GameScreen(){
+        world = new World(WORLD_GRAVITY, true);
     }
 
     public Enemy spawnEnemy(){

@@ -18,6 +18,7 @@ public class ContactHandler implements ContactListener {
 
     }
 
+
     @Override
     public void beginContact(Contact contact) {
 
@@ -26,13 +27,13 @@ public class ContactHandler implements ContactListener {
 
         // Checks for contact between runner and ground to prevent double-jumping
         if ((a.isExpectedType(GameObjectType.GROUND) && b.isExpectedType(GameObjectType.RUNNER))||
-                a.isExpectedType(GameObjectType.RUNNER) && b.isExpectedType(GameObjectType.GROUND)){
+             a.isExpectedType(GameObjectType.RUNNER) && b.isExpectedType(GameObjectType.GROUND)){
             runner.landed();
         }
 
         // Checks contact between enemy and runner
         if ((a.isExpectedType(GameObjectType.RUNNER) && b.isExpectedType(GameObjectType.ENEMY)) ||
-                b.isExpectedType(GameObjectType.RUNNER) && b.isExpectedType(GameObjectType.ENEMY)){
+             b.isExpectedType(GameObjectType.RUNNER) && b.isExpectedType(GameObjectType.ENEMY)){
             Gdx.app.log("CONTACT", "" + a.isExpectedType(GameObjectType.RUNNER));
             Gdx.app.log("CONTACT", "" + b.isExpectedType(GameObjectType.ENEMY));
             runner.removeHealth();
