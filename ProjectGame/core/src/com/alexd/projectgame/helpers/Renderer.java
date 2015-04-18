@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
 /**
@@ -43,20 +44,38 @@ public class Renderer {
 
     public void render(Matrix4 projectionMatrix){
 
+        batch.setProjectionMatrix(projectionMatrix);
+        runnerSprite.setX((runner.getBody().getWorldCenter().x - Runner.WIDTH / 2));
+        runnerSprite.setY((runner.getBody().getWorldCenter().y - Runner.WIDTH / 2));
 
-        runnerSprite.setPosition((runner.getBody().getWorldCenter().x * GameScreen.PIXELS_TO_METERS) - runnerSprite.getWidth() / 2,
-                (runner.getBody().getWorldCenter().y * GameScreen.PIXELS_TO_METERS) - runnerSprite.getHeight() / 2);
+
+        runnerSprite.setOrigin(runnerSprite.getWidth() / 2, runnerSprite.getHeight() / 2);
+
+        //nerSprite.setPosition((runner.getBody().getWorldCenter().x * GameScreen.PIXELS_TO_METERS) - (Runner.WIDTH * GameScreen.PIXELS_TO_METERS / 2),
+        //        (runner.getBody().getWorldCenter().y * GameScreen.PIXELS_TO_METERS) - (Runner.WIDTH * GameScreen.PIXELS_TO_METERS / 2));
+
+
+
+        Gdx.app.log("RunnerX: ", ""+(runner.getBody().getWorldCenter().x - Runner.WIDTH / 2));
+        Gdx.app.log("RunnerX: ", ""+(runner.getBody().getWorldCenter().y - Runner.HEIGHT / 2));
+
 
 
 
         batch.begin();
-        batch.draw(runnerSprite, runnerSprite.getX(), runnerSprite.getY());
+        batch.draw(runnerSprite, runnerSprite.getX(), runnerSprite.getY(),convertToMeters(runnerSprite.getWidth()), convertToMeters(runnerSprite.getHeight()));
         batch.end();
+
 
     }
 
     public void dispose(){
         img.dispose();
         batch.dispose();
+    }
+
+
+    public float convertToMeters(float pixels){
+        return pixels / GameScreen.PIXELS_TO_METERS;
     }
 }

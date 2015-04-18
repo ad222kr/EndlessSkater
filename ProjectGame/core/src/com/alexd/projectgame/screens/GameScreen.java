@@ -113,8 +113,9 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         doStep(delta);
-        debugRenderer.render(world, camera.combined);
+
         renderer.render(camera.combined);
+        debugRenderer.render(world, camera.combined);
 
 
 
