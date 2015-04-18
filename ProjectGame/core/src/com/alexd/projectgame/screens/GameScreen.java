@@ -1,6 +1,7 @@
 package com.alexd.projectgame.screens;
 
 import com.alexd.projectgame.TheGame;
+import com.alexd.projectgame.helpers.Renderer;
 import com.alexd.projectgame.model.Enemy;
 import com.alexd.projectgame.model.Ground;
 import com.alexd.projectgame.model.Runner;
@@ -11,7 +12,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScalingViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 
 import java.util.Random;
@@ -22,8 +27,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class GameScreen implements Screen {
 
-    private final int VIEWPORT_WIDTH = TheGame.APP_WIDTH / 50;
-    private final int VIEWPORT_HEIGHT = TheGame.APP_HEIGHT / 50;
+    public static final int PIXELS_TO_METERS = 50;
+    private static final int VIEWPORT_WIDTH = TheGame.APP_WIDTH / PIXELS_TO_METERS;
+    private final int VIEWPORT_HEIGHT = TheGame.APP_HEIGHT / PIXELS_TO_METERS;
 
     private final Vector2 WORLD_GRAVITY = new Vector2(0, -10);
 
@@ -37,7 +43,9 @@ public class GameScreen implements Screen {
 
 
     private OrthographicCamera camera;
-    private Box2DDebugRenderer renderer;
+    private Viewport viewport;
+    private Box2DDebugRenderer debugRenderer;
+    private Renderer renderer;
 
     private long lastEnemySpawnTime;
     private float randomNumber;
@@ -45,31 +53,49 @@ public class GameScreen implements Screen {
 
 
     public GameScreen(Game game) {
+
+        // TODO: Refactor?
         this.game = game;
         world = new World(WORLD_GRAVITY, true);
         ground = new Ground(world);
         runner = new Runner(world);
+        debugRenderer = new Box2DDebugRenderer();
+
+        setupCamera();
+        renderer = new Renderer(world, runner);
+
+        Gdx.input.setInputProcessor(new GameInputHandler(runner));
+        world.setContactListener(new ContactHandler(runner));
 
         spawnEnemy();
 
 
-        renderer = new Box2DDebugRenderer();
-        camera = new OrthographicCamera(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
-        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0f);
-        camera.update();
 
-        Gdx.input.setInputProcessor(new GameInputHandler(runner));
-        world.setContactListener(new ContactHandler(runner));
+
+
+
     }
+
 
     public GameScreen(){
         world = new World(WORLD_GRAVITY, true);
     }
 
+    public void setupCamera(){
+        camera = new OrthographicCamera(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+        //viewport = new ScalingViewport(Scaling.stretch, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, camera);
+
+        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0f);
+        camera.update();
+    }
+
+
+
     public Enemy spawnEnemy(){
         lastEnemySpawnTime = TimeUtils.nanoTime();
 
-        // Random number for next enemy-spawn
+        // Random number for next enemy-spawn, for later
+        // use to spawn enemies at a random time
         Random random = new Random();
         randomNumber = random.nextFloat() * ((5 - 1) + 1);
         return new Enemy(world);
@@ -84,11 +110,11 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-
-
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        camera.update();
-        renderer.render(world, camera.combined);
+
+        doStep(delta);
+        debugRenderer.render(world, camera.combined);
+        renderer.render(camera.combined);
 
 
 
@@ -104,7 +130,7 @@ public class GameScreen implements Screen {
         }
 
 
-        doStep(delta);
+
 
 
 
@@ -115,6 +141,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        //viewport.update(width, height);
 
     }
 
@@ -136,6 +163,7 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         world.dispose();
+        renderer.dispose();
         this.dispose();
 
     }

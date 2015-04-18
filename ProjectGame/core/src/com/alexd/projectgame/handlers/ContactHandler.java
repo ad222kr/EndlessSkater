@@ -7,7 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 
 /**
- * Created by Alex on 2015-04-12.
+ * Class handling contacts between physics-objects
  */
 public class ContactHandler implements ContactListener {
     private Runner runner;
@@ -26,16 +26,12 @@ public class ContactHandler implements ContactListener {
         UserData b = (UserData) contact.getFixtureB().getBody().getUserData();
 
         // Checks for contact between runner and ground to prevent double-jumping
-        if ((a.isExpectedType(GameObjectType.GROUND) && b.isExpectedType(GameObjectType.RUNNER))||
-             a.isExpectedType(GameObjectType.RUNNER) && b.isExpectedType(GameObjectType.GROUND)){
+        if (isRunnerGroundContact(a, b)){
             runner.landed();
         }
 
         // Checks contact between enemy and runner
-        if ((a.isExpectedType(GameObjectType.RUNNER) && b.isExpectedType(GameObjectType.ENEMY)) ||
-             b.isExpectedType(GameObjectType.RUNNER) && b.isExpectedType(GameObjectType.ENEMY)){
-            Gdx.app.log("CONTACT", "" + a.isExpectedType(GameObjectType.RUNNER));
-            Gdx.app.log("CONTACT", "" + b.isExpectedType(GameObjectType.ENEMY));
+        if (isRunnerEnemyContact(a, b)){
             runner.removeHealth();
         }
 
@@ -56,4 +52,17 @@ public class ContactHandler implements ContactListener {
     public void postSolve(Contact contact, ContactImpulse impulse) {
 
     }
+
+    public boolean isRunnerGroundContact(UserData a, UserData b){
+        return ((a.isExpectedType(GameObjectType.GROUND) && b.isExpectedType(GameObjectType.RUNNER))||
+                 a.isExpectedType(GameObjectType.RUNNER) && b.isExpectedType(GameObjectType.GROUND));
+    }
+
+    public boolean isRunnerEnemyContact(UserData a, UserData b){
+        return (a.isExpectedType(GameObjectType.RUNNER) && b.isExpectedType(GameObjectType.ENEMY)) ||
+                b.isExpectedType(GameObjectType.RUNNER) && b.isExpectedType(GameObjectType.ENEMY);
+
+    }
+
+
 }

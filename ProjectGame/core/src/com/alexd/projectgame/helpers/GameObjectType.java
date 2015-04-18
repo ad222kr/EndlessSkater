@@ -1,10 +1,10 @@
 package com.alexd.projectgame.helpers;
 
 /**
- * Created by Alex on 2015-04-12.
+ * Enum for keeping track of what kind of GameObject
+ * we are dealing with
  */
 public enum GameObjectType {
     GROUND,
     RUNNER,
-    ENEMY
-}
+    ENEMY }

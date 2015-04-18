@@ -4,7 +4,7 @@ import com.alexd.projectgame.model.Runner;
 import com.badlogic.gdx.InputProcessor;
 
 /**
- * Created by Alex on 2015-04-12.
+ * Class handling the input
  */
 public class GameInputHandler implements InputProcessor {
     private Runner runner;

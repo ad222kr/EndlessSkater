@@ -16,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 public class PhysicsBodyHelper {
 
     public static Body creteGround(World world){
+
         BodyDef bodyDef = getBodyDef(Ground.X, Ground.Y, BodyType.StaticBody);
         Body body = world.createBody(bodyDef);
         PolygonShape shape = getBox(Ground.WIDTH, Ground.HEIGHT);
@@ -27,10 +28,15 @@ public class PhysicsBodyHelper {
     }
 
     public static Body createEnemy(World world){
+
         BodyDef bodyDef = getBodyDef(Enemy.X, Enemy.Y, BodyType.KinematicBody);
         PolygonShape shape = getBox(Enemy.WIDTH, Enemy.HEIGHT);
         Body body = world.createBody(bodyDef);
         body.setLinearVelocity(Enemy.LINEAR_VELOCITY);
+
+        // Creating fixture definition for the body. This fixture needs more
+        // information than the other ones. It is a sensor, meaning that it's
+        // "transparent" for the other game objects
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.isSensor = true;
         fixtureDef.shape = shape;
@@ -44,6 +50,7 @@ public class PhysicsBodyHelper {
     }
 
     public static Body createRunner(World world){
+
         BodyDef bodyDef = getBodyDef(Runner.X, Runner.Y, BodyType.DynamicBody);
         PolygonShape shape = getBox(Runner.WIDTH, Runner.HEIGHT);
         Body body = world.createBody(bodyDef);
@@ -55,12 +62,14 @@ public class PhysicsBodyHelper {
     }
 
     private static PolygonShape getBox(float width, float height){
+
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(width / 2, height / 2);
         return shape;
     }
 
     private static BodyDef getBodyDef(float x, float y, BodyType type){
+
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = type;
         bodyDef.position.set(new Vector2(x, y));

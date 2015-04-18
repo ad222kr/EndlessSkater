@@ -54,6 +54,7 @@ public class Runner extends GameObject {
     }
 
     public void landed(){
+
         isJumping = false;
     }
 

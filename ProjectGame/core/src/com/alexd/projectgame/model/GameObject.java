@@ -5,7 +5,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 
 /**
- * Base class for the game-objets
+ * Abstract base-class for game objects
  */
 public abstract class GameObject {
     /* Members */
