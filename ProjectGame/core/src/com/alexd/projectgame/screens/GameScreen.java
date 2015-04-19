@@ -1,10 +1,9 @@
 package com.alexd.projectgame.screens;
 
 import com.alexd.projectgame.TheGame;
+import com.alexd.projectgame.helpers.GameObjectType;
 import com.alexd.projectgame.helpers.Renderer;
-import com.alexd.projectgame.model.Enemy;
-import com.alexd.projectgame.model.Ground;
-import com.alexd.projectgame.model.Runner;
+import com.alexd.projectgame.model.*;
 import com.alexd.projectgame.handlers.ContactHandler;
 import com.alexd.projectgame.handlers.GameInputHandler;
 import com.badlogic.gdx.*;
@@ -12,6 +11,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -49,6 +49,7 @@ public class GameScreen implements Screen {
 
     private long lastEnemySpawnTime;
     private float randomNumber;
+    private GameObjectType[] enemies;
 
 
 
@@ -66,6 +67,7 @@ public class GameScreen implements Screen {
 
         Gdx.input.setInputProcessor(new GameInputHandler(runner));
         world.setContactListener(new ContactHandler(runner));
+        enemies = new GameObjectType[]{ GameObjectType.ENEMY, GameObjectType.OBSTACLE };
 
         spawnEnemy();
 
@@ -91,14 +93,24 @@ public class GameScreen implements Screen {
 
 
 
-    public Enemy spawnEnemy(){
+    public GameObject spawnEnemy(){
         lastEnemySpawnTime = TimeUtils.nanoTime();
 
-        // Random number for next enemy-spawn, for later
-        // use to spawn enemies at a random time
-        Random random = new Random();
-        randomNumber = random.nextFloat() * ((5 - 1) + 1);
-        return new Enemy(world);
+        GameObjectType type = enemies[new Random().nextInt(enemies.length)];
+        GameObject retObj = null;
+
+        switch (type){
+            case ENEMY:
+                retObj = new Enemy(world);
+                break;
+            case OBSTACLE:
+                retObj = new Obstacle(world);
+                break;
+
+        }
+
+        return retObj;
+
     }
 
     @Override
@@ -121,12 +133,13 @@ public class GameScreen implements Screen {
 
 
 
-        if (TimeUtils.nanoTime() - lastEnemySpawnTime > 1500000000){
+        if (TimeUtils.nanoTime() - lastEnemySpawnTime > 2000000000){
             spawnEnemy();
 
         }
 
         if(runner.getHealth() == 0){
+
             game.setScreen(new GameOverScreen(game));
         }
 
@@ -158,14 +171,14 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override
     public void dispose() {
         world.dispose();
         renderer.dispose();
-        this.dispose();
+        debugRenderer.dispose();
 
     }
 

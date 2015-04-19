@@ -7,4 +7,6 @@ package com.alexd.projectgame.helpers;
 public enum GameObjectType {
     GROUND,
     RUNNER,
-    ENEMY }
+    ENEMY,
+    OBSTACLE,
+}

@@ -12,11 +12,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Disposable;
 
 /**
  * Created by Alex on 2015-04-18.
  */
-public class Renderer {
+public class Renderer implements Disposable{
     private SpriteBatch batch;
 
     private Sprite runnerSprite;
@@ -51,7 +52,7 @@ public class Renderer {
 
         runnerSprite.setOrigin(runnerSprite.getWidth() / 2, runnerSprite.getHeight() / 2);
 
-        //nerSprite.setPosition((runner.getBody().getWorldCenter().x * GameScreen.PIXELS_TO_METERS) - (Runner.WIDTH * GameScreen.PIXELS_TO_METERS / 2),
+        //runnerSprite.setPosition((runner.getBody().getWorldCenter().x * GameScreen.PIXELS_TO_METERS) - (Runner.WIDTH * GameScreen.PIXELS_TO_METERS / 2),
         //        (runner.getBody().getWorldCenter().y * GameScreen.PIXELS_TO_METERS) - (Runner.WIDTH * GameScreen.PIXELS_TO_METERS / 2));
 
 

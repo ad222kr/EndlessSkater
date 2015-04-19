@@ -13,12 +13,12 @@ import com.badlogic.gdx.physics.box2d.World;
  */
 public class Runner extends GameObject {
     /* CONSTANTS */
-    public static final float X = 3f;
+    public static final float X = 4f;
     public static final float Y = 4f;
     public static final float WIDTH = 2f;
     public static final float HEIGHT = 2f;
     public static final float DENSITY = 0.5f;
-    private final Vector2 JUMPING_IMPULSE = new Vector2(0, 13f);
+    private final Vector2 JUMPING_IMPULSE = new Vector2(0, 15f);
 
     /* Members */
     private boolean isJumping;

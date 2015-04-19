@@ -1,6 +1,7 @@
 package com.alexd.projectgame.handlers;
 
 import com.alexd.projectgame.helpers.GameObjectType;
+import com.alexd.projectgame.model.GameObject;
 import com.alexd.projectgame.model.Runner;
 import com.alexd.projectgame.userdata.UserData;
 import com.badlogic.gdx.Gdx;
@@ -26,12 +27,21 @@ public class ContactHandler implements ContactListener {
         UserData b = (UserData) contact.getFixtureB().getBody().getUserData();
 
         // Checks for contact between runner and ground to prevent double-jumping
-        if (isRunnerGroundContact(a, b)){
+        /*if (isRunnerGroundContact(a, b)){
             runner.landed();
         }
 
         // Checks contact between enemy and runner
-        if (isRunnerEnemyContact(a, b)){
+        if (isRunnerEnemyContact(a, b) || isRunnerObstacleContact(a, b)){
+            runner.removeHealth();
+        } */
+
+        if (isContact(a, b, GameObjectType.RUNNER, GameObjectType.GROUND)){
+            runner.landed();
+        }
+
+        if (isContact(a, b, GameObjectType.ENEMY, GameObjectType.RUNNER) ||
+            isContact(a, b, GameObjectType.OBSTACLE, GameObjectType.RUNNER)){
             runner.removeHealth();
         }
 
@@ -62,6 +72,16 @@ public class ContactHandler implements ContactListener {
         return (a.isExpectedType(GameObjectType.RUNNER) && b.isExpectedType(GameObjectType.ENEMY)) ||
                 b.isExpectedType(GameObjectType.RUNNER) && b.isExpectedType(GameObjectType.ENEMY);
 
+    }
+
+    public boolean isRunnerObstacleContact(UserData a, UserData b){
+        return (a.isExpectedType(GameObjectType.RUNNER) && b.isExpectedType(GameObjectType.OBSTACLE)) ||
+                b.isExpectedType(GameObjectType.RUNNER) && b.isExpectedType(GameObjectType.OBSTACLE);
+    }
+
+    public boolean isContact(UserData a, UserData b, GameObjectType typeA, GameObjectType typeB){
+        return ((a.isExpectedType(typeA) && b.isExpectedType(typeB)) ||
+                (b.isExpectedType(typeA) && a.isExpectedType(typeB)));
     }
 
 

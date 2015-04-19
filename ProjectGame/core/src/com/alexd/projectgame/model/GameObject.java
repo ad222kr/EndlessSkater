@@ -12,6 +12,9 @@ public abstract class GameObject {
     protected World world;
     protected Body body;
 
+    /* Get & set */
+
+
 
     /* get/set */
     public Body getBody(){

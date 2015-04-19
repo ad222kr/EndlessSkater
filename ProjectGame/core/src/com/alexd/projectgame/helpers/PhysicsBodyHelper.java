@@ -2,13 +2,16 @@ package com.alexd.projectgame.helpers;
 
 import com.alexd.projectgame.model.Enemy;
 import com.alexd.projectgame.model.Ground;
+import com.alexd.projectgame.model.Obstacle;
 import com.alexd.projectgame.model.Runner;
 import com.alexd.projectgame.userdata.EnemyData;
 import com.alexd.projectgame.userdata.GroundData;
+import com.alexd.projectgame.userdata.ObstacleData;
 import com.alexd.projectgame.userdata.RunnerData;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import sun.security.util.PolicyUtil;
 
 /**
  * Created by Alex on 2015-04-16.
@@ -49,6 +52,23 @@ public class PhysicsBodyHelper {
 
     }
 
+    public static Body createObstacle(World world){
+        BodyDef bodyDef = getBodyDef(Obstacle.X, Obstacle.Y, BodyType.KinematicBody);
+        PolygonShape shape = getBox(Obstacle.WIDTH, Obstacle.HEIGHT);
+        Body body = world.createBody(bodyDef);
+        body.setLinearVelocity(Obstacle.LINEAR_VELOCITY);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.isSensor = true;
+        fixtureDef.shape = shape;
+        fixtureDef.density = Obstacle.DENSITY;
+        body.createFixture(fixtureDef);
+        body.resetMassData();;
+        body.setUserData(new ObstacleData());
+        shape.dispose();
+        return body;
+    }
+
     public static Body createRunner(World world){
 
         BodyDef bodyDef = getBodyDef(Runner.X, Runner.Y, BodyType.DynamicBody);
@@ -60,6 +80,8 @@ public class PhysicsBodyHelper {
         shape.dispose();
         return body;
     }
+
+
 
     private static PolygonShape getBox(float width, float height){
 
