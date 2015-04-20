@@ -1,9 +1,9 @@
 package com.alexd.projectgame.helpers;
 
-import com.alexd.projectgame.model.Enemy;
-import com.alexd.projectgame.model.Ground;
-import com.alexd.projectgame.model.Obstacle;
-import com.alexd.projectgame.model.Runner;
+import com.alexd.projectgame.gameobjects.Enemy;
+import com.alexd.projectgame.gameobjects.Ground;
+import com.alexd.projectgame.gameobjects.Obstacle;
+import com.alexd.projectgame.gameobjects.Runner;
 import com.alexd.projectgame.userdata.EnemyData;
 import com.alexd.projectgame.userdata.GroundData;
 import com.alexd.projectgame.userdata.ObstacleData;
@@ -11,7 +11,6 @@ import com.alexd.projectgame.userdata.RunnerData;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import sun.security.util.PolicyUtil;
 
 /**
  * Created by Alex on 2015-04-16.
@@ -35,7 +34,7 @@ public class PhysicsBodyHelper {
         BodyDef bodyDef = getBodyDef(Enemy.X, Enemy.Y, BodyType.KinematicBody);
         PolygonShape shape = getBox(Enemy.WIDTH, Enemy.HEIGHT);
         Body body = world.createBody(bodyDef);
-        body.setLinearVelocity(Enemy.LINEAR_VELOCITY);
+        body.setLinearVelocity(new Vector2( -HelperMethods.getRandomNumber(4, 7), 0));
 
         // Creating fixture definition for the body. This fixture needs more
         // information than the other ones. It is a sensor, meaning that it's
@@ -63,7 +62,7 @@ public class PhysicsBodyHelper {
         fixtureDef.shape = shape;
         fixtureDef.density = Obstacle.DENSITY;
         body.createFixture(fixtureDef);
-        body.resetMassData();;
+        body.resetMassData();
         body.setUserData(new ObstacleData());
         shape.dispose();
         return body;

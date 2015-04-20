@@ -1,4 +1,4 @@
-package com.alexd.projectgame.helpers;
+package com.alexd.projectgame.enums;
 
 /**
  * Enum for keeping track of what kind of GameObject

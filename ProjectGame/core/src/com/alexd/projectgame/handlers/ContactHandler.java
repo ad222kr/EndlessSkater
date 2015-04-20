@@ -1,10 +1,8 @@
 package com.alexd.projectgame.handlers;
 
-import com.alexd.projectgame.helpers.GameObjectType;
-import com.alexd.projectgame.model.GameObject;
-import com.alexd.projectgame.model.Runner;
+import com.alexd.projectgame.enums.GameObjectType;
+import com.alexd.projectgame.gameobjects.Runner;
 import com.alexd.projectgame.userdata.UserData;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 
 /**

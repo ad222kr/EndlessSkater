@@ -1,4 +1,4 @@
-package com.alexd.projectgame.model;
+package com.alexd.projectgame.gameobjects;
 
 import com.badlogic.gdx.physics.box2d.Body;
 
@@ -14,9 +14,6 @@ public abstract class GameObject {
 
     /* Get & set */
 
-
-
-    /* get/set */
     public Body getBody(){
         return body;
     }

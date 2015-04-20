@@ -1,6 +1,6 @@
 package com.alexd.projectgame.handlers;
 
-import com.alexd.projectgame.model.Runner;
+import com.alexd.projectgame.gameobjects.Runner;
 import com.badlogic.gdx.InputProcessor;
 
 /**

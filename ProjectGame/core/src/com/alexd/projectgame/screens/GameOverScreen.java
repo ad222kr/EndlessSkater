@@ -1,6 +1,5 @@
 package com.alexd.projectgame.screens;
 
-import com.alexd.projectgame.model.GameObject;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -53,14 +52,14 @@ public class GameOverScreen implements Screen, InputProcessor {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override
     public void dispose() {
         batch.dispose();
         font.dispose();
-        this.dispose();
+
     }
 
     @Override

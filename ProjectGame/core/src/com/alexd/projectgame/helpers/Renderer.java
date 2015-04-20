@@ -1,16 +1,12 @@
 package com.alexd.projectgame.helpers;
 
-import com.alexd.projectgame.model.Enemy;
-import com.alexd.projectgame.model.Runner;
-import com.alexd.projectgame.screens.GameScreen;
+import com.alexd.projectgame.gameobjects.Runner;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 
@@ -57,14 +53,12 @@ public class Renderer implements Disposable{
 
 
 
-        Gdx.app.log("RunnerX: ", ""+(runner.getBody().getWorldCenter().x - Runner.WIDTH / 2));
-        Gdx.app.log("RunnerX: ", ""+(runner.getBody().getWorldCenter().y - Runner.HEIGHT / 2));
 
 
 
 
         batch.begin();
-        batch.draw(runnerSprite, runnerSprite.getX(), runnerSprite.getY(),convertToMeters(runnerSprite.getWidth()), convertToMeters(runnerSprite.getHeight()));
+        batch.draw(runnerSprite, runnerSprite.getX(), runnerSprite.getY(), HelperMethods.convertToMeters(runnerSprite.getWidth()), HelperMethods.convertToMeters(runnerSprite.getHeight()));
         batch.end();
 
 
@@ -76,7 +70,5 @@ public class Renderer implements Disposable{
     }
 
 
-    public float convertToMeters(float pixels){
-        return pixels / GameScreen.PIXELS_TO_METERS;
-    }
+
 }

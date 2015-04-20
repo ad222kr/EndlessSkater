@@ -1,10 +1,10 @@
-package com.alexd.projectgame.model;
+package com.alexd.projectgame.gameobjects;
 
 import com.alexd.projectgame.helpers.PhysicsBodyHelper;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-
-import javax.xml.bind.annotation.W3CDomHandler;
+import com.badlogic.gdx.utils.Pool;
+import com.badlogic.gdx.utils.Pool.Poolable;
 
 /**
  * Created by Alex on 2015-04-18.
@@ -15,11 +15,15 @@ public class Obstacle extends GameObject {
     public static final float WIDTH = 2f;
     public static final float HEIGHT = 0.5f;
     public static final float DENSITY = 0.5f;
-    public static final Vector2 LINEAR_VELOCITY = new Vector2(-4f, 0);
+    public static final Vector2 LINEAR_VELOCITY = new Vector2(-3f, 0);
+
+    public boolean alive ;
 
 
     public Obstacle(World world){
         super(world);
         body = PhysicsBodyHelper.createObstacle(this.world);
     }
+
+
 }

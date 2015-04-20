@@ -1,6 +1,6 @@
 package com.alexd.projectgame.userdata;
 
-import com.alexd.projectgame.helpers.GameObjectType;
+import com.alexd.projectgame.enums.GameObjectType;
 
 /**
  * Base class for the UserData-classe that will hold

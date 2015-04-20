@@ -1,9 +1,10 @@
 package com.alexd.projectgame.screens;
 
 import com.alexd.projectgame.TheGame;
-import com.alexd.projectgame.helpers.GameObjectType;
+import com.alexd.projectgame.enums.GameObjectType;
+import com.alexd.projectgame.helpers.HelperMethods;
 import com.alexd.projectgame.helpers.Renderer;
-import com.alexd.projectgame.model.*;
+import com.alexd.projectgame.gameobjects.*;
 import com.alexd.projectgame.handlers.ContactHandler;
 import com.alexd.projectgame.handlers.GameInputHandler;
 import com.badlogic.gdx.*;
@@ -12,15 +13,12 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScalingViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.utils.viewport.*;
 
 
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Alex on 2015-04-07.
@@ -53,6 +51,7 @@ public class GameScreen implements Screen {
 
 
 
+
     public GameScreen(Game game) {
 
         // TODO: Refactor?
@@ -79,13 +78,16 @@ public class GameScreen implements Screen {
     }
 
 
-    public GameScreen(){
+        public GameScreen(){
+        // For testing purpose...
         world = new World(WORLD_GRAVITY, true);
+        enemies = new GameObjectType[]{ GameObjectType.ENEMY, GameObjectType.OBSTACLE };
     }
 
     public void setupCamera(){
         camera = new OrthographicCamera(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
-        //viewport = new ScalingViewport(Scaling.stretch, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, camera);
+        viewport = new StretchViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, camera);
+        viewport.apply();
 
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0f);
         camera.update();
@@ -95,6 +97,7 @@ public class GameScreen implements Screen {
 
     public GameObject spawnEnemy(){
         lastEnemySpawnTime = TimeUtils.nanoTime();
+        randomNumber = HelperMethods.getRandomNumber(1, 4);
 
         GameObjectType type = enemies[new Random().nextInt(enemies.length)];
         GameObject retObj = null;
@@ -133,7 +136,7 @@ public class GameScreen implements Screen {
 
 
 
-        if (TimeUtils.nanoTime() - lastEnemySpawnTime > 2000000000){
+        if ((TimeUtils.nanoTime() - lastEnemySpawnTime) / 1000000000 > randomNumber){
             spawnEnemy();
 
         }
@@ -151,11 +154,10 @@ public class GameScreen implements Screen {
 
     }
 
-
-
     @Override
     public void resize(int width, int height) {
-        //viewport.update(width, height);
+        viewport.update(width, height);
+        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
 
     }
 
