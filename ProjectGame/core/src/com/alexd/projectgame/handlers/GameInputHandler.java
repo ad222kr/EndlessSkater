@@ -1,16 +1,19 @@
 package com.alexd.projectgame.handlers;
 
 import com.alexd.projectgame.gameobjects.Runner;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * Class handling the input
  */
 public class GameInputHandler implements InputProcessor {
-    private Runner runner;
+    private Runner _runner;
+    private float _timeElapsed;
 
     public GameInputHandler(Runner runner){
-        this.runner = runner;
+        _runner = runner;
     }
 
     @Override
@@ -30,7 +33,7 @@ public class GameInputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        runner.jump();
+        _runner.jump();
         return true;
     }
 

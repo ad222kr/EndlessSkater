@@ -13,21 +13,30 @@ public class Runner extends GameObject {
     public static final float X = 4f;
     public static final float Y = 4f;
     public static final float WIDTH = 1f;
-    public static final float HEIGHT = 1f;
+    public static final float HEIGHT = 1.5f;
     public static final float DENSITY = 0.5f;
-    private final Vector2 JUMPING_IMPULSE = new Vector2(0, 5f);
+    public static final int MAX_HEALTH = 3;
+    private final Vector2 JUMPING_IMPULSE = new Vector2(0, 8f);
 
     /* Members */
+    private int _health;
+    private int _jumpCount;
     private boolean _isJumping;
-    private int _health = 3;
+    private float _jumpTimer;
 
     /* Getters & Setters */
-    public boolean getIsJumping(){
-        return _isJumping;
-    }
+
 
     public int getHealth(){
         return _health;
+    }
+
+    public float getJumpTimer(){
+        return _jumpTimer;
+    }
+
+    public boolean getIsJumping(){
+        return _isJumping;
     }
 
 
@@ -37,6 +46,9 @@ public class Runner extends GameObject {
         _body = PhysicsBodyHelper.createRunner(_world, this);
         _gameObjectType = GameObjectType.RUNNER;
         _isJumping = false;
+        _health = MAX_HEALTH;
+        _jumpCount = 0;
+
     }
 
     public Runner(){
@@ -46,6 +58,9 @@ public class Runner extends GameObject {
 
     /* Methods */
 
+    public void incrementJumpTimer(float value){
+        _jumpTimer += value;
+    }
 
     public void jump(){
         if (!_isJumping){
@@ -57,6 +72,13 @@ public class Runner extends GameObject {
     public void landed(){
 
         _isJumping = false;
+        _jumpTimer = 0;
+
+    }
+
+    public boolean isFalling(){
+
+        return _body.getLinearVelocity().y < 0;
     }
 
     public void removeHealth(){

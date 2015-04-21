@@ -10,15 +10,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  * Created by Alex on 2015-04-13.
  */
 public class GameOverScreen implements Screen, InputProcessor {
-    private SpriteBatch batch;
-    private BitmapFont font;
-    private Game game;
+    private SpriteBatch _batch;
+    private BitmapFont _font;
+    private Game _game;
 
     public GameOverScreen(Game game){
-        this.game = game;
-        batch = new SpriteBatch();
-        font = new BitmapFont();
-        font.setColor(Color.RED);
+        this._game = game;
+        _batch = new SpriteBatch();
+        _font = new BitmapFont();
+        _font.setColor(Color.RED);
         Gdx.input.setInputProcessor(this);
     }
     @Override
@@ -30,9 +30,9 @@ public class GameOverScreen implements Screen, InputProcessor {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        batch.begin();
-        font.draw(batch, "Game over", Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
-        batch.end();
+        _batch.begin();
+        _font.draw(_batch, "Game over", Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        _batch.end();
     }
 
     @Override
@@ -57,8 +57,8 @@ public class GameOverScreen implements Screen, InputProcessor {
 
     @Override
     public void dispose() {
-        batch.dispose();
-        font.dispose();
+        _batch.dispose();
+        _font.dispose();
 
     }
 
@@ -79,7 +79,7 @@ public class GameOverScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        game.setScreen(new GameScreen(game));
+        _game.setScreen(new GameScreen(_game));
         return true;
     }
 

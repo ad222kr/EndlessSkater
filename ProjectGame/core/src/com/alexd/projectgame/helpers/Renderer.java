@@ -1,7 +1,6 @@
 package com.alexd.projectgame.helpers;
 
 import com.alexd.projectgame.gameobjects.Runner;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -14,59 +13,43 @@ import com.badlogic.gdx.utils.Disposable;
  * Created by Alex on 2015-04-18.
  */
 public class Renderer implements Disposable{
-    private SpriteBatch batch;
 
-    private Sprite runnerSprite;
-    private Texture img;
-    private World world;
-    private Runner runner;
-    private OrthographicCamera camera;
+    private SpriteBatch _batch;
+    private Sprite _runnerSprite;
+    private Texture _img;
+    private World _world;
+    private Runner _runner;
+    private OrthographicCamera _camera;
 
 
     public Renderer(World world, Runner runner){
-        this.world = world;
-        this.runner = runner;
-
-
-
-        batch = new SpriteBatch();
-        img = new Texture("badlogic.jpg");
-
-        runnerSprite = new Sprite(img);
-
-
-
+        _world = world;
+        _runner = runner;
+        _batch = new SpriteBatch();
+        _img = new Texture("badlogic.jpg");
+        _runnerSprite = new Sprite(_img);
 
     }
 
     public void render(Matrix4 projectionMatrix){
 
-        batch.setProjectionMatrix(projectionMatrix);
-        runnerSprite.setX((runner.getBody().getWorldCenter().x - Runner.WIDTH / 2));
-        runnerSprite.setY((runner.getBody().getWorldCenter().y - Runner.WIDTH / 2));
+        _batch.setProjectionMatrix(projectionMatrix);
+        _runnerSprite.setX((_runner.getBody().getWorldCenter().x - Runner.WIDTH / 2));
+        _runnerSprite.setY((_runner.getBody().getWorldCenter().y - Runner.WIDTH / 2));
 
+        _runnerSprite.setOrigin(_runnerSprite.getWidth() / 2, _runnerSprite.getHeight() / 2);
 
-        runnerSprite.setOrigin(runnerSprite.getWidth() / 2, runnerSprite.getHeight() / 2);
-
-        //runnerSprite.setPosition((runner.getBody().getWorldCenter().x * GameScreen.PIXELS_TO_METERS) - (Runner.WIDTH * GameScreen.PIXELS_TO_METERS / 2),
-        //        (runner.getBody().getWorldCenter().y * GameScreen.PIXELS_TO_METERS) - (Runner.WIDTH * GameScreen.PIXELS_TO_METERS / 2));
-
-
-
-
-
-
-
-        batch.begin();
-        batch.draw(runnerSprite, runnerSprite.getX(), runnerSprite.getY(), HelperMethods.convertToMeters(runnerSprite.getWidth()), HelperMethods.convertToMeters(runnerSprite.getHeight()));
-        batch.end();
-
+        _batch.begin();
+        _batch.draw(_runnerSprite, _runnerSprite.getX(), _runnerSprite.getY(),
+                Helpers.convertToMeters(_runnerSprite.getWidth()),
+                Helpers.convertToMeters(_runnerSprite.getHeight()));
+        _batch.end();
 
     }
 
     public void dispose(){
-        img.dispose();
-        batch.dispose();
+        _img.dispose();
+        _batch.dispose();
     }
 
 

@@ -2,7 +2,7 @@ package com.alexd.projectgame.screens;
 
 import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.enums.GameObjectType;
-import com.alexd.projectgame.helpers.HelperMethods;
+import com.alexd.projectgame.helpers.Helpers;
 import com.alexd.projectgame.helpers.Renderer;
 import com.alexd.projectgame.gameobjects.*;
 import com.alexd.projectgame.handlers.ContactHandler;
@@ -12,8 +12,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.*;
 
@@ -24,11 +22,8 @@ import java.util.Random;
  * Created by Alex on 2015-04-07.
  */
 public class GameScreen implements Screen {
-
-    public static final int PIXELS_TO_METERS = 50;
-    private static final int VIEWPORT_WIDTH = TheGame.APP_WIDTH / PIXELS_TO_METERS;
-    private final int VIEWPORT_HEIGHT = TheGame.APP_HEIGHT / PIXELS_TO_METERS;
-
+    private static final int VIEWPORT_WIDTH = Helpers.convertToMeters(TheGame.APP_WIDTH);
+    private final int VIEWPORT_HEIGHT = Helpers.convertToMeters(TheGame.APP_HEIGHT);
     private final Vector2 WORLD_GRAVITY = new Vector2(0, -10);
 
     private final float TIME_STEP = 1 / 300f;
@@ -97,7 +92,7 @@ public class GameScreen implements Screen {
 
     public GameObject spawnEnemy(){
         lastEnemySpawnTime = TimeUtils.nanoTime();
-        randomNumber = HelperMethods.getRandomNumber(1, 4);
+        randomNumber = Helpers.getRandomNumber(1, 4);
 
         GameObjectType type = enemies[new Random().nextInt(enemies.length)];
         GameObject retObj = null;
@@ -144,6 +139,10 @@ public class GameScreen implements Screen {
         if(runner.getHealth() == 0){
 
             game.setScreen(new GameOverScreen(game));
+        }
+
+        if (runner.getIsJumping()){
+            runner.incrementJumpTimer(delta);
         }
 
 

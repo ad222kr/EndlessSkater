@@ -14,7 +14,7 @@ public class Enemy extends GameObject {
     public static final float X = 25f;
     public static final float Y = 3.5f;
     public static final float WIDTH = 1f;
-    public static final float HEIGHT = 1f;
+    public static final float HEIGHT = 1.5f;
     public static final float DENSITY = 0.5f;
 
 

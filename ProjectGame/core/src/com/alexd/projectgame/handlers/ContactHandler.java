@@ -3,19 +3,18 @@ package com.alexd.projectgame.handlers;
 import com.alexd.projectgame.enums.GameObjectType;
 import com.alexd.projectgame.gameobjects.GameObject;
 import com.alexd.projectgame.gameobjects.Runner;
-import com.alexd.projectgame.userdata.UserData;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.physics.box2d.*;
 
 /**
  * Class handling contacts between physics-objects
  */
 public class ContactHandler implements ContactListener {
-    private Runner runner;
+    private Runner _runner;
 
 
     public ContactHandler(Runner runner){
-        this.runner = runner;
+
+        _runner = runner;
 
     }
 
@@ -28,12 +27,12 @@ public class ContactHandler implements ContactListener {
 
 
         if (isContact(a, b, GameObjectType.RUNNER, GameObjectType.GROUND)){
-            runner.landed();
+            _runner.landed();
         }
 
         if (isContact(a, b, GameObjectType.ENEMY, GameObjectType.RUNNER) ||
             isContact(a, b, GameObjectType.OBSTACLE, GameObjectType.RUNNER)){
-            runner.removeHealth();
+            _runner.removeHealth();
         }
 
 

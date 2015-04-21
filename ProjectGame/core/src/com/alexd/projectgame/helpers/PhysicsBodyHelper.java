@@ -1,10 +1,6 @@
 package com.alexd.projectgame.helpers;
 
 import com.alexd.projectgame.gameobjects.*;
-import com.alexd.projectgame.userdata.EnemyData;
-import com.alexd.projectgame.userdata.GroundData;
-import com.alexd.projectgame.userdata.ObstacleData;
-import com.alexd.projectgame.userdata.RunnerData;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -31,7 +27,7 @@ public class PhysicsBodyHelper {
         BodyDef bodyDef = getBodyDef(Enemy.X, Enemy.Y, BodyType.KinematicBody);
         PolygonShape shape = getBox(Enemy.WIDTH, Enemy.HEIGHT);
         Body body = world.createBody(bodyDef);
-        body.setLinearVelocity(new Vector2( -HelperMethods.getRandomNumber(4, 7), 0));
+        body.setLinearVelocity(new Vector2( -Helpers.getRandomNumber(4, 7), 0));
 
         // Creating fixture definition for the body. This fixture needs more
         // information than the other ones. It is a sensor, meaning that it's
@@ -70,6 +66,7 @@ public class PhysicsBodyHelper {
         BodyDef bodyDef = getBodyDef(Runner.X, Runner.Y, BodyType.DynamicBody);
         PolygonShape shape = getBox(Runner.WIDTH, Runner.HEIGHT);
         Body body = world.createBody(bodyDef);
+        body.setGravityScale(1.5f);
         body.createFixture(shape, Runner.DENSITY);
         body.resetMassData();
         body.setUserData(gameObject);
