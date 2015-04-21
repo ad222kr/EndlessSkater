@@ -15,7 +15,16 @@ public class Helpers {
         return number / TheGame.PIXELS_TO_METERS;
     }
 
-    public static int convertToMeters(int number) { return number / TheGame.PIXELS_TO_METERS; }
+    public static int convertToMeters(int number) {
+        return number / TheGame.PIXELS_TO_METERS; }
+
+    public static float convertToPixels(float number){
+        return number * TheGame.PIXELS_TO_METERS;
+    }
+
+    public static int convertToPixels(int number){
+        return number * TheGame.PIXELS_TO_METERS;
+    }
 
     public static float getRandomNumber(int min, int max){
         return new Random().nextFloat() * (max - min) + min;

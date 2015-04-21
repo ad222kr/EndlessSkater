@@ -10,8 +10,11 @@ import com.alexd.projectgame.handlers.GameInputHandler;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.*;
@@ -28,23 +31,25 @@ public class GameScreen implements Screen {
     private final Vector2 WORLD_GRAVITY = new Vector2(0, -10);
 
     private final float TIME_STEP = 1 / 300f;
-    private float accumulator = 0f;
+    private float _accumulator = 0f;
 
-    private Game game;
-    private World world;
-    private Ground ground;
-    private Runner runner;
+    private Game _game;
+    private World _world;
+    private Ground _ground;
+    private Runner _runner;
 
 
-    private OrthographicCamera camera;
-    private Viewport viewport;
-    private Box2DDebugRenderer debugRenderer;
-    private Renderer renderer;
+    private OrthographicCamera _camera;
+    private OrthographicCamera _renderCam;
+    private Viewport _viewport;
+    private Box2DDebugRenderer _debugRenderer;
+    private Renderer _renderer;
 
-    private long lastEnemySpawnTime;
-    private float randomNumber;
-    private GameObjectType[] enemies;
-    private Array<Body> bodies;
+    private long _lastEnemySpawnTime;
+    private float _randomNumber;
+    private GameObjectType[] _enemies;
+    private Array<Body> _bodies;
+
 
 
 
@@ -52,62 +57,63 @@ public class GameScreen implements Screen {
     public GameScreen(Game game) {
 
         // TODO: Refactor?
-        this.game = game;
-        world = new World(WORLD_GRAVITY, true);
-        ground = new Ground(world);
-        runner = new Runner(world);
-        debugRenderer = new Box2DDebugRenderer();
+        _game = game;
+        _world = new World(WORLD_GRAVITY, true);
+        _ground = new Ground(_world);
+        _runner = new Runner(_world);
+        _debugRenderer = new Box2DDebugRenderer();
+
+
 
         setupCamera();
-        renderer = new Renderer(world, runner);
+        _renderer = new Renderer(_world, _runner);
 
-        Gdx.input.setInputProcessor(new GameInputHandler(runner));
-        world.setContactListener(new ContactHandler(runner));
-        enemies = new GameObjectType[]{ GameObjectType.ENEMY, GameObjectType.OBSTACLE };
-        bodies = new Array<Body>();
+        Gdx.input.setInputProcessor(new GameInputHandler(_runner));
+        _world.setContactListener(new ContactHandler(_runner));
+        _bodies = new Array<Body>();
 
         spawnEnemy();
-
-
-
-
-
 
     }
 
 
         public GameScreen(){
-        // For testing purpose...
-        world = new World(WORLD_GRAVITY, true);
-        enemies = new GameObjectType[]{ GameObjectType.ENEMY, GameObjectType.OBSTACLE };
+        _world = new World(WORLD_GRAVITY, true);
     }
 
     public void setupCamera(){
-        camera = new OrthographicCamera(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
-        viewport = new StretchViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, camera);
-        viewport.apply();
+        /* physics cam */
 
-        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0f);
-        camera.update();
+        _camera = new OrthographicCamera(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+        _viewport = new StretchViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, _camera);
+        _viewport.apply();
+
+        _camera.position.set(_camera.viewportWidth / 2, _camera.viewportHeight / 2, 0f);
+        _camera.update();
+
+        /* render cam */
+
+        _renderCam = new OrthographicCamera(TheGame.APP_WIDTH, TheGame.APP_HEIGHT);
+        _renderCam.position.set(_renderCam.viewportWidth / 2, _renderCam.viewportHeight / 2, 0f);
+        _renderCam.update();
+
     }
 
 
 
     public GameObject spawnEnemy(){
-        lastEnemySpawnTime = TimeUtils.nanoTime();
-        randomNumber = Helpers.getRandomNumber(1, 4);
+        _lastEnemySpawnTime = TimeUtils.nanoTime();
+        _randomNumber = Helpers.getRandomNumber(1, 4);
 
-        GameObjectType type = enemies[new Random().nextInt(enemies.length)];
-        GameObject retObj = null;
+        GameObject retObj;
 
-        switch (type){
-            case ENEMY:
-                retObj = new Enemy(world);
-                break;
-            case OBSTACLE:
-                retObj = new Obstacle(world);
-                break;
+        float spawnChanse = Helpers.getRandomNumber(1, 5);
 
+        if (spawnChanse < 4){
+            retObj = new Enemy(_world);
+        }
+        else {
+            retObj = new Obstacle(_world);
         }
 
         return retObj;
@@ -127,25 +133,25 @@ public class GameScreen implements Screen {
 
         doStep(delta);
 
-        renderer.render(camera.combined);
-        debugRenderer.render(world, camera.combined);
+        _renderer.render(_camera.combined);
+        _debugRenderer.render(_world, _camera.combined);
 
 
 
 
 
-        if ((TimeUtils.nanoTime() - lastEnemySpawnTime) / 1000000000 > randomNumber){
+        if ((TimeUtils.nanoTime() - _lastEnemySpawnTime) / 1000000000 > _randomNumber){
             spawnEnemy();
 
         }
 
-        if(runner.getHealth() == 0){
+        if(_runner.getHealth() == 0){
 
-            game.setScreen(new GameOverScreen(game));
+            _game.setScreen(new GameOverScreen(_game));
         }
 
-        if (runner.getIsJumping()){
-            runner.incrementJumpTimer(delta);
+        if (_runner.getIsJumping()){
+            _runner.incrementJumpTimer(delta);
         }
 
 
@@ -158,8 +164,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
-        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
+        _viewport.update(width, height);
+        _camera.position.set(_camera.viewportWidth / 2, _camera.viewportHeight / 2, 0);
 
     }
 
@@ -180,9 +186,9 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        world.dispose();
-        renderer.dispose();
-        debugRenderer.dispose();
+        _world.dispose();
+        _renderer.dispose();
+        _debugRenderer.dispose();
 
     }
 
@@ -197,20 +203,20 @@ public class GameScreen implements Screen {
         // fixed time step
         // max frame time to avoid spiral of death (on slow devices)
         float frameTime = Math.min(delta, 0.25f);
-        accumulator += frameTime;
-        while (accumulator >= TIME_STEP) {
-            world.step(TIME_STEP, 6, 2);
-            accumulator -= TIME_STEP;
+        _accumulator += frameTime;
+        while (_accumulator >= TIME_STEP) {
+            _world.step(TIME_STEP, 6, 2);
+            _accumulator -= TIME_STEP;
         }
 
     }
 
     public void destroyBodies(){
-        world.getBodies(bodies);
+        _world.getBodies(_bodies);
 
-        for(Body body : bodies){
+        for(Body body : _bodies){
             if(body.getPosition().x < -1){
-                world.destroyBody(body);
+                _world.destroyBody(body);
             }
 
 

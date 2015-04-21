@@ -11,24 +11,24 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
  */
 public class PhysicsFactory {
 
-    public static Body creteGround(World world, GameObject gameObject){
+    public static Body creteGround(World world, Ground ground){
 
         BodyDef bodyDef = getBodyDef(Ground.X, Ground.Y, BodyType.StaticBody);
         Body body = world.createBody(bodyDef);
         PolygonShape shape = getBox(Ground.WIDTH, Ground.HEIGHT);
         body.createFixture(shape, Ground.DENSITY);
-        body.setUserData(gameObject);
+        body.setUserData(ground);
         shape.dispose();
         return body;
 
     }
 
-    public static Body createEnemy(World world, GameObject gameObject){
+    public static Body createEnemy(World world, Enemy enemy){
 
         BodyDef bodyDef = getBodyDef(Enemy.X, Enemy.Y, BodyType.KinematicBody);
         PolygonShape shape = getBox(Enemy.WIDTH, Enemy.HEIGHT);
         Body body = world.createBody(bodyDef);
-        body.setLinearVelocity(new Vector2( -Helpers.getRandomNumber(4, 7), 0));
+        body.setLinearVelocity(enemy.getEnemyType().getSpeed());
 
         // Creating fixture definition for the body. This fixture needs more
         // information than the other ones. It is a sensor, meaning that it's
@@ -39,13 +39,13 @@ public class PhysicsFactory {
         fixtureDef.density = Enemy.DENSITY;
         body.createFixture(fixtureDef);
         body.resetMassData();
-        body.setUserData(gameObject);
+        body.setUserData(enemy);
         shape.dispose();
         return body;
 
     }
 
-    public static Body createObstacle(World world, GameObject gameObject){
+    public static Body createObstacle(World world, Obstacle obstacle){
         BodyDef bodyDef = getBodyDef(Obstacle.X, Obstacle.Y, BodyType.KinematicBody);
         PolygonShape shape = getBox(Obstacle.WIDTH, Obstacle.HEIGHT);
         Body body = world.createBody(bodyDef);
@@ -57,19 +57,19 @@ public class PhysicsFactory {
         fixtureDef.density = Obstacle.DENSITY;
         body.createFixture(fixtureDef);
         body.resetMassData();
-        body.setUserData(gameObject);
+        body.setUserData(obstacle);
         shape.dispose();
         return body;
     }
 
-    public static Body createRunner(World world, GameObject gameObject){
+    public static Body createRunner(World world, Runner runner){
 
         BodyDef bodyDef = getBodyDef(Runner.X, Runner.Y, BodyType.DynamicBody);
         PolygonShape shape = getBox(Runner.WIDTH, Runner.HEIGHT);
         Body body = world.createBody(bodyDef);
         body.createFixture(shape, Runner.DENSITY);
         body.resetMassData();
-        body.setUserData(gameObject);
+        body.setUserData(runner);
         shape.dispose();
         return body;
     }

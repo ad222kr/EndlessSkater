@@ -15,11 +15,11 @@ public class Runner extends GameObject {
     /* CONSTANTS */
     public static final float X = 4f;
     public static final float Y = 4f;
-    public static final float WIDTH = 1f;
-    public static final float HEIGHT = 1.5f;
+    public static final float WIDTH = 1.5f;
+    public static final float HEIGHT = 2f;
     public static final float DENSITY = 0.5f;
     public static final int MAX_HEALTH = 3;
-    private final Vector2 JUMPING_IMPULSE = new Vector2(0, 8f);
+    private final Vector2 JUMPING_IMPULSE = new Vector2(0, 14f);
 
     /* Members */
     private int _health;
