@@ -1,5 +1,6 @@
 package com.alexd.projectgame.gameobjects;
 
+import com.alexd.projectgame.enums.GameObjectType;
 import com.badlogic.gdx.physics.box2d.Body;
 
 import com.badlogic.gdx.physics.box2d.World;
@@ -9,33 +10,44 @@ import com.badlogic.gdx.physics.box2d.World;
  */
 public abstract class GameObject {
     /* Members */
-    protected World world;
-    protected Body body;
+    protected World _world;
+    protected Body _body;
+    protected GameObjectType _gameObjectType;
 
     /* Get & set */
 
     public Body getBody(){
-        return body;
+        return _body;
     }
 
     public void setBody(Body body){
-        this.body = body;
+        _body = body;
     }
 
     public World getWorld(){
-        return world;
+        return _world;
     }
 
     public void setWorld(World world){
-        this.world = world;
+        _world = world;
     }
 
     /* Constructor */
     public GameObject (World world){
-        this.world = world;
+        _world = world;
     }
 
     public GameObject () {}
+
+    /* Methods */
+
+    public GameObjectType getGameObjectType (){
+        return _gameObjectType;
+    }
+
+    public boolean isExpectedType(GameObjectType type){
+        return _gameObjectType == type;
+    }
 
 
 

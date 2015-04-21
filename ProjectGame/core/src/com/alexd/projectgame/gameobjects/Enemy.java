@@ -1,5 +1,6 @@
 package com.alexd.projectgame.gameobjects;
 
+import com.alexd.projectgame.enums.GameObjectType;
 import com.alexd.projectgame.helpers.PhysicsBodyHelper;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -20,7 +21,8 @@ public class Enemy extends GameObject {
 
     public Enemy(World world){
         super(world);
-        body = PhysicsBodyHelper.createEnemy(this.world);
+        _body = PhysicsBodyHelper.createEnemy(_world, this);
+        _gameObjectType = GameObjectType.ENEMY;
     }
 
 

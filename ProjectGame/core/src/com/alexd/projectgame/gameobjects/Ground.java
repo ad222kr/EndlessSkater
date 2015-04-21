@@ -1,5 +1,6 @@
 package com.alexd.projectgame.gameobjects;
 
+import com.alexd.projectgame.enums.GameObjectType;
 import com.alexd.projectgame.helpers.PhysicsBodyHelper;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -20,7 +21,8 @@ public class Ground extends GameObject {
     }
     public Ground(World world){
         super(world);
-        body = PhysicsBodyHelper.creteGround(this.world);
+        _body = PhysicsBodyHelper.creteGround(_world, this);
+        _gameObjectType = GameObjectType.GROUND;
     }
 
 

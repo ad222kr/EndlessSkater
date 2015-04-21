@@ -1,5 +1,6 @@
 package com.alexd.projectgame.gameobjects;
 
+import com.alexd.projectgame.enums.GameObjectType;
 import com.alexd.projectgame.helpers.PhysicsBodyHelper;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -17,56 +18,56 @@ public class Runner extends GameObject {
     private final Vector2 JUMPING_IMPULSE = new Vector2(0, 5f);
 
     /* Members */
-    private boolean isJumping;
-    private int health = 3;
+    private boolean _isJumping;
+    private int _health = 3;
 
     /* Getters & Setters */
     public boolean getIsJumping(){
-        return isJumping;
+        return _isJumping;
     }
 
+    public int getHealth(){
+        return _health;
+    }
 
 
     /* Constructor */
     public Runner(World world){
         super(world);
-        body = PhysicsBodyHelper.createRunner(this.world);
-        isJumping = false;
+        _body = PhysicsBodyHelper.createRunner(_world, this);
+        _gameObjectType = GameObjectType.RUNNER;
+        _isJumping = false;
     }
 
     public Runner(){
         super();
     }
 
-    /* get set */
-    public int getHealth(){
-        return health;
-    }
 
     /* Methods */
 
 
     public void jump(){
-        if (!isJumping){
-            body.applyLinearImpulse(JUMPING_IMPULSE, body.getWorldCenter(), true);
-            isJumping = true;
+        if (!_isJumping){
+            _body.applyLinearImpulse(JUMPING_IMPULSE, _body.getWorldCenter(), true);
+            _isJumping = true;
         }
     }
 
     public void landed(){
 
-        isJumping = false;
+        _isJumping = false;
     }
 
     public void removeHealth(){
-        if (health != 0){
-            health--;
+        if (_health != 0){
+            _health--;
         }
     }
 
     public void addHealth(){
-        if (health < 3){
-            health++;
+        if (_health < 3){
+            _health++;
         }
     }
 

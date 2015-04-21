@@ -1,5 +1,6 @@
 package com.alexd.projectgame.gameobjects;
 
+import com.alexd.projectgame.enums.GameObjectType;
 import com.alexd.projectgame.helpers.PhysicsBodyHelper;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -17,12 +18,13 @@ public class Obstacle extends GameObject {
     public static final float DENSITY = 0.5f;
     public static final Vector2 LINEAR_VELOCITY = new Vector2(-3f, 0);
 
-    public boolean alive ;
+
 
 
     public Obstacle(World world){
         super(world);
-        body = PhysicsBodyHelper.createObstacle(this.world);
+        _body = PhysicsBodyHelper.createObstacle(_world, this);
+        _gameObjectType = GameObjectType.OBSTACLE;
     }
 
 
