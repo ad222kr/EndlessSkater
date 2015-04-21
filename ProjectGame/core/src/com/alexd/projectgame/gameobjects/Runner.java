@@ -1,8 +1,10 @@
 package com.alexd.projectgame.gameobjects;
 
 import com.alexd.projectgame.enums.GameObjectType;
-import com.alexd.projectgame.helpers.PhysicsBodyHelper;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 /**
@@ -31,6 +33,10 @@ public class Runner extends GameObject {
         return _health;
     }
 
+    public void setHealth(int value){
+        _health = value;
+    }
+
     public float getJumpTimer(){
         return _jumpTimer;
     }
@@ -43,7 +49,7 @@ public class Runner extends GameObject {
     /* Constructor */
     public Runner(World world){
         super(world);
-        _body = PhysicsBodyHelper.createRunner(_world, this);
+        _body = createBody();
         _gameObjectType = GameObjectType.RUNNER;
         _isJumping = false;
         _health = MAX_HEALTH;
@@ -52,7 +58,7 @@ public class Runner extends GameObject {
     }
 
     public Runner(){
-        super();
+
     }
 
 
@@ -91,6 +97,19 @@ public class Runner extends GameObject {
         if (_health < 3){
             _health++;
         }
+    }
+
+    protected Body createBody(){
+
+        BodyDef bodyDef = getBodyDef(Runner.X, Runner.Y, BodyDef.BodyType.DynamicBody);
+        PolygonShape shape = getBox(Runner.WIDTH, Runner.HEIGHT);
+        Body body = _world.createBody(bodyDef);
+        body.setGravityScale(1.5f);
+        body.createFixture(shape, Runner.DENSITY);
+        body.resetMassData();
+        body.setUserData(this);
+        shape.dispose();
+        return body;
     }
 
 

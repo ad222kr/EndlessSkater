@@ -18,9 +18,8 @@ public class Helpers {
     public static int convertToMeters(int number) { return number / TheGame.PIXELS_TO_METERS; }
 
     public static float getRandomNumber(int min, int max){
-        float ret =  new Random().nextFloat() * (max - min) + min;
-        Gdx.app.log("Random value:", ""+ ret);
-        return ret;
+        return new Random().nextFloat() * (max - min) + min;
+
     }
 
 

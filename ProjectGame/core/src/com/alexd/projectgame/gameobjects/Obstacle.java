@@ -1,11 +1,8 @@
 package com.alexd.projectgame.gameobjects;
 
 import com.alexd.projectgame.enums.GameObjectType;
-import com.alexd.projectgame.helpers.PhysicsBodyHelper;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Pool;
-import com.badlogic.gdx.utils.Pool.Poolable;
+import com.badlogic.gdx.physics.box2d.*;
 
 /**
  * Created by Alex on 2015-04-18.
@@ -23,8 +20,25 @@ public class Obstacle extends GameObject {
 
     public Obstacle(World world){
         super(world);
-        _body = PhysicsBodyHelper.createObstacle(_world, this);
+        _body = createBody();
         _gameObjectType = GameObjectType.OBSTACLE;
+    }
+
+    public Body createBody(){
+        BodyDef bodyDef = getBodyDef(Obstacle.X, Obstacle.Y, BodyDef.BodyType.KinematicBody);
+        PolygonShape shape = getBox(Obstacle.WIDTH, Obstacle.HEIGHT);
+        Body body = _world.createBody(bodyDef);
+        body.setLinearVelocity(Obstacle.LINEAR_VELOCITY);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.isSensor = true;
+        fixtureDef.shape = shape;
+        fixtureDef.density = Obstacle.DENSITY;
+        body.createFixture(fixtureDef);
+        body.resetMassData();
+        body.setUserData(this);
+        shape.dispose();
+        return body;
     }
 
 

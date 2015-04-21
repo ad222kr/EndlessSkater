@@ -1,8 +1,11 @@
 package com.alexd.projectgame.gameobjects;
 
 import com.alexd.projectgame.enums.GameObjectType;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 /**
@@ -39,6 +42,10 @@ public abstract class GameObject {
 
     public GameObject () {}
 
+    /* Abstract methods */
+
+    protected abstract Body createBody();
+
     /* Methods */
 
     public GameObjectType getGameObjectType (){
@@ -50,5 +57,20 @@ public abstract class GameObject {
     }
 
 
+
+    protected static PolygonShape getBox(float width, float height){
+
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(width / 2, height / 2);
+        return shape;
+    }
+
+    protected static BodyDef getBodyDef(float x, float y, BodyDef.BodyType type){
+
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = type;
+        bodyDef.position.set(new Vector2(x, y));
+        return bodyDef;
+    }
 
 }
