@@ -2,6 +2,7 @@ package com.alexd.projectgame.gameobjects;
 
 import com.alexd.projectgame.enums.GameObjectType;
 import com.alexd.projectgame.helpers.Helpers;
+import com.alexd.projectgame.helpers.PhysicsFactory;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
@@ -21,31 +22,11 @@ public class Enemy extends GameObject {
 
     public Enemy(World world){
         super(world);
-        _body = createBody();
+        _body = PhysicsFactory.createEnemy(_world, this);
         _gameObjectType = GameObjectType.ENEMY;
     }
 
-    protected Body createBody(){
 
-        BodyDef bodyDef = getBodyDef(Enemy.X, Enemy.Y, BodyDef.BodyType.KinematicBody);
-        PolygonShape shape = getBox(Enemy.WIDTH, Enemy.HEIGHT);
-        Body body = _world.createBody(bodyDef);
-        body.setLinearVelocity(new Vector2( -Helpers.getRandomNumber(4, 7), 0));
-
-        // Creating fixture definition for the body. This fixture needs more
-        // information than the other ones. It is a sensor, meaning that it's
-        // "transparent" for the other game objects
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.isSensor = true;
-        fixtureDef.shape = shape;
-        fixtureDef.density = Enemy.DENSITY;
-        body.createFixture(fixtureDef);
-        body.resetMassData();
-        body.setUserData(this);
-        shape.dispose();
-        return body;
-
-    }
 
 
 }

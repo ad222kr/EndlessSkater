@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.*;
 
@@ -43,6 +44,7 @@ public class GameScreen implements Screen {
     private long lastEnemySpawnTime;
     private float randomNumber;
     private GameObjectType[] enemies;
+    private Array<Body> bodies;
 
 
 
@@ -62,6 +64,7 @@ public class GameScreen implements Screen {
         Gdx.input.setInputProcessor(new GameInputHandler(runner));
         world.setContactListener(new ContactHandler(runner));
         enemies = new GameObjectType[]{ GameObjectType.ENEMY, GameObjectType.OBSTACLE };
+        bodies = new Array<Body>();
 
         spawnEnemy();
 
@@ -184,6 +187,15 @@ public class GameScreen implements Screen {
     }
 
     public void doStep(float delta) {
+
+
+
+        // if bodies are out of bounds destroy them
+        destroyBodies();
+
+        // Stepping the physics-simulation, see https://github.com/libgdx/libgdx/wiki/Box2d#stepping-the-simulation
+        // fixed time step
+        // max frame time to avoid spiral of death (on slow devices)
         float frameTime = Math.min(delta, 0.25f);
         accumulator += frameTime;
         while (accumulator >= TIME_STEP) {
@@ -192,5 +204,18 @@ public class GameScreen implements Screen {
         }
 
     }
+
+    public void destroyBodies(){
+        world.getBodies(bodies);
+
+        for(Body body : bodies){
+            if(body.getPosition().x < -1){
+                world.destroyBody(body);
+            }
+
+
+        }
+    }
+
 
 }

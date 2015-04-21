@@ -44,7 +44,7 @@ public abstract class GameObject {
 
     /* Abstract methods */
 
-    protected abstract Body createBody();
+
 
     /* Methods */
 
@@ -58,19 +58,5 @@ public abstract class GameObject {
 
 
 
-    protected static PolygonShape getBox(float width, float height){
-
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width / 2, height / 2);
-        return shape;
-    }
-
-    protected static BodyDef getBodyDef(float x, float y, BodyDef.BodyType type){
-
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = type;
-        bodyDef.position.set(new Vector2(x, y));
-        return bodyDef;
-    }
 
 }

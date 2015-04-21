@@ -1,6 +1,7 @@
 package com.alexd.projectgame.gameobjects;
 
 import com.alexd.projectgame.enums.GameObjectType;
+import com.alexd.projectgame.helpers.PhysicsFactory;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -20,21 +21,11 @@ public class Ground extends GameObject {
 
     public Ground(World world){
         super(world);
-        _body = createBody();
+        _body = PhysicsFactory.creteGround(_world, this);
         _gameObjectType = GameObjectType.GROUND;
     }
 
-    protected  Body createBody(){
 
-        BodyDef bodyDef = getBodyDef(Ground.X, Ground.Y, BodyDef.BodyType.StaticBody);
-        Body body = _world.createBody(bodyDef);
-        PolygonShape shape = getBox(Ground.WIDTH, Ground.HEIGHT);
-        body.createFixture(shape, Ground.DENSITY);
-        body.setUserData(this);
-        shape.dispose();
-        return body;
-
-    }
 
 
 }

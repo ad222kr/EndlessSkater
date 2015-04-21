@@ -1,6 +1,7 @@
 package com.alexd.projectgame.gameobjects;
 
 import com.alexd.projectgame.enums.GameObjectType;
+import com.alexd.projectgame.helpers.PhysicsFactory;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -49,7 +50,7 @@ public class Runner extends GameObject {
     /* Constructor */
     public Runner(World world){
         super(world);
-        _body = createBody();
+        _body = PhysicsFactory.createRunner(_world, this);
         _gameObjectType = GameObjectType.RUNNER;
         _isJumping = false;
         _health = MAX_HEALTH;
@@ -99,18 +100,7 @@ public class Runner extends GameObject {
         }
     }
 
-    protected Body createBody(){
 
-        BodyDef bodyDef = getBodyDef(Runner.X, Runner.Y, BodyDef.BodyType.DynamicBody);
-        PolygonShape shape = getBox(Runner.WIDTH, Runner.HEIGHT);
-        Body body = _world.createBody(bodyDef);
-        body.setGravityScale(1.5f);
-        body.createFixture(shape, Runner.DENSITY);
-        body.resetMassData();
-        body.setUserData(this);
-        shape.dispose();
-        return body;
-    }
 
 
 
