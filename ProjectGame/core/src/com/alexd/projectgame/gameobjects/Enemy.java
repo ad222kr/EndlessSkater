@@ -32,7 +32,7 @@ public class Enemy extends GameObject {
 
 
 
-    public Enemy(World world, float x, float y){
+    public Enemy(World world, float y){
         super(world);
         setPos(y);
         initiate();

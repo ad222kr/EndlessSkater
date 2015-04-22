@@ -10,17 +10,27 @@ import com.badlogic.gdx.physics.box2d.*;
  */
 public class Obstacle extends GameObject {
 
-    public static final float X = 25f;
-    public static final float Y = 3.25f;
+
     public static final float WIDTH = 2f;
     public static final float HEIGHT = 0.5f;
     public static final float DENSITY = 0.5f;
     public static final Vector2 LINEAR_VELOCITY = new Vector2(-4f, 0);
 
-    public Obstacle(World world){
+    private float _x;
+    private float _y;
+
+    public Obstacle(World world, float y){
         super(world);
+        setPos(y);
         initiate();
 
+    }
+    public float getX(){
+        return _x;
+    }
+
+    public float getY(){
+        return _y;
     }
 
     @Override
@@ -35,8 +45,13 @@ public class Obstacle extends GameObject {
 
     @Override
     public void initiate() {
+        _x = 25f;
         _gameObjectType = GameObjectType.OBSTACLE;
         _body = PhysicsFactory.createObstacle(_world, this);
+    }
+
+    public void setPos(float y){
+        _y = y - getHeight();
     }
 
 

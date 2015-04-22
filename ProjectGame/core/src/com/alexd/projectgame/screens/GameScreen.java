@@ -111,11 +111,19 @@ public class GameScreen implements Screen {
         float spawnChance = Helpers.getRandomInt(1, 5);
         _lastEnemySpawnTime = TimeUtils.nanoTime();
         _randomNumber = Helpers.getRandomFloat(1, 4);
-        Enemy enemy = new Enemy(_world, 25, _enemySpawnY);
+        Enemy enemy = new Enemy(_world, _enemySpawnY);
 
         Gdx.app.log("ENemy spawned", "");
 
         return enemy;
+    }
+
+    public Obstacle spawnObstacle(){
+        _lastEnemySpawnTime = TimeUtils.nanoTime();
+        _randomNumber = Helpers.getRandomFloat(1, 4);
+        Obstacle obstacle = new Obstacle(_world, _enemySpawnY);
+
+        return obstacle;
     }
 
     public Platform spawnPlatform(){
@@ -173,12 +181,6 @@ public class GameScreen implements Screen {
             _game.setScreen(new GameOverScreen(_game));
         }
 
-
-        if (Helpers.isBodyOutOfBounds(_enemy.getBody())){
-            _enemy = spawnEnemy();
-            Gdx.app.log("SPAWN ENEMY: ", "CALLED BITCH");
-
-        }
         destroyBodies();
     }
 
@@ -216,10 +218,17 @@ public class GameScreen implements Screen {
 
     public void doStep(float delta) {
 
-        // here or render(gameloop)?
-        /* if ((TimeUtils.nanoTime() - _lastEnemySpawnTime) / 1000000000 > _randomNumber){
-            spawnEnemy();
-        } */
+
+        if ((TimeUtils.nanoTime() - _lastEnemySpawnTime) / 1000000000 > _randomNumber){
+            int random = Helpers.getRandomInt(1, 5);
+
+            if (random > 2){
+                spawnEnemy();
+            }
+            else {
+                spawnObstacle();
+            }
+        }
         if(_timeSinceLastPlatform > 7){
             _platform = spawnPlatform();
             _timeSinceLastPlatform = 0;

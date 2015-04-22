@@ -48,11 +48,21 @@ public class ContactHandler implements ContactListener {
 
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
+        GameObject objA = (GameObject) contact.getFixtureA().getBody().getUserData();
+        GameObject objB = (GameObject) contact.getFixtureB().getBody().getUserData();
+
+
+        if ((objA.isExpectedType(GameObjectType.ENEMY) && objB.isExpectedType(GameObjectType.RUNNER)) ||
+            (objA.isExpectedType(GameObjectType.RUNNER) && objB.isExpectedType(GameObjectType.ENEMY))){
+            contact.setEnabled(false);
+        }
+
 
     }
 
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
+
 
     }
 

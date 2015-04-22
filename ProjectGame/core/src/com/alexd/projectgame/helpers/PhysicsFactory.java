@@ -1,7 +1,9 @@
 package com.alexd.projectgame.helpers;
 
+import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.gameobjects.*;
 
+import com.alexd.projectgame.screens.GameScreen;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -28,10 +30,10 @@ public class PhysicsFactory {
 
     public static Body createEnemy(World world, Enemy enemy){
 
-        BodyDef bodyDef = getBodyDef(enemy.getX(), enemy.getY(), BodyType.KinematicBody);
+        BodyDef bodyDef = getBodyDef(enemy.getX(), enemy.getY(), BodyType.DynamicBody);
         PolygonShape shape = getBox(Enemy.WIDTH, Enemy.HEIGHT);
         Body body = world.createBody(bodyDef);
-        FixtureDef fixtureDef = getFixtureDef(true, shape, Enemy.DENSITY);
+        FixtureDef fixtureDef = getFixtureDef(false, shape, Enemy.DENSITY);
 
         body.setLinearVelocity(enemy.getEnemyType().getSpeed());
         body.createFixture(fixtureDef);
@@ -44,7 +46,7 @@ public class PhysicsFactory {
     }
 
     public static Body createObstacle(World world, Obstacle obstacle){
-        BodyDef bodyDef = getBodyDef(Obstacle.X, Obstacle.Y, BodyType.KinematicBody);
+        BodyDef bodyDef = getBodyDef(obstacle.getX(), obstacle.getY(), BodyType.KinematicBody);
         PolygonShape shape = getBox(Obstacle.WIDTH, Obstacle.HEIGHT);
         Body body = world.createBody(bodyDef);
         FixtureDef fixtureDef = getFixtureDef(true, shape, Obstacle.DENSITY);
@@ -80,7 +82,7 @@ public class PhysicsFactory {
         PolygonShape shape = getBox(Runner.WIDTH, Runner.HEIGHT);
         Body body = world.createBody(bodyDef);
         FixtureDef fixtureDef = getFixtureDef(false, shape, Runner.DENSITY);
-
+        fixtureDef.filter.categoryBits = TheGame.RUNNER_BIT;
         body.createFixture(fixtureDef);
         body.resetMassData();
         body.setUserData(runner);
