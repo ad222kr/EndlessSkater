@@ -41,7 +41,6 @@ public class GameScreen implements Screen {
 
     private Game _game;
     private World _world;
-    private Ground _ground;
     private Runner _runner;
 
     private OrthographicCamera _camera;
@@ -50,8 +49,10 @@ public class GameScreen implements Screen {
     private Renderer _renderer;
 
     private long _lastEnemySpawnTime;
+    private float _timeSinceLastPlatform;
     private float _randomNumber;
     private Array<Body> _bodies;
+    private Array<Platform> _platforms;
 
     public GameScreen(Game game) {
 
@@ -62,6 +63,7 @@ public class GameScreen implements Screen {
         setUpRendering();
         setUpHandlers();
         spawnEnemy();
+        new Platform(_world).initiate();
 
     }
 
@@ -71,9 +73,10 @@ public class GameScreen implements Screen {
 
     public void setUpPhysicsWorld(){
         _world = new World(WORLD_GRAVITY, true);
-        _ground = new Ground(_world);
+        new Platform(_world);
         _runner = new Runner(_world);
         _bodies = new Array<Body>();
+        _platforms = new Array<Platform>();
 
     }
 
@@ -113,6 +116,17 @@ public class GameScreen implements Screen {
         }
     }
 
+    public void spawnPlatform(){
+
+        Platform platform = new Platform(_world);
+        _platforms.add(platform);
+        platform.initiate(45, 0);
+        Gdx.app.log("PLATFORM", ": SPAWNED");
+
+
+
+    }
+
     @Override
     public void show() {
 
@@ -125,6 +139,7 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        _timeSinceLastPlatform += delta;
 
         doStep(delta);
         _renderer.render(_camera.combined);
@@ -179,9 +194,17 @@ public class GameScreen implements Screen {
         if ((TimeUtils.nanoTime() - _lastEnemySpawnTime) / 1000000000 > _randomNumber){
             spawnEnemy();
         }
+        if(_timeSinceLastPlatform > 7){
+            spawnPlatform();
+            _timeSinceLastPlatform = 0;
+
+        }
+
+
 
         // if bodies are out of bounds destroy them
-        destroyBodies();
+        //destroyBodies();
+
 
         // Stepping the physics-simulation, see https://github.com/libgdx/libgdx/wiki/Box2d#stepping-the-simulation
         // fixed time step
@@ -199,7 +222,7 @@ public class GameScreen implements Screen {
         _world.getBodies(_bodies);
 
         for(Body body : _bodies){
-            if(body.getPosition().x < -1){
+            if(body.getWorldPoint(new Vector2(1f, 1f)).x < 0){
                 _world.destroyBody(body);
             }
 

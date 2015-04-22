@@ -83,8 +83,10 @@ public class Runner extends GameObject {
     /* Methods */
     public void jump(){
         if (!_isJumping){
-            _body.setLinearVelocity(0f, 5f);
-            _isJumping = true;
+            getBody().applyLinearImpulse(new Vector2(JUMPING_IMPULSE), getBody().getWorldCenter(), true);
+
+
+            setIsJumping(true);
         }
     }
 

@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
-import java.util.FormatFlagsConversionMismatchException;
 
 /**
  * Created by Alex on 2015-04-16.
@@ -59,6 +58,23 @@ public class PhysicsFactory {
         return body;
     }
 
+    public static Body createPlatform(World world, Platform platform ){
+        BodyDef bodyDef = getBodyDef(platform.getX(), platform.getY(), BodyType.KinematicBody);
+        PolygonShape shape = getBox(platform.getWidth(), platform.getHeight());
+        Body body = world.createBody(bodyDef);
+        FixtureDef fixtureDef = getFixtureDef(false, shape, Platform.DENSITY);
+        fixtureDef.friction = 0f;
+
+        body.setLinearVelocity(Platform.LINEAR_VELOCITY);
+        body.createFixture(fixtureDef);
+        body.resetMassData();
+        body.setUserData(platform);
+        shape.dispose();
+
+        return body;
+
+    }
+
     public static Body createRunner(World world, Runner runner){
         BodyDef bodyDef = getBodyDef(Runner.X, Runner.Y, BodyType.DynamicBody);
         PolygonShape shape = getBox(Runner.WIDTH, Runner.HEIGHT);
@@ -80,6 +96,7 @@ public class PhysicsFactory {
         fixtureDef.isSensor = isSensor;
         fixtureDef.shape = shape;
         fixtureDef.density = density;
+
 
         return fixtureDef;
     }

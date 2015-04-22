@@ -37,8 +37,9 @@ public class GameInputHandler implements InputProcessor {
 
 
         if(!_runner.getIsJumping()){
+
             Vector2 vel = _runner.getBody().getLinearVelocity();
-            float desiredVel = Math.max(vel.y + 0.1f, 10.0f);
+            float desiredVel = Math.max(vel.y + 0.1f, 8.5f);
             float velChange = desiredVel - vel.y;
             float impulse = _runner.getBody().getMass() * velChange;
 
@@ -46,6 +47,8 @@ public class GameInputHandler implements InputProcessor {
 
 
             _runner.setIsJumping(true);
+
+
 
         }
 
@@ -55,16 +58,19 @@ public class GameInputHandler implements InputProcessor {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
+        /* For canceling the jump on touch up. Doesn't feel right,
+            TODO: Implement this better
+
         if (_runner.getIsJumping() && !_runner.isFalling()){
             Vector2 vel = _runner.getBody().getLinearVelocity();
             float desiredVel = vel.y * -0.0098f;
             float velChange = desiredVel - vel.y;
             float impulse = _runner.getBody().getMass() * velChange;
             _runner.getBody().applyLinearImpulse(new Vector2(0f, impulse), _runner.getBody().getWorldCenter(), true);
-        }
+        }*/
 
 
-        return true;
+        return false;
     }
 
     @Override
