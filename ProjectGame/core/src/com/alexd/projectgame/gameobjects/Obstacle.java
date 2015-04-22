@@ -19,6 +19,7 @@ public class Obstacle extends GameObject {
 
     public Obstacle(World world){
         super(world);
+        initiate();
 
     }
 
