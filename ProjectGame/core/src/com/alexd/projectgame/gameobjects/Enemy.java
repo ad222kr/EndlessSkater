@@ -18,19 +18,14 @@ public class Enemy extends GameObject {
     public static final float DENSITY = 0.5f;
 
     /* Members */
-
     private EnemyType _enemyType;
     private float _x;
     private float _y;
 
     /* Get & set */
-
     public EnemyType getEnemyType(){
         return _enemyType;
     }
-
-
-
 
     public Enemy(World world, float y){
         super(world);
@@ -68,17 +63,6 @@ public class Enemy extends GameObject {
     public void setPos( float y){
         _y = y;
     }
-
-    public void changeDirection(float x){
-        if (getBody().getPosition().x > x){
-            getBody().setLinearVelocity(new Vector2(+getBody().getLinearVelocity().x, 0));
-        }
-        else {
-            getBody().setLinearVelocity(new Vector2(-getBody().getLinearVelocity().x, 0));
-        }
-    }
-
-
 
 
 }

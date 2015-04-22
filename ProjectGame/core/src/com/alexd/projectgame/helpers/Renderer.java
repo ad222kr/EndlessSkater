@@ -15,7 +15,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
 
 /**
- * Created by Alex on 2015-04-18.
+ * Created by Alex on 2015-04-18. Placeholder for the class that will render everything later
+ * Will probably use Scene2D for rendering the UI later.
  */
 public class Renderer implements Disposable{
 

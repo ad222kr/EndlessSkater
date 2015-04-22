@@ -31,70 +31,95 @@ public class GameScreen implements Screen {
      */
     private final int VIEWPORT_WIDTH = Helpers.convertToMeters(TheGame.APP_WIDTH);
     private final int VIEWPORT_HEIGHT = Helpers.convertToMeters(TheGame.APP_HEIGHT);
+    private final int TIME_BETWEEN_PLATFORMS = 7;
     private final Vector2 WORLD_GRAVITY = new Vector2(0, -10);
+
+
+    /**
+     * Vars for fixed timestep
+     */
     private final float TIME_STEP = 1 / 300f;
+    private float _accumulator = 0f;
 
     /**
      * Members
      */
-    private float _accumulator = 0f;
 
+    // Physics
     private Game _game;
     private World _world;
     private Runner _runner;
-    private Enemy _enemy;
-    private Platform _platform;
+    private Array<Body> _bodies;
 
+    // Cam & rendering
     private OrthographicCamera _camera;
     private Viewport _viewport;
     private Box2DDebugRenderer _debugRenderer;
     private Renderer _renderer;
 
+    // Misc
     private long _lastEnemySpawnTime;
     private float _timeSinceLastPlatform;
     private float _randomNumber;
-    private Array<Body> _bodies;
-    private Array<Platform> _platforms;
     private float _enemySpawnY;
 
+    /**
+     * Constructors
+     * @param game - Instance of the TheGame class
+     */
     public GameScreen(Game game) {
-
         _game = game;
-        setUpPhysicsWorld();
-        setupCamera();
 
+        setUpRunnerAndWorld();
+        setupCamera();
         setUpHandlers();
 
-        Platform initialPlatform = new Platform(_world);
-
-        initialPlatform.initiate();
-        setEnemyPositionY(initialPlatform);
-        _enemy = spawnEnemy();
+        initiate();
     }
 
     public GameScreen(){
         _world = new World(WORLD_GRAVITY, true);
     }
 
-    public void setUpPhysicsWorld(){
-        _world = new World(WORLD_GRAVITY, true);
 
-        _runner = new Runner(_world);
-        _bodies = new Array<Body>();
-        _platforms = new Array<Platform>();
-
+    /**
+     * Initiates the game. Spawns the first platforms and enemy
+     */
+    public void initiate(){
+        Platform initialPlatform = new Platform(_world);
+        initialPlatform.initiate();
+        setEnemyPositionY(initialPlatform);
+        spawnEnemy();
     }
 
+    /**
+     * Creates a physics-world and the runner.
+     */
+    public void setUpRunnerAndWorld(){
+        _world = new World(WORLD_GRAVITY, true);
+        _runner = new Runner(_world);
+        _bodies = new Array<Body>();
+    }
+
+    /**
+     * Sets up the handles for contact and input
+     */
     public void setUpHandlers(){
         Gdx.input.setInputProcessor(new GameInputHandler(_runner));
         _world.setContactListener(new ContactHandler(_runner));
     }
 
+    /**
+     * Sets up rendering
+     */
     public void setUpRendering(){
         _renderer = new Renderer(_world, _runner);
         _debugRenderer = new Box2DDebugRenderer();
     }
 
+    /**
+     * Sets up the camera and the viewport
+     */
     public void setupCamera(){
         _camera = new OrthographicCamera(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         _viewport = new StretchViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, _camera);
@@ -106,60 +131,73 @@ public class GameScreen implements Screen {
     }
 
 
-
+    /**
+     * Spawns an enemy
+     * @return - and instance of the Enemy class
+     */
     public Enemy spawnEnemy(){
-        float spawnChance = Helpers.getRandomInt(1, 5);
         _lastEnemySpawnTime = TimeUtils.nanoTime();
         _randomNumber = Helpers.getRandomFloat(1, 4);
-        Enemy enemy = new Enemy(_world, _enemySpawnY);
 
-        Gdx.app.log("ENemy spawned", "");
-
-        return enemy;
+        return new Enemy(_world, _enemySpawnY);
     }
 
+    /**
+     * Spawns an obstacle
+     * @return - an instance of the Obstacle class
+     */
     public Obstacle spawnObstacle(){
         _lastEnemySpawnTime = TimeUtils.nanoTime();
         _randomNumber = Helpers.getRandomFloat(1, 4);
-        Obstacle obstacle = new Obstacle(_world, _enemySpawnY);
 
-        return obstacle;
+        return new Obstacle(_world, _enemySpawnY);
     }
 
+    /**
+     * Spawns a platform
+     * @return - an instance of the Platform class
+     */
     public Platform spawnPlatform(){
-
         Platform platform = new Platform(_world);
 
-
-
         platform.initiate(42, 0);
-
         setEnemyPositionY(platform);
 
-
         return platform;
-
-
     }
 
+    /**
+     * Sets the y-position for enemies & obstacles according to the
+     * latest spawned platform
+     * @param platform - platform to use for y-positioning
+     */
     public void setEnemyPositionY(Platform platform){
         _enemySpawnY = platform.getBody().getPosition().y + platform.getHeight() / 2 + Enemy.HEIGHT / 2;
     }
 
+    /**
+     * Called when the screen is first shown, set's up rendering
+     */
     @Override
     public void show() {
         setUpRendering();
     }
 
-
-
-
+    /**
+     * The main "game-loop". Called every .25 seconds (i think)
+     * All rendering and logig-method calls happens here. This method
+     * also calls the doStep method
+     * @param delta - The time in seconds since the last render.
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
+
+        // Checks against last time an enemy spawned
         if ((TimeUtils.nanoTime() - _lastEnemySpawnTime) / 1000000000 > _randomNumber){
+            // Random chance for spawning enemy or obstacle
             int random = Helpers.getRandomInt(1, 5);
 
             if (random > 2){
@@ -169,19 +207,18 @@ public class GameScreen implements Screen {
                 spawnObstacle();
             }
         }
-        if(_timeSinceLastPlatform > 7){
-            _platform = spawnPlatform();
-            _timeSinceLastPlatform = 0;
-
-        }
 
         _timeSinceLastPlatform += delta;
+        if(_timeSinceLastPlatform > TIME_BETWEEN_PLATFORMS){
+            spawnPlatform();
+            _timeSinceLastPlatform = 0;
+        }
+
 
 
         doStep(delta);
         _renderer.render(_camera.combined);
         _debugRenderer.render(_world, _camera.combined);
-
 
         if(_runner.getHealth() == 0 || Helpers.isBodyOutOfBounds(_runner.getBody())){
             _game.setScreen(new GameOverScreen(_game));
@@ -192,38 +229,60 @@ public class GameScreen implements Screen {
         destroyBodies();
     }
 
+    /**
+     * Called when the window is resized, updates the viewport
+     * and set's camera position according to that
+     * @param width - the new width
+     * @param height - the new height
+     */
     @Override
     public void resize(int width, int height) {
         _viewport.update(width, height);
         _camera.position.set(_camera.viewportWidth / 2, _camera.viewportHeight / 2, 0);
-
     }
 
+    /**
+     * Called when the application is paused
+     * (home-button pressed in android etc)
+     */
     @Override
     public void pause() {
-
+        //TODO: Save the states of the game here?
     }
 
+    /**
+     * Called when the application is resumed
+     */
     @Override
     public void resume() {
-
+        //TODO: Recreate from states here?
     }
 
+    /**
+     * Called when the Screen is destroyed. Important
+     * to clean up resources here
+     */
     @Override
     public void hide() {
         dispose();
     }
 
 
+    /**
+     * This is NOT called automatically. Clean up of
+     * resources that the GC won't handle
+     */
     @Override
     public void dispose() {
-
         _world.dispose();
         _renderer.dispose();
         _debugRenderer.dispose();
-
     }
 
+    /**
+     * Advances the physics-world by a fixed timestep
+     * @param delta - The time in seconds since the last render.
+     */
     public void doStep(float delta) {
 
         // Stepping the physics-simulation, see https://github.com/libgdx/libgdx/wiki/Box2d#stepping-the-simulation
@@ -238,24 +297,17 @@ public class GameScreen implements Screen {
 
     }
 
+    /**
+     * Destroys the physics-bodies that have gone out of bounds.
+     */
     public void destroyBodies(){
 
         _world.getBodies(_bodies);
 
         for(Body body : _bodies){
-            GameObject gameObject = (GameObject)body.getUserData();
-
             if(Helpers.isBodyOutOfBounds(body)){
-                Gdx.app.log("Body destroyed: ", "" + gameObject.getGameObjectType());
                 _world.destroyBody(body);
-
             }
-
-
         }
     }
-
-
-
-
 }

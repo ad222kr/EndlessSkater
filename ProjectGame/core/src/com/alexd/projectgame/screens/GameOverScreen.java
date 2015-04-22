@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
- * Created by Alex on 2015-04-13.
+ * Created by Alex on 2015-04-13. Placeholder for a Game Over screen
  */
 public class GameOverScreen implements Screen, InputProcessor {
     private SpriteBatch _batch;

@@ -3,9 +3,12 @@ package com.alexd.projectgame.enums;
 import com.badlogic.gdx.math.Vector2;
 
 /**
- * Created by Alex on 2015-04-21.
+ * Enum for different enemy-types. They will have different speeds
  */
 public enum EnemyType {
+    /**
+     * EnemyTypes
+     */
     FAST_SPEED(new Vector2(-7f, 0)),
     MEDIUM_SPEED(new Vector2(-6f, 0)),
     SLOW_SPEED(new Vector2(-5f, 0));
@@ -20,6 +23,9 @@ public enum EnemyType {
         return _speed;
     }
 
+    /**
+     * @return - A random value of this enum
+     */
     public static EnemyType getRandomValue(){
         // get random enum value http://stackoverflow.com/a/8114214
 

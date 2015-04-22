@@ -34,11 +34,9 @@ public class Helpers {
 
     public static int getRandomInt(int min, int max){
         return new Random().nextInt((max - min) + 1) + min;
-
     }
 
     public static boolean isBodyOutOfBounds(Body body){
-
         GameObject gameObject = (GameObject) body.getUserData();
         return ((body.getPosition().x + gameObject.getWidth() / 2) < 0) ||
                 ((body.getPosition().y + gameObject.getHeight() / 2) < 0);

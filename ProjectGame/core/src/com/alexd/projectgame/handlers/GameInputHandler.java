@@ -13,8 +13,8 @@ import java.security.Key;
  * Class handling the input
  */
 public class GameInputHandler implements InputProcessor {
-    private Runner _runner;
 
+    private Runner _runner;
 
     public GameInputHandler(Runner runner){
         _runner = runner;
@@ -24,23 +24,8 @@ public class GameInputHandler implements InputProcessor {
     public boolean keyDown(int keycode) {
 
         if (keycode == Input.Keys.SPACE){
-            if(!_runner.getIsJumping()){
-
-                Vector2 vel = _runner.getBody().getLinearVelocity();
-                float desiredVel = Math.max(vel.y + 0.1f, 8.5f);
-                float velChange = desiredVel - vel.y;
-                float impulse = _runner.getBody().getMass() * velChange;
-
-                _runner.getBody().applyLinearImpulse(new Vector2(0f, impulse), _runner.getBody().getWorldCenter(), true);
-
-
-                _runner.setIsJumping(true);
-
-
-
-            }
+            _runner.jump();
         }
-
 
         return true;
     }
@@ -57,33 +42,14 @@ public class GameInputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-
-
-        if(!_runner.getIsJumping()){
-
-            Vector2 vel = _runner.getBody().getLinearVelocity();
-            float desiredVel = Math.max(vel.y + 0.1f, 8.5f);
-            float velChange = desiredVel - vel.y;
-            float impulse = _runner.getBody().getMass() * velChange;
-
-            _runner.getBody().applyLinearImpulse(new Vector2(0f, impulse), _runner.getBody().getWorldCenter(), true);
-
-
-            _runner.setIsJumping(true);
-
-
-
-        }
-
+        _runner.jump();
         return true;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-
         /* For canceling the jump on touch up. Doesn't feel right,
             TODO: Implement this better
-
         if (_runner.getIsJumping() && !_runner.isFalling()){
             Vector2 vel = _runner.getBody().getLinearVelocity();
             float desiredVel = vel.y * -0.0098f;
@@ -91,8 +57,6 @@ public class GameInputHandler implements InputProcessor {
             float impulse = _runner.getBody().getMass() * velChange;
             _runner.getBody().applyLinearImpulse(new Vector2(0f, impulse), _runner.getBody().getWorldCenter(), true);
         }*/
-
-
         return false;
     }
 
@@ -110,6 +74,5 @@ public class GameInputHandler implements InputProcessor {
     public boolean scrolled(int amount) {
         return false;
     }
-
 
 }
