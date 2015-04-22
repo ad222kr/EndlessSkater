@@ -4,6 +4,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 
 /**
  * Created by Alex on 2015-04-21.
@@ -17,4 +18,12 @@ public class Platform extends GameObject {
     public static final float DENSITY = 0f;
 
 
+    public Platform(World world){
+        super(world);
+        initiate();
+    }
+    @Override
+    public void initiate() {
+
+    }
 }

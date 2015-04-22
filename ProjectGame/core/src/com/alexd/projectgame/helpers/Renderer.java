@@ -26,9 +26,6 @@ public class Renderer implements Disposable{
     private Runner _runner;
     private BitmapFont _font;
 
-    private OrthographicCamera _camera;
-
-
     public Renderer(World world, Runner runner){
         _world = world;
         _runner = runner;
@@ -39,6 +36,7 @@ public class Renderer implements Disposable{
         _font.setColor(Color.RED);
 
     }
+
 
     public void render(Matrix4 projectionMatrix){
 

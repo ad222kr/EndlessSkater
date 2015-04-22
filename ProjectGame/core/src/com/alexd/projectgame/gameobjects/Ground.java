@@ -21,11 +21,15 @@ public class Ground extends GameObject {
 
     public Ground(World world){
         super(world);
+        initiate();
+
+    }
+
+    @Override
+    public void initiate() {
         _body = PhysicsFactory.creteGround(_world, this);
         _gameObjectType = GameObjectType.GROUND;
     }
-
-
 
 
 }

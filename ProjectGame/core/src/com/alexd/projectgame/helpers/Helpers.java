@@ -28,7 +28,6 @@ public class Helpers {
 
     public static float getRandomNumber(int min, int max){
         return new Random().nextFloat() * (max - min) + min;
-
     }
 
 

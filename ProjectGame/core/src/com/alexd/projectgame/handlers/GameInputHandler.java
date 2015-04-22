@@ -3,6 +3,7 @@ package com.alexd.projectgame.handlers;
 import com.alexd.projectgame.gameobjects.Runner;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -10,7 +11,7 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class GameInputHandler implements InputProcessor {
     private Runner _runner;
-    private float _timeElapsed;
+
 
     public GameInputHandler(Runner runner){
         _runner = runner;
@@ -33,13 +34,37 @@ public class GameInputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        _runner.jump();
+
+
+        if(!_runner.getIsJumping()){
+            Vector2 vel = _runner.getBody().getLinearVelocity();
+            float desiredVel = Math.max(vel.y + 0.1f, 10.0f);
+            float velChange = desiredVel - vel.y;
+            float impulse = _runner.getBody().getMass() * velChange;
+
+            _runner.getBody().applyLinearImpulse(new Vector2(0f, impulse), _runner.getBody().getWorldCenter(), true);
+
+
+            _runner.setIsJumping(true);
+
+        }
+
         return true;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
+
+        if (_runner.getIsJumping() && !_runner.isFalling()){
+            Vector2 vel = _runner.getBody().getLinearVelocity();
+            float desiredVel = vel.y * -0.098f;
+            float velChange = desiredVel - vel.y;
+            float impulse = _runner.getBody().getMass() * velChange;
+            _runner.getBody().applyLinearImpulse(new Vector2(0f, impulse), _runner.getBody().getWorldCenter(), true);
+        }
+
+
+        return true;
     }
 
     @Override

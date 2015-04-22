@@ -19,11 +19,14 @@ public class Obstacle extends GameObject {
 
     public Obstacle(World world){
         super(world);
-        _body = PhysicsFactory.createObstacle(_world, this);
-        _gameObjectType = GameObjectType.OBSTACLE;
+
     }
 
-
+    @Override
+    public void initiate() {
+        _gameObjectType = GameObjectType.OBSTACLE;
+        _body = PhysicsFactory.createObstacle(_world, this);
+    }
 
 
 }

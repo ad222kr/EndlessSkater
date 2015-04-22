@@ -47,6 +47,7 @@ public abstract class GameObject {
 
 
     /* Methods */
+    public abstract void initiate();
 
     public GameObjectType getGameObjectType (){
         return _gameObjectType;

@@ -33,6 +33,11 @@ public class Enemy extends GameObject {
 
     public Enemy(World world){
         super(world);
+        initiate();
+    }
+
+    @Override
+    public void initiate(){
         _enemyType = EnemyType.getRandomValue();
         _gameObjectType = GameObjectType.ENEMY;
         _body = PhysicsFactory.createEnemy(_world, this);

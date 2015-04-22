@@ -21,14 +21,27 @@ public class Runner extends GameObject {
     public static final int MAX_HEALTH = 3;
     private final Vector2 JUMPING_IMPULSE = new Vector2(0, 14f);
 
+
     /* Members */
     private int _health;
-    private int _jumpCount;
     private boolean _isJumping;
-    private float _jumpTimer;
+    private float _timeSinceJump;
+    public float _incrementVelocity = 4;
 
     /* Getters & Setters */
 
+    public float getTimeSinceJump(){
+        return _timeSinceJump;
+    }
+
+    public float getIncrementVelocity(){
+        return _incrementVelocity;
+    }
+
+    public void incrementTimeSinceJumpt(float value){
+        _timeSinceJump += value;
+        _incrementVelocity += _timeSinceJump;
+    }
 
     public int getHealth(){
         return _health;
@@ -38,23 +51,19 @@ public class Runner extends GameObject {
         _health = value;
     }
 
-    public float getJumpTimer(){
-        return _jumpTimer;
-    }
 
     public boolean getIsJumping(){
         return _isJumping;
     }
 
+    public void setIsJumping(boolean value){
+        _isJumping = value;
+    }
 
     /* Constructor */
     public Runner(World world){
         super(world);
-        _body = PhysicsFactory.createRunner(_world, this);
-        _gameObjectType = GameObjectType.RUNNER;
-        _isJumping = false;
-        _health = MAX_HEALTH;
-        _jumpCount = 0;
+        initiate();
 
     }
 
@@ -62,24 +71,27 @@ public class Runner extends GameObject {
 
     }
 
-
-    /* Methods */
-
-    public void incrementJumpTimer(float value){
-        _jumpTimer += value;
+    @Override
+    public void initiate() {
+        _body = PhysicsFactory.createRunner(_world, this);
+        _gameObjectType = GameObjectType.RUNNER;
+        _isJumping = false;
+        _health = MAX_HEALTH;
     }
 
+
+    /* Methods */
     public void jump(){
         if (!_isJumping){
-            _body.applyLinearImpulse(JUMPING_IMPULSE, _body.getWorldCenter(), true);
+            _body.setLinearVelocity(0f, 5f);
             _isJumping = true;
         }
     }
 
     public void landed(){
-
         _isJumping = false;
-        _jumpTimer = 0;
+        _timeSinceJump = 0;
+        _incrementVelocity = 4;
 
     }
 
@@ -99,9 +111,5 @@ public class Runner extends GameObject {
             _health++;
         }
     }
-
-
-
-
 
 }
