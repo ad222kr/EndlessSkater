@@ -70,7 +70,7 @@ public class Platform extends GameObject {
     public void initiate(float x, float y){
         _x = x;
         _y = Helpers.getRandomFloat(0, 2);
-        _width = 24;
+        _width = 27;
         _height = INIT_HEIGHT;
         _body = PhysicsFactory.createPlatform(_world, this);
     }

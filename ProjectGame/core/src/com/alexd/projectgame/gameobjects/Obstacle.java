@@ -29,6 +29,10 @@ public class Obstacle extends GameObject {
         return _x;
     }
 
+    public void setX(float value){
+        _x = value;
+    }
+
     public float getY(){
         return _y;
     }
@@ -45,7 +49,7 @@ public class Obstacle extends GameObject {
 
     @Override
     public void initiate() {
-        _x = 25f;
+        _x = 30f;
         _gameObjectType = GameObjectType.OBSTACLE;
         _body = PhysicsFactory.createObstacle(_world, this);
     }
@@ -53,6 +57,8 @@ public class Obstacle extends GameObject {
     public void setPos(float y){
         _y = y - getHeight();
     }
+
+
 
 
 }

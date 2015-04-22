@@ -37,8 +37,6 @@ public class Runner extends GameObject {
 
     public boolean getIsJumping(){ return _isJumping; }
 
-    public void setIsJumping(boolean value){ _isJumping = value; }
-
     @Override
     public float getWidth() { return WIDTH; }
 
@@ -70,7 +68,8 @@ public class Runner extends GameObject {
     }
 
     public void jump(){
-        Gdx.app.log("Velocity: ", ""+_body.getLinearVelocity().y);
+        Gdx.app.log("ISONGROUND = ", ""+ _isOnGround);
+        Gdx.app.log("IS JUMPING? ", "" + _isJumping);
         if(!_isJumping && _isOnGround){
 
             // Jumping code translated from http://www.iforce2d.net/b2dtut/constant-speed
@@ -107,5 +106,16 @@ public class Runner extends GameObject {
             _health++;
         }
     }
+
+    public void stabilize() {
+        if (_body.getLinearVelocity().x < 0){
+
+            Gdx.app.log("LINEARVELOCITY X = ", "STABILIZED!!!!!!!!!");
+        _body.applyLinearImpulse(new Vector2(0f, 0f), _body.getWorldCenter(), true);
+        _body.setTransform(X, _body.getPosition().y, 0);
+        }
+    }
+
+
 
 }

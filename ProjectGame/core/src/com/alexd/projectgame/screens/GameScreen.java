@@ -31,8 +31,9 @@ public class GameScreen implements Screen {
      */
     private final int VIEWPORT_WIDTH = Helpers.convertToMeters(TheGame.APP_WIDTH);
     private final int VIEWPORT_HEIGHT = Helpers.convertToMeters(TheGame.APP_HEIGHT);
-    private final int TIME_BETWEEN_PLATFORMS = 7;
+    private final int TIME_BETWEEN_PLATFORMS = 8;
     private final Vector2 WORLD_GRAVITY = new Vector2(0, -10);
+
 
 
     /**
@@ -40,6 +41,7 @@ public class GameScreen implements Screen {
      */
     private final float TIME_STEP = 1 / 300f;
     private float _accumulator = 0f;
+    public float _score = 0;
 
     /**
      * Members
@@ -49,6 +51,7 @@ public class GameScreen implements Screen {
     private Game _game;
     private World _world;
     private Runner _runner;
+    private Platform _platform;
     private Array<Body> _bodies;
 
     // Cam & rendering
@@ -86,9 +89,9 @@ public class GameScreen implements Screen {
      * Initiates the game. Spawns the first platforms and enemy
      */
     public void initiate(){
-        Platform initialPlatform = new Platform(_world);
-        initialPlatform.initiate();
-        setEnemyPositionY(initialPlatform);
+        _platform = new Platform(_world);
+        _platform.initiate();
+        setEnemyPositionY(_platform);
         spawnEnemy();
     }
 
@@ -113,7 +116,7 @@ public class GameScreen implements Screen {
      * Sets up rendering
      */
     public void setUpRendering(){
-        _renderer = new Renderer(_world, _runner);
+        _renderer = new Renderer(_world, _runner, this);
         _debugRenderer = new Box2DDebugRenderer();
     }
 
@@ -137,7 +140,7 @@ public class GameScreen implements Screen {
      */
     public Enemy spawnEnemy(){
         _lastEnemySpawnTime = TimeUtils.nanoTime();
-        _randomNumber = Helpers.getRandomFloat(1, 4);
+        _randomNumber = Helpers.getRandomFloat(2, 5);
 
         return new Enemy(_world, _enemySpawnY);
     }
@@ -146,24 +149,27 @@ public class GameScreen implements Screen {
      * Spawns an obstacle
      * @return - an instance of the Obstacle class
      */
-    public Obstacle spawnObstacle(){
+    public void spawnObstacle(){
         _lastEnemySpawnTime = TimeUtils.nanoTime();
-        _randomNumber = Helpers.getRandomFloat(1, 4);
+        _randomNumber = Helpers.getRandomFloat(2, 5);
 
-        return new Obstacle(_world, _enemySpawnY);
+        Obstacle obstacle = new Obstacle(_world, _enemySpawnY);
+
+        if (obstacle.getBody().getPosition().x > _platform.getBody().getPosition().x + _platform.getWidth() / 2){
+            obstacle.getBody().setTransform(_platform.getBody().getPosition().x + _platform.getWidth() / 2 - obstacle.getWidth(), obstacle.getY(), 0);
+        }
     }
 
     /**
      * Spawns a platform
      * @return - an instance of the Platform class
      */
-    public Platform spawnPlatform(){
-        Platform platform = new Platform(_world);
+    public void spawnPlatform(){
+        _platform = new Platform(_world);
 
-        platform.initiate(42, 0);
-        setEnemyPositionY(platform);
+        _platform.initiate(42, 0);
+        setEnemyPositionY(_platform);
 
-        return platform;
     }
 
     /**
@@ -193,17 +199,20 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        _score += delta * 5;
 
+        Gdx.app.log("Score: ", ""+ Math.ceil(_score));
 
         // Checks against last time an enemy spawned
+
         if ((TimeUtils.nanoTime() - _lastEnemySpawnTime) / 1000000000 > _randomNumber){
             // Random chance for spawning enemy or obstacle
             int random = Helpers.getRandomInt(1, 5);
 
-            if (random > 2){
+            if (random >= 2){
                 spawnEnemy();
             }
-            else {
+            else{
                 spawnObstacle();
             }
         }
@@ -213,6 +222,7 @@ public class GameScreen implements Screen {
             spawnPlatform();
             _timeSinceLastPlatform = 0;
         }
+
 
 
 
@@ -310,4 +320,5 @@ public class GameScreen implements Screen {
             }
         }
     }
+
 }

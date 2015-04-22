@@ -26,8 +26,9 @@ public class Renderer implements Disposable{
     private World _world;
     private Runner _runner;
     private BitmapFont _font;
+    private GameScreen _screen;
 
-    public Renderer(World world, Runner runner){
+    public Renderer(World world, Runner runner, GameScreen screen){
         _world = world;
         _runner = runner;
         _batch = new SpriteBatch();
@@ -35,6 +36,7 @@ public class Renderer implements Disposable{
         _runnerSprite = new Sprite(_img);
         _font = new BitmapFont();
         _font.setColor(Color.RED);
+        _screen = screen;
 
     }
 
@@ -49,12 +51,13 @@ public class Renderer implements Disposable{
 
         _runnerSprite.setOrigin(_runnerSprite.getWidth() / 2, _runnerSprite.getHeight() / 2);
 
+
         _batch.begin();
         _batch.draw(_runnerSprite, _runnerSprite.getX(), _runnerSprite.getY(),
                 Helpers.convertToMeters(_runnerSprite.getWidth()),
                 Helpers.convertToMeters(_runnerSprite.getHeight()));
-
-        _font.draw(_batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 1, 13);
+        _font.draw(_batch, ""+(int)Math.floor(_screen._score), 1, 13);
+        _font.draw(_batch, ""+_runner.getHealth(), 20, 13);
 
         _batch.end();
 
