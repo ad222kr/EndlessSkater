@@ -2,9 +2,12 @@ package com.alexd.projectgame.handlers;
 
 import com.alexd.projectgame.gameobjects.Runner;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+
+import java.security.Key;
 
 /**
  * Class handling the input
@@ -19,7 +22,27 @@ public class GameInputHandler implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        return false;
+
+        if (keycode == Input.Keys.SPACE){
+            if(!_runner.getIsJumping()){
+
+                Vector2 vel = _runner.getBody().getLinearVelocity();
+                float desiredVel = Math.max(vel.y + 0.1f, 8.5f);
+                float velChange = desiredVel - vel.y;
+                float impulse = _runner.getBody().getMass() * velChange;
+
+                _runner.getBody().applyLinearImpulse(new Vector2(0f, impulse), _runner.getBody().getWorldCenter(), true);
+
+
+                _runner.setIsJumping(true);
+
+
+
+            }
+        }
+
+
+        return true;
     }
 
     @Override

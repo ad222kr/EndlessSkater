@@ -158,29 +158,37 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+
+        if ((TimeUtils.nanoTime() - _lastEnemySpawnTime) / 1000000000 > _randomNumber){
+            int random = Helpers.getRandomInt(1, 5);
+
+            if (random > 2){
+                spawnEnemy();
+            }
+            else {
+                spawnObstacle();
+            }
+        }
+        if(_timeSinceLastPlatform > 7){
+            _platform = spawnPlatform();
+            _timeSinceLastPlatform = 0;
+
+        }
+
         _timeSinceLastPlatform += delta;
+
 
         doStep(delta);
         _renderer.render(_camera.combined);
         _debugRenderer.render(_world, _camera.combined);
 
-        if (_runner.getIsJumping() && !_runner.isFalling()){
 
-            _runner.incrementTimeSinceJumpt(delta);
-        }
-
-
-
-
-        if(_runner.getHealth() == 0){
+        if(_runner.getHealth() == 0 || Helpers.isBodyOutOfBounds(_runner.getBody())){
             _game.setScreen(new GameOverScreen(_game));
+            // So it doesn't destroy bodies after new screen is set. Don't know why it's called but
+            // if no return the app crashes...
+            return;
         }
-
-        if (Helpers.isBodyOutOfBounds(_runner.getBody())){
-            Gdx.app.log("Game over runner: ", "out of bounds");
-            _game.setScreen(new GameOverScreen(_game));
-        }
-
         destroyBodies();
     }
 
@@ -218,33 +226,6 @@ public class GameScreen implements Screen {
 
     public void doStep(float delta) {
 
-
-        if ((TimeUtils.nanoTime() - _lastEnemySpawnTime) / 1000000000 > _randomNumber){
-            int random = Helpers.getRandomInt(1, 5);
-
-            if (random > 2){
-                spawnEnemy();
-            }
-            else {
-                spawnObstacle();
-            }
-        }
-        if(_timeSinceLastPlatform > 7){
-            _platform = spawnPlatform();
-            _timeSinceLastPlatform = 0;
-
-        }
-
-
-
-        destroyBodies();
-
-
-
-        // if bodies are out of bounds destroy them
-
-
-
         // Stepping the physics-simulation, see https://github.com/libgdx/libgdx/wiki/Box2d#stepping-the-simulation
         // fixed time step
         // max frame time to avoid spiral of death (on slow devices)
@@ -258,6 +239,7 @@ public class GameScreen implements Screen {
     }
 
     public void destroyBodies(){
+
         _world.getBodies(_bodies);
 
         for(Body body : _bodies){
