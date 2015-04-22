@@ -1,6 +1,7 @@
 package com.alexd.projectgame.gameobjects;
 
 import com.alexd.projectgame.enums.GameObjectType;
+import com.alexd.projectgame.helpers.Helpers;
 import com.alexd.projectgame.helpers.PhysicsFactory;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -68,8 +69,8 @@ public class Platform extends GameObject {
 
     public void initiate(float x, float y){
         _x = x;
-        _y = y;
-        _width = 25;
+        _y = Helpers.getRandomFloat(0, 2);
+        _width = 24;
         _height = INIT_HEIGHT;
         _body = PhysicsFactory.createPlatform(_world, this);
     }

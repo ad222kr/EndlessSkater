@@ -16,7 +16,7 @@ public class Runner extends GameObject {
     public static final float X = 4f;
     public static final float Y = 4f;
     public static final float WIDTH = 1.5f;
-    public static final float HEIGHT = 2f;
+    public static final float HEIGHT = 1.5f;
     public static final float DENSITY = 0.5f;
     public static final int MAX_HEALTH = 3;
     private final Vector2 JUMPING_IMPULSE = new Vector2(0, 14f);
@@ -69,6 +69,16 @@ public class Runner extends GameObject {
 
     public Runner(){
 
+    }
+
+    @Override
+    public float getWidth() {
+        return WIDTH;
+    }
+
+    @Override
+    public float getHeight() {
+        return WIDTH;
     }
 
     @Override

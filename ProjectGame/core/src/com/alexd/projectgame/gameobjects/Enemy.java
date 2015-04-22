@@ -13,15 +13,15 @@ import com.badlogic.gdx.physics.box2d.*;
 public class Enemy extends GameObject {
 
     /* CONSTANTS */
-    public static final float X = 25f;
-    public static final float Y = 4f;
     public static final float WIDTH = 1.5f;
-    public static final float HEIGHT = 2f;
+    public static final float HEIGHT = 1.5f;
     public static final float DENSITY = 0.5f;
 
     /* Members */
 
     private EnemyType _enemyType;
+    private float _x;
+    private float _y;
 
     /* Get & set */
 
@@ -31,16 +31,51 @@ public class Enemy extends GameObject {
 
 
 
-    public Enemy(World world){
+
+    public Enemy(World world, float x, float y){
         super(world);
+        setPos(y);
         initiate();
+    }
+
+    public float getX(){
+        return _x;
+    }
+
+    public float getY(){
+        return _y;
+    }
+
+    @Override
+    public float getWidth() {
+        return WIDTH;
+    }
+
+    @Override
+    public float getHeight() {
+        return HEIGHT;
     }
 
     @Override
     public void initiate(){
+        _x = 25f;
         _enemyType = EnemyType.getRandomValue();
         _gameObjectType = GameObjectType.ENEMY;
         _body = PhysicsFactory.createEnemy(_world, this);
+
+    }
+
+    public void setPos( float y){
+        _y = y;
+    }
+
+    public void changeDirection(float x){
+        if (getBody().getPosition().x > x){
+            getBody().setLinearVelocity(new Vector2(+getBody().getLinearVelocity().x, 0));
+        }
+        else {
+            getBody().setLinearVelocity(new Vector2(-getBody().getLinearVelocity().x, 0));
+        }
     }
 
 

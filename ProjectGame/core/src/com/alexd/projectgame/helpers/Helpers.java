@@ -1,8 +1,10 @@
 package com.alexd.projectgame.helpers;
 
 import com.alexd.projectgame.TheGame;
+import com.alexd.projectgame.gameobjects.GameObject;
 import com.alexd.projectgame.screens.GameScreen;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.physics.box2d.Body;
 
 import java.util.Random;
 
@@ -33,6 +35,13 @@ public class Helpers {
     public static int getRandomInt(int min, int max){
         return new Random().nextInt((max - min) + 1) + min;
 
+    }
+
+    public static boolean isBodyOutOfBounds(Body body){
+
+        GameObject gameObject = (GameObject) body.getUserData();
+        return ((body.getPosition().x + gameObject.getWidth() / 2) < 0) ||
+                ((body.getPosition().y + gameObject.getHeight() / 2) < 0);
     }
 
 

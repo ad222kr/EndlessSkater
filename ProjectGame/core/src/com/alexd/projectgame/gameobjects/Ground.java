@@ -26,6 +26,16 @@ public class Ground extends GameObject {
     }
 
     @Override
+    public float getWidth() {
+        return WIDTH;
+    }
+
+    @Override
+    public float getHeight() {
+        return HEIGHT;
+    }
+
+    @Override
     public void initiate() {
         _body = PhysicsFactory.creteGround(_world, this);
         _gameObjectType = GameObjectType.GROUND;

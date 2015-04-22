@@ -28,7 +28,7 @@ public class PhysicsFactory {
 
     public static Body createEnemy(World world, Enemy enemy){
 
-        BodyDef bodyDef = getBodyDef(Enemy.X, Enemy.Y, BodyType.KinematicBody);
+        BodyDef bodyDef = getBodyDef(enemy.getX(), enemy.getY(), BodyType.KinematicBody);
         PolygonShape shape = getBox(Enemy.WIDTH, Enemy.HEIGHT);
         Body body = world.createBody(bodyDef);
         FixtureDef fixtureDef = getFixtureDef(true, shape, Enemy.DENSITY);

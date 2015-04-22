@@ -44,10 +44,14 @@ public abstract class GameObject {
 
     /* Abstract methods */
 
+    public abstract float getWidth();
+    public abstract float getHeight();
 
 
     /* Methods */
     public abstract void initiate();
+
+
 
     public GameObjectType getGameObjectType (){
         return _gameObjectType;

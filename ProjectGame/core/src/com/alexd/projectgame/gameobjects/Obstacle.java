@@ -24,6 +24,16 @@ public class Obstacle extends GameObject {
     }
 
     @Override
+    public float getWidth() {
+        return WIDTH;
+    }
+
+    @Override
+    public float getHeight() {
+        return HEIGHT;
+    }
+
+    @Override
     public void initiate() {
         _gameObjectType = GameObjectType.OBSTACLE;
         _body = PhysicsFactory.createObstacle(_world, this);

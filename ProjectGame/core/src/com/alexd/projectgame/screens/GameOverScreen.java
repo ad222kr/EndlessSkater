@@ -16,14 +16,14 @@ public class GameOverScreen implements Screen, InputProcessor {
 
     public GameOverScreen(Game game){
         this._game = game;
-        _batch = new SpriteBatch();
-        _font = new BitmapFont();
-        _font.setColor(Color.RED);
+
         Gdx.input.setInputProcessor(this);
     }
     @Override
     public void show() {
-
+        _batch = new SpriteBatch();
+        _font = new BitmapFont();
+        _font.setColor(Color.RED);
     }
 
     @Override

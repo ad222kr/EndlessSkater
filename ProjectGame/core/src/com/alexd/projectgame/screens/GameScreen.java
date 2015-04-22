@@ -42,6 +42,8 @@ public class GameScreen implements Screen {
     private Game _game;
     private World _world;
     private Runner _runner;
+    private Enemy _enemy;
+    private Platform _platform;
 
     private OrthographicCamera _camera;
     private Viewport _viewport;
@@ -53,18 +55,21 @@ public class GameScreen implements Screen {
     private float _randomNumber;
     private Array<Body> _bodies;
     private Array<Platform> _platforms;
+    private float _enemySpawnY;
 
     public GameScreen(Game game) {
 
-        // TODO: Refactor?
         _game = game;
         setUpPhysicsWorld();
         setupCamera();
-        setUpRendering();
-        setUpHandlers();
-        spawnEnemy();
-        new Platform(_world).initiate();
 
+        setUpHandlers();
+
+        Platform initialPlatform = new Platform(_world);
+
+        initialPlatform.initiate();
+        setEnemyPositionY(initialPlatform);
+        _enemy = spawnEnemy();
     }
 
     public GameScreen(){
@@ -73,7 +78,7 @@ public class GameScreen implements Screen {
 
     public void setUpPhysicsWorld(){
         _world = new World(WORLD_GRAVITY, true);
-        new Platform(_world);
+
         _runner = new Runner(_world);
         _bodies = new Array<Body>();
         _platforms = new Array<Platform>();
@@ -102,34 +107,40 @@ public class GameScreen implements Screen {
 
 
 
-    public GameObject spawnEnemy(){
+    public Enemy spawnEnemy(){
         float spawnChance = Helpers.getRandomInt(1, 5);
         _lastEnemySpawnTime = TimeUtils.nanoTime();
         _randomNumber = Helpers.getRandomFloat(1, 4);
-        Gdx.app.log("Random number:", ""+spawnChance);
+        Enemy enemy = new Enemy(_world, 25, _enemySpawnY);
 
-        if (spawnChance < 3){
-            return new Enemy(_world);
-        }
-        else {
-            return new Obstacle(_world);
-        }
+        Gdx.app.log("ENemy spawned", "");
+
+        return enemy;
     }
 
-    public void spawnPlatform(){
+    public Platform spawnPlatform(){
 
         Platform platform = new Platform(_world);
-        _platforms.add(platform);
-        platform.initiate(45, 0);
-        Gdx.app.log("PLATFORM", ": SPAWNED");
 
 
 
+        platform.initiate(42, 0);
+
+        setEnemyPositionY(platform);
+
+
+        return platform;
+
+
+    }
+
+    public void setEnemyPositionY(Platform platform){
+        _enemySpawnY = platform.getBody().getPosition().y + platform.getHeight() / 2 + Enemy.HEIGHT / 2;
     }
 
     @Override
     public void show() {
-
+        setUpRendering();
     }
 
 
@@ -156,6 +167,19 @@ public class GameScreen implements Screen {
         if(_runner.getHealth() == 0){
             _game.setScreen(new GameOverScreen(_game));
         }
+
+        if (Helpers.isBodyOutOfBounds(_runner.getBody())){
+            Gdx.app.log("Game over runner: ", "out of bounds");
+            _game.setScreen(new GameOverScreen(_game));
+        }
+
+
+        if (Helpers.isBodyOutOfBounds(_enemy.getBody())){
+            _enemy = spawnEnemy();
+            Gdx.app.log("SPAWN ENEMY: ", "CALLED BITCH");
+
+        }
+        destroyBodies();
     }
 
     @Override
@@ -180,8 +204,10 @@ public class GameScreen implements Screen {
         dispose();
     }
 
+
     @Override
     public void dispose() {
+
         _world.dispose();
         _renderer.dispose();
         _debugRenderer.dispose();
@@ -191,19 +217,23 @@ public class GameScreen implements Screen {
     public void doStep(float delta) {
 
         // here or render(gameloop)?
-        if ((TimeUtils.nanoTime() - _lastEnemySpawnTime) / 1000000000 > _randomNumber){
+        /* if ((TimeUtils.nanoTime() - _lastEnemySpawnTime) / 1000000000 > _randomNumber){
             spawnEnemy();
-        }
+        } */
         if(_timeSinceLastPlatform > 7){
-            spawnPlatform();
+            _platform = spawnPlatform();
             _timeSinceLastPlatform = 0;
 
         }
 
 
 
+        destroyBodies();
+
+
+
         // if bodies are out of bounds destroy them
-        //destroyBodies();
+
 
 
         // Stepping the physics-simulation, see https://github.com/libgdx/libgdx/wiki/Box2d#stepping-the-simulation
@@ -222,13 +252,19 @@ public class GameScreen implements Screen {
         _world.getBodies(_bodies);
 
         for(Body body : _bodies){
-            if(body.getWorldPoint(new Vector2(1f, 1f)).x < 0){
+            GameObject gameObject = (GameObject)body.getUserData();
+
+            if(Helpers.isBodyOutOfBounds(body)){
+                Gdx.app.log("Body destroyed: ", "" + gameObject.getGameObjectType());
                 _world.destroyBody(body);
+
             }
 
 
         }
     }
+
+
 
 
 }
