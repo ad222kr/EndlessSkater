@@ -26,10 +26,14 @@ public class Helpers {
         return number * TheGame.PIXELS_TO_METERS;
     }
 
-    public static float getRandomNumber(int min, int max){
+    public static float getRandomFloat(int min, int max){
         return new Random().nextFloat() * (max - min) + min;
     }
 
+    public static int getRandomInt(int min, int max){
+        return new Random().nextInt((max - min) + 1) + min;
+
+    }
 
 
 }

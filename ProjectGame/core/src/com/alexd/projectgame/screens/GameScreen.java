@@ -100,12 +100,12 @@ public class GameScreen implements Screen {
 
 
     public GameObject spawnEnemy(){
-        float spawnChance = Helpers.getRandomNumber(1, 5);
+        float spawnChance = Helpers.getRandomInt(1, 5);
         _lastEnemySpawnTime = TimeUtils.nanoTime();
-        _randomNumber = Helpers.getRandomNumber(1, 4);
+        _randomNumber = Helpers.getRandomFloat(1, 4);
+        Gdx.app.log("Random number:", ""+spawnChance);
 
-
-        if (spawnChance <= 4){
+        if (spawnChance < 3){
             return new Enemy(_world);
         }
         else {
@@ -124,6 +124,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
 
         doStep(delta);
         _renderer.render(_camera.combined);

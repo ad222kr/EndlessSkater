@@ -57,7 +57,7 @@ public class GameInputHandler implements InputProcessor {
 
         if (_runner.getIsJumping() && !_runner.isFalling()){
             Vector2 vel = _runner.getBody().getLinearVelocity();
-            float desiredVel = vel.y * -0.098f;
+            float desiredVel = vel.y * -0.0098f;
             float velChange = desiredVel - vel.y;
             float impulse = _runner.getBody().getMass() * velChange;
             _runner.getBody().applyLinearImpulse(new Vector2(0f, impulse), _runner.getBody().getWorldCenter(), true);
