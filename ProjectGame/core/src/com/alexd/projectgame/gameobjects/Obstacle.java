@@ -1,6 +1,7 @@
 package com.alexd.projectgame.gameobjects;
 
 import com.alexd.projectgame.enums.GameObjectType;
+import com.alexd.projectgame.helpers.PhysicsConstants;
 import com.alexd.projectgame.helpers.PhysicsFactory;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -11,54 +12,21 @@ import com.badlogic.gdx.physics.box2d.*;
 public class Obstacle extends GameObject {
 
 
-    public static final float WIDTH = 2f;
-    public static final float HEIGHT = 0.5f;
-    public static final float DENSITY = 0.5f;
-    public static final Vector2 LINEAR_VELOCITY = new Vector2(-4f, 0);
-
-    private float _x;
-    private float _y;
-
-    public Obstacle(World world, float y){
+    public Obstacle(World world, float x, float y, float width, float height){
         super(world);
-        setPos(y);
-        initiate();
+        initiate(x, y, width, height);
 
-    }
-    public float getX(){
-        return _x;
-    }
 
-    public void setX(float value){
-        _x = value;
-    }
-
-    public float getY(){
-        return _y;
     }
 
     @Override
-    public float getWidth() {
-        return WIDTH;
-    }
-
-    @Override
-    public float getHeight() {
-        return HEIGHT;
-    }
-
-    @Override
-    public void initiate() {
-        _x = 30f;
+    public void initiate(float x, float y, float width, float height) {
+        float fixedY = y - PhysicsConstants.OBSTACLE_HEIGHT; // else obstacles floats
+        setupMembers(x, fixedY, width, height);
         _gameObjectType = GameObjectType.OBSTACLE;
         _body = PhysicsFactory.createObstacle(_world, this);
+
     }
-
-    public void setPos(float y){
-        _y = y - getHeight();
-    }
-
-
 
 
 }

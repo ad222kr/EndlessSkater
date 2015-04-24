@@ -12,58 +12,28 @@ import com.badlogic.gdx.physics.box2d.*;
  */
 public class Enemy extends GameObject {
 
-    /* CONSTANTS */
-    public static final float WIDTH = 1.5f;
-    public static final float HEIGHT = 1.5f;
-    public static final float DENSITY = 0.5f;
-
-    /* Members */
     private EnemyType _enemyType;
-    private float _x;
-    private float _y;
 
     /* Get & set */
     public EnemyType getEnemyType(){
         return _enemyType;
     }
 
-    public Enemy(World world, float y){
+    public Enemy(World world, float x, float y, float width, float height){
         super(world);
-        setPos(y);
-        initiate();
+        initiate(x, y, width, height);
+
     }
 
-    public float getX(){
-        return _x;
-    }
 
-    public float getY(){
-        return _y;
-    }
+
 
     @Override
-    public float getWidth() {
-        return WIDTH;
-    }
-
-    @Override
-    public float getHeight() {
-        return HEIGHT;
-    }
-
-    @Override
-    public void initiate(){
-        _x = 25f;
-        _enemyType = EnemyType.getRandomValue();
+    public void initiate(float x, float y, float width, float height) {
+        setupMembers(x, y, width, height);
         _gameObjectType = GameObjectType.ENEMY;
+        _enemyType = EnemyType.getRandomValue();
         _body = PhysicsFactory.createEnemy(_world, this);
 
     }
-
-    public void setPos( float y){
-        _y = y;
-    }
-
-
-
 }

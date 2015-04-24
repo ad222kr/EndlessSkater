@@ -1,6 +1,7 @@
 package com.alexd.projectgame.gameobjects;
 
 import com.alexd.projectgame.enums.GameObjectType;
+import com.alexd.projectgame.helpers.PhysicsConstants;
 import com.alexd.projectgame.helpers.PhysicsFactory;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
@@ -14,22 +15,13 @@ import com.badlogic.gdx.physics.box2d.World;
  */
 public class Runner extends GameObject {
     /* CONSTANTS */
-    public static final float X = 4f;
-    public static final float Y = 4f;
-    public static final float WIDTH = 1.5f;
-    public static final float HEIGHT = 1.5f;
-    public static final float DENSITY = 0.5f;
+
     public static final int MAX_HEALTH = 3;
-    private final Vector2 JUMPING_IMPULSE = new Vector2(0, 14f);
 
-
-    /* Members */
     private int _health;
     private boolean _isJumping;
     private boolean _isOnGround;
 
-
-    /* Getters & Setters */
 
     public int getHealth(){ return _health; }
 
@@ -37,44 +29,38 @@ public class Runner extends GameObject {
 
     public boolean getIsJumping(){ return _isJumping; }
 
-    @Override
-    public float getWidth() { return WIDTH; }
-
-    @Override
-    public float getHeight() { return HEIGHT; }
-
     public void setIsOnGround(boolean value){
         _isOnGround = value;
     }
 
+
     /* Constructor */
-    public Runner(World world){
+    public Runner(World world, float x, float y, float width, float height){
         super(world);
-        initiate();
+        initiate(x, y, width, height);
+
     }
 
     public Runner(){
 
     }
 
-
     @Override
-    public void initiate() {
-        _body = PhysicsFactory.createRunner(_world, this);
+    public void initiate(float x, float y, float width, float height) {
+        setupMembers(x, y, width, height);
         _gameObjectType = GameObjectType.RUNNER;
-        _isJumping = false;
-        _isOnGround = true;
+        _body = PhysicsFactory.createRunner(_world, this);
         _health = MAX_HEALTH;
+        landed();
     }
 
+
     public void jump(){
-        Gdx.app.log("ISONGROUND = ", ""+ _isOnGround);
-        Gdx.app.log("IS JUMPING? ", "" + _isJumping);
+        // Jumping code translated from http://www.iforce2d.net/b2dtut/constant-speed
         if(!_isJumping && _isOnGround){
 
-            // Jumping code translated from http://www.iforce2d.net/b2dtut/constant-speed
             Vector2 vel = getBody().getLinearVelocity();
-            float desiredVel = Math.max(vel.y + 0.1f, 8.5f);
+            float desiredVel = Math.max(vel.y + 0.1f, 10f);
             float velChange = desiredVel - vel.y;
             float impulse = getBody().getMass() * velChange;
 
@@ -82,6 +68,7 @@ public class Runner extends GameObject {
 
             _isJumping = true;
             _isOnGround = false;
+            //_body.applyLinearImpulse(PhysicsConstants.RUNNER_JUMPING_IMPULSE, _body.getWorldCenter(), true);
 
         }
     }
@@ -91,9 +78,6 @@ public class Runner extends GameObject {
         _isOnGround = true;
     }
 
-    public boolean isFalling(){
-        return _body.getLinearVelocity().y < 0;
-    }
 
     public void removeHealth(){
         if (_health != 0){
@@ -106,16 +90,6 @@ public class Runner extends GameObject {
             _health++;
         }
     }
-
-    public void stabilize() {
-        if (_body.getLinearVelocity().x < 0){
-
-            Gdx.app.log("LINEARVELOCITY X = ", "STABILIZED!!!!!!!!!");
-        _body.applyLinearImpulse(new Vector2(0f, 0f), _body.getWorldCenter(), true);
-        _body.setTransform(X, _body.getPosition().y, 0);
-        }
-    }
-
 
 
 }

@@ -39,7 +39,7 @@ public class ContactHandler implements ContactListener {
         GameObject objB = (GameObject) contact.getFixtureB().getBody().getUserData();
 
         if (checkTypes(objA, objB, GameObjectType.RUNNER, GameObjectType.GROUND)){
-            _runner.setIsOnGround(false);
+            _runner.setIsOnGround(false); // what?
         }
     }
 

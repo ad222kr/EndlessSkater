@@ -22,9 +22,9 @@ public class PhysicsFactory {
      */
     public static Body createEnemy(World world, Enemy enemy){
         BodyDef bodyDef = getBodyDef(enemy.getX(), enemy.getY(), BodyType.DynamicBody);
-        PolygonShape shape = getBox(Enemy.WIDTH, Enemy.HEIGHT);
+        PolygonShape shape = getBox(enemy.getWidth(), enemy.getHeight());
         Body body = world.createBody(bodyDef);
-        FixtureDef fixtureDef = getFixtureDef(false, shape, Enemy.DENSITY);
+        FixtureDef fixtureDef = getFixtureDef(false, shape, PhysicsConstants.ENEMY_DENSITY);
 
         body.setLinearVelocity(enemy.getEnemyType().getSpeed());
         body.createFixture(fixtureDef);
@@ -44,11 +44,11 @@ public class PhysicsFactory {
      */
     public static Body createObstacle(World world, Obstacle obstacle){
         BodyDef bodyDef = getBodyDef(obstacle.getX(), obstacle.getY(), BodyType.KinematicBody);
-        PolygonShape shape = getBox(Obstacle.WIDTH, Obstacle.HEIGHT);
+        PolygonShape shape = getBox(obstacle.getWidth(), obstacle.getHeight());
         Body body = world.createBody(bodyDef);
-        FixtureDef fixtureDef = getFixtureDef(true, shape, Obstacle.DENSITY);
+        FixtureDef fixtureDef = getFixtureDef(true, shape, PhysicsConstants.OBSTACLE_DENSITY);
 
-        body.setLinearVelocity(Obstacle.LINEAR_VELOCITY);
+        body.setLinearVelocity(PhysicsConstants.OBSTACLE_LINEAR_VELOCITY);
         body.createFixture(fixtureDef);
         body.resetMassData();
         body.setUserData(obstacle);
@@ -67,10 +67,10 @@ public class PhysicsFactory {
         BodyDef bodyDef = getBodyDef(platform.getX(), platform.getY(), BodyType.KinematicBody);
         PolygonShape shape = getBox(platform.getWidth(), platform.getHeight());
         Body body = world.createBody(bodyDef);
-        FixtureDef fixtureDef = getFixtureDef(false, shape, Platform.DENSITY);
+        FixtureDef fixtureDef = getFixtureDef(false, shape, PhysicsConstants.PLATFORM_DENSITY);
         fixtureDef.friction = 0f;
 
-        body.setLinearVelocity(Platform.LINEAR_VELOCITY);
+        body.setLinearVelocity(PhysicsConstants.PLATFORM_LINEAR_VELOCITY);
         body.createFixture(fixtureDef);
         body.resetMassData();
         body.setUserData(platform);
@@ -86,11 +86,11 @@ public class PhysicsFactory {
      * @return
      */
     public static Body createRunner(World world, Runner runner){
-        BodyDef bodyDef = getBodyDef(Runner.X, Runner.Y, BodyType.DynamicBody);
-        PolygonShape shape = getBox(Runner.WIDTH, Runner.HEIGHT);
+        BodyDef bodyDef = getBodyDef(runner.getX(), runner.getY(), BodyType.DynamicBody);
+        bodyDef.fixedRotation = true;
+        PolygonShape shape = getBox(runner.getWidth(), runner.getHeight());
         Body body = world.createBody(bodyDef);
-        FixtureDef fixtureDef = getFixtureDef(false, shape, Runner.DENSITY);
-        fixtureDef.filter.categoryBits = TheGame.RUNNER_BIT;
+        FixtureDef fixtureDef = getFixtureDef(false, shape, PhysicsConstants.RUNNER_DENSITY);
         body.createFixture(fixtureDef);
         body.resetMassData();
         body.setUserData(runner);

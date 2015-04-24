@@ -3,6 +3,7 @@ package com.alexd.projectgame.screens;
 import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.enums.GameObjectType;
 import com.alexd.projectgame.helpers.Helpers;
+import com.alexd.projectgame.helpers.PhysicsConstants;
 import com.alexd.projectgame.helpers.Renderer;
 import com.alexd.projectgame.gameobjects.*;
 import com.alexd.projectgame.handlers.ContactHandler;
@@ -31,7 +32,7 @@ public class GameScreen implements Screen {
      */
     private final int VIEWPORT_WIDTH = Helpers.convertToMeters(TheGame.APP_WIDTH);
     private final int VIEWPORT_HEIGHT = Helpers.convertToMeters(TheGame.APP_HEIGHT);
-    private final int TIME_BETWEEN_PLATFORMS = 8;
+    private final int TIME_BETWEEN_PLATFORMS = 6;
     private final Vector2 WORLD_GRAVITY = new Vector2(0, -10);
 
 
@@ -89,8 +90,8 @@ public class GameScreen implements Screen {
      * Initiates the game. Spawns the first platforms and enemy
      */
     public void initiate(){
-        _platform = new Platform(_world);
-        _platform.initiate();
+        _platform = new Platform(_world, PhysicsConstants.PLATFORM_INIT_X, PhysicsConstants.PLATFORM_INIT_Y,
+                PhysicsConstants.PLATFORM_INIT_WIDTH, PhysicsConstants.PLATFORM_HEIGHT);
         setEnemyPositionY(_platform);
         spawnEnemy();
     }
@@ -100,7 +101,8 @@ public class GameScreen implements Screen {
      */
     public void setUpRunnerAndWorld(){
         _world = new World(WORLD_GRAVITY, true);
-        _runner = new Runner(_world);
+        _runner = new Runner(_world, PhysicsConstants.RUNNER_X, PhysicsConstants.RUNNER_Y,
+                PhysicsConstants.RUNNER_WIDTH, PhysicsConstants.RUNNER_HEIGHT);
         _bodies = new Array<Body>();
     }
 
@@ -142,18 +144,20 @@ public class GameScreen implements Screen {
         _lastEnemySpawnTime = TimeUtils.nanoTime();
         _randomNumber = Helpers.getRandomFloat(2, 5);
 
-        return new Enemy(_world, _enemySpawnY);
+        return new Enemy(_world, PhysicsConstants.ENEMY_X, _enemySpawnY,
+                PhysicsConstants.ENEMY_WIDTH, PhysicsConstants.ENEMY_HEIGHT);
     }
 
     /**
      * Spawns an obstacle
      * @return - an instance of the Obstacle class
      */
-    public void spawnObstacle(){
+    public void spawnObstacle(float x){
         _lastEnemySpawnTime = TimeUtils.nanoTime();
         _randomNumber = Helpers.getRandomFloat(2, 5);
 
-        Obstacle obstacle = new Obstacle(_world, _enemySpawnY);
+        Obstacle obstacle = new Obstacle(_world, x, _enemySpawnY,
+                PhysicsConstants.OBSTACLE_WIDTH, PhysicsConstants.OBSTACLE_HEIGHT);
 
         if (obstacle.getBody().getPosition().x > _platform.getBody().getPosition().x + _platform.getWidth() / 2){
             obstacle.getBody().setTransform(_platform.getBody().getPosition().x + _platform.getWidth() / 2 - obstacle.getWidth(), obstacle.getY(), 0);
@@ -165,10 +169,19 @@ public class GameScreen implements Screen {
      * @return - an instance of the Platform class
      */
     public void spawnPlatform(){
-        _platform = new Platform(_world);
+        float randomY = Helpers.getRandomFloat(0, 2);
+        _platform = new Platform(_world, 42, randomY, PhysicsConstants.PLATFORM_WIDTH,
+                PhysicsConstants.PLATFORM_HEIGHT);
 
-        _platform.initiate(42, 0);
+        // Gets a random number between the last spawned platforms left X and right X coordinates.
+        // Add and subtract 5 from those to make sure obstacle is in the bounds of the platform.
+        // 1 obstacle / platform feels good but maybe move this to game-loop rather?
+        float obstacleX = Helpers.getRandomFloat(5 + (int) (_platform.getBody().getPosition().x - _platform.getWidth() / 2),
+                (int) (_platform.getBody().getPosition().x + _platform.getWidth() / 2) - 5);
         setEnemyPositionY(_platform);
+        if (Helpers.getRandomInt(0, 3) <= 1){
+            spawnObstacle(obstacleX);
+        }
 
     }
 
@@ -178,7 +191,7 @@ public class GameScreen implements Screen {
      * @param platform - platform to use for y-positioning
      */
     public void setEnemyPositionY(Platform platform){
-        _enemySpawnY = platform.getBody().getPosition().y + platform.getHeight() / 2 + Enemy.HEIGHT / 2;
+        _enemySpawnY = platform.getBody().getPosition().y + platform.getHeight() / 2 + PhysicsConstants.ENEMY_HEIGHT / 2;
     }
 
     /**
@@ -200,22 +213,17 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         _score += delta * 5;
-
-        Gdx.app.log("Score: ", ""+ Math.ceil(_score));
+        Gdx.app.log("Mem usage: ", ""+((Gdx.app.getJavaHeap() + Gdx.app.getNativeHeap())/ 1000000));
 
         // Checks against last time an enemy spawned
 
         if ((TimeUtils.nanoTime() - _lastEnemySpawnTime) / 1000000000 > _randomNumber){
-            // Random chance for spawning enemy or obstacle
-            int random = Helpers.getRandomInt(1, 5);
 
-            if (random >= 2){
-                spawnEnemy();
-            }
-            else{
-                spawnObstacle();
-            }
+            spawnEnemy();
+
         }
+
+
 
         _timeSinceLastPlatform += delta;
         if(_timeSinceLastPlatform > TIME_BETWEEN_PLATFORMS){

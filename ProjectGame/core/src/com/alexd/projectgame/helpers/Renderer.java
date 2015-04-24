@@ -44,8 +44,8 @@ public class Renderer implements Disposable{
     public void render(Matrix4 projectionMatrix){
 
         _batch.setProjectionMatrix(projectionMatrix);
-        _runnerSprite.setX((_runner.getBody().getWorldCenter().x - Runner.WIDTH / 2));
-        _runnerSprite.setY((_runner.getBody().getWorldCenter().y - Runner.WIDTH / 2));
+        _runnerSprite.setX((_runner.getBody().getWorldCenter().x - _runner.getWidth() / 2));
+        _runnerSprite.setY((_runner.getBody().getWorldCenter().y - _runner.getHeight() / 2));
 
         _font.setScale(0.2f, 0.2f);
 
