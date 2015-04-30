@@ -2,23 +2,37 @@ testatlas.png
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-sprite
+enemy
   rotate: false
   xy: 2, 2
+  size: 72, 101
+  orig: 72, 102
+  offset: 0, 0
+  index: -1
+obstacle
+  rotate: false
+  xy: 76, 2
+  size: 123, 35
+  orig: 124, 37
+  offset: 0, 1
+  index: -1
+sprite
+  rotate: false
+  xy: 201, 2
   size: 52, 101
   orig: 52, 101
   offset: 0, 0
   index: -1
 sprite
   rotate: false
-  xy: 2, 197
+  xy: 255, 2
   size: 46, 96
   orig: 46, 96
   offset: 0, 0
   index: -1
 sprite
   rotate: false
-  xy: 2, 105
+  xy: 303, 2
   size: 52, 90
   orig: 52, 90
   offset: 0, 0

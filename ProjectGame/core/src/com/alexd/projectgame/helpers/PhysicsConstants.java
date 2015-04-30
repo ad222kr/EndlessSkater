@@ -15,7 +15,7 @@ public class PhysicsConstants {
     public static final float RUNNER_WIDTH = 1.5f;
     public static final float RUNNER_HEIGHT = 2f;
     public static final float RUNNER_DENSITY = 0.5f;
-    public static final Vector2 RUNNER_JUMPING_IMPULSE = new Vector2(0, 14f);
+    public static final Vector2 RUNNER_JUMPING_IMPULSE = new Vector2(0, 16f);
 
 
 
@@ -36,7 +36,7 @@ public class PhysicsConstants {
     public static final float OBSTACLE_WIDTH = 2.5f;
     public static final float OBSTACLE_HEIGHT = ENEMY_HEIGHT / 3;
     public static final float OBSTACLE_DENSITY = 0.5f;
-    public static final Vector2 OBSTACLE_LINEAR_VELOCITY = new Vector2(-6f, 0);
+    public static final Vector2 OBSTACLE_LINEAR_VELOCITY = new Vector2(-5f, 0);
 
 
     /**
@@ -49,5 +49,5 @@ public class PhysicsConstants {
     public static final float PLATFORM_INIT_WIDTH = PLATFORM_WIDTH * 4;
     public static final float PLATFORM_HEIGHT = 6f;
     public static final float PLATFORM_DENSITY = 0f;
-    public static final Vector2 PLATFORM_LINEAR_VELOCITY = new Vector2(-6f, 0);
+    public static final Vector2 PLATFORM_LINEAR_VELOCITY = new Vector2(-5f, 0);
 }

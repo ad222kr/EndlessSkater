@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.alexd.projectgame.TheGame;
@@ -19,6 +20,7 @@ public class AndroidLauncher extends AndroidApplication {
 
 		cfg.useAccelerometer = false;
 		cfg.useCompass = false;
+
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
 			hideVirtualButtons();

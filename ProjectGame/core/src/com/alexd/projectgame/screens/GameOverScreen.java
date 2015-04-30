@@ -57,8 +57,10 @@ public class GameOverScreen implements Screen, InputProcessor {
 
     @Override
     public void dispose() {
+        Gdx.app.log("DISPOSE CALLED ON: ", "GameOverScreen");
         _batch.dispose();
         _font.dispose();
+
 
     }
 

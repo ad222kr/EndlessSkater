@@ -9,9 +9,9 @@ public enum EnemyType {
     /**
      * EnemyTypes
      */
-    FAST_SPEED(new Vector2(-9f, 0)),
-    MEDIUM_SPEED(new Vector2(-8f, 0)),
-    SLOW_SPEED(new Vector2(-7f, 0));
+    FAST_SPEED(new Vector2(-8f, 0)),
+    MEDIUM_SPEED(new Vector2(-7f, 0)),
+    SLOW_SPEED(new Vector2(-6f, 0));
 
     private Vector2 _speed;
 

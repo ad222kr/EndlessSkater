@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import java.security.Key;
 
@@ -15,6 +16,7 @@ import java.security.Key;
 public class GameInputHandler implements InputProcessor {
 
     private Runner _runner;
+
 
     public GameInputHandler(Runner runner){
         _runner = runner;
@@ -48,15 +50,6 @@ public class GameInputHandler implements InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        /* For canceling the jump on touch up. Doesn't feel right,
-            TODO: Implement this better
-        if (_runner.getIsJumping() && !_runner.isFalling()){
-            Vector2 vel = _runner.getBody().getLinearVelocity();
-            float desiredVel = vel.y * -0.0098f;
-            float velChange = desiredVel - vel.y;
-            float impulse = _runner.getBody().getMass() * velChange;
-            _runner.getBody().applyLinearImpulse(new Vector2(0f, impulse), _runner.getBody().getWorldCenter(), true);
-        }*/
         return false;
     }
 

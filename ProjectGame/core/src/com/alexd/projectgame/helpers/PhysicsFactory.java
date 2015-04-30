@@ -92,6 +92,7 @@ public class PhysicsFactory {
         Body body = world.createBody(bodyDef);
         FixtureDef fixtureDef = getFixtureDef(false, shape, PhysicsConstants.RUNNER_DENSITY);
         body.createFixture(fixtureDef);
+        body.setGravityScale(1.75f);
         body.resetMassData();
         body.setUserData(runner);
         shape.dispose();

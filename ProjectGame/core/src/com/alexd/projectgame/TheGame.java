@@ -3,7 +3,9 @@ package com.alexd.projectgame;
 
 import com.alexd.projectgame.screens.GameScreen;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 
 public class TheGame extends Game {
@@ -16,12 +18,25 @@ public class TheGame extends Game {
 	public static final int ENEMY_BIT = 0x0002;
 	public static final int PLATFORM_BIT = 0x0003;
 
+	private TextureAtlas _atlas;
+
 
 
 	@Override
 	public void create(){
+		Gdx.graphics.setVSync(true);
+		_atlas = new TextureAtlas("testatlas.txt");
 		setScreen(new GameScreen(this));
 
+	}
+
+	@Override
+	public void dispose(){
+		_atlas.dispose();
+	}
+
+	public TextureAtlas getAtlas(){
+		return _atlas;
 	}
 
 
