@@ -23,7 +23,7 @@ public class IntegrationTests {
     public void testRunnerJump(){
         // Setup
         World world = new World(new Vector2(0, -10), true);
-        Runner runner = new Runner(world);
+        Runner runner = new Runner(world, 0, 0, 1, 1);
 
         // act
         runner.jump();
@@ -37,7 +37,7 @@ public class IntegrationTests {
     public void testRunnerLanded(){
         // Setup
         World world = new World(new Vector2(0, -10), true);
-        Runner runner = new Runner(world);
+        Runner runner = new Runner(world, 0, 0, 1, 1);
         runner.jump();
 
         // act

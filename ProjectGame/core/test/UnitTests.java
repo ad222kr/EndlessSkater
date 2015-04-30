@@ -4,6 +4,8 @@
 
 
 
+import com.alexd.projectgame.enums.GameObjectType;
+import com.alexd.projectgame.gameobjects.GameObject;
 import com.alexd.projectgame.gameobjects.Runner;
 import com.alexd.projectgame.helpers.Helpers;
 import org.junit.Test;
@@ -14,6 +16,29 @@ import static org.junit.Assert.assertTrue;
 
 public class UnitTests {
 
+    /**
+     * Test of abstract class GameObject's methods
+     */
+
+    @Test
+    public void testIsExpectedType(){
+        // Setup
+
+        GameObject gameObject = new GameObject() {
+            @Override
+            public void initiate(float x, float y, float width, float height) {
+                _gameObjectType = GameObjectType.ENEMY;
+            }
+        };
+        gameObject.initiate(0,0,0,0);
+
+
+        // act
+        boolean isRightType = gameObject.isExpectedType(GameObjectType.ENEMY);
+
+        assertTrue("Should be true!", isRightType);
+
+    }
 
     /**
      * Test of class Runner
@@ -67,20 +92,35 @@ public class UnitTests {
     }
 
     @Test
-    public void testGetRandomNumber(){
+    public void testGetRandomInt(){
         // Setup
         int min = 1;
         int max = 20;
-        float [] expected = new float[100];
+        int [] expected = new int[100];
 
         // act
         for (int i = 0; i < expected.length; i++ ){
-            expected[i] = Helpers.getRandomNumber(min, max);
+            expected[i] = Helpers.getRandomInt(min, max);
         }
 
         // assert
         for (float value : expected){
             assertTrue("Should be between 1-20", value >= 1 && value <= 20);
+        }
+    }
+
+    @Test
+    public void testGetRandomFloat(){
+        int min = 1;
+        int max = 20;
+        float [] expected = new float[100];
+
+        for (int i = 0; i < expected.length; i++){
+            expected[i] = Helpers.getRandomFloat(min, max);
+        }
+
+        for(float value : expected){
+            assertTrue("Should be between 1-20", value >= 0 && value <= 20);
         }
     }
 }

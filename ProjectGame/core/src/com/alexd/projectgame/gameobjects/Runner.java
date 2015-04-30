@@ -60,7 +60,7 @@ public class Runner extends GameObject {
         if(!_isJumping && _isOnGround){
 
             Vector2 vel = getBody().getLinearVelocity();
-            float desiredVel = Math.max(vel.y + 0.1f, 10f);
+            float desiredVel = Math.max(vel.y + 0.1f, 8f);
             float velChange = desiredVel - vel.y;
             float impulse = getBody().getMass() * velChange;
 

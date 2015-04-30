@@ -34,8 +34,6 @@ public abstract class GameObject {
     public GameObject () {}
 
 
-
-
     public abstract void initiate(float x, float y, float width, float height);
 
     public void setupMembers(float x, float y, float width, float height){

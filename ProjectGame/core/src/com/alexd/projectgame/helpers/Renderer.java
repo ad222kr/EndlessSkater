@@ -7,64 +7,69 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
 /**
- * Created by Alex on 2015-04-18. Placeholder for the class that will render everything later
- * Will probably use Scene2D for rendering the UI later.
+ * Class that will render the game objects. The UI-rendering will be taken
+ * care of by Scene2D
  */
 public class Renderer implements Disposable{
 
     private SpriteBatch _batch;
-    private Sprite _runnerSprite;
-    private Texture _img;
-    private World _world;
-    private Runner _runner;
     private BitmapFont _font;
     private GameScreen _screen;
+    private TextureAtlas _spriteSheet;
 
-    public Renderer(World world, Runner runner, GameScreen screen){
-        _world = world;
-        _runner = runner;
+    private Animation _animation;
+    private float _animationElapsed = 0f;
+
+
+    public Renderer(GameScreen screen){
         _batch = new SpriteBatch();
-        _img = new Texture("badlogic.jpg");
-        _runnerSprite = new Sprite(_img);
         _font = new BitmapFont();
         _font.setColor(Color.RED);
         _screen = screen;
 
+        // Animation with textureatlas test
+        _spriteSheet = new TextureAtlas("testatlas.txt");
+        _animation = new Animation(1/15f, _spriteSheet.getRegions());
+
     }
 
 
-    public void render(Matrix4 projectionMatrix){
-
+    public void render(Matrix4 projectionMatrix, float delta){
         _batch.setProjectionMatrix(projectionMatrix);
-        _runnerSprite.setX((_runner.getBody().getWorldCenter().x - _runner.getWidth() / 2));
-        _runnerSprite.setY((_runner.getBody().getWorldCenter().y - _runner.getHeight() / 2));
 
         _font.setScale(0.2f, 0.2f);
 
-        _runnerSprite.setOrigin(_runnerSprite.getWidth() / 2, _runnerSprite.getHeight() / 2);
+        _animationElapsed += delta;
+
+        float x = (_screen.getRunner().getBody().getWorldCenter().x - _screen.getRunner().getWidth() / 2);
+        float y = (_screen.getRunner().getBody().getWorldCenter().y - _screen.getRunner().getHeight() / 2);
 
 
         _batch.begin();
-        _batch.draw(_runnerSprite, _runnerSprite.getX(), _runnerSprite.getY(),
-                Helpers.convertToMeters(_runnerSprite.getWidth()),
-                Helpers.convertToMeters(_runnerSprite.getHeight()));
+        _batch.draw(_animation.getKeyFrame(_animationElapsed, true), x, y, 1.5f, 2f);
+
+
+
         _font.draw(_batch, ""+(int)Math.floor(_screen._score), 1, 13);
-        _font.draw(_batch, ""+_runner.getHealth(), 20, 13);
+        _font.draw(_batch, "" + _screen.getRunner().getHealth(), 20, 13);
 
         _batch.end();
 
     }
 
+    public void renderRunner(){
+
+    }
+
+
     public void dispose(){
-        _img.dispose();
         _batch.dispose();
     }
 

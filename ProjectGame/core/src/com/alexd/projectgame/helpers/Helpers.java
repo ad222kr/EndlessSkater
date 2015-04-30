@@ -13,6 +13,8 @@ import java.util.Random;
  */
 public class Helpers {
 
+    private static Random _random = new Random();
+
     public static float convertToMeters(float number){
         return number / TheGame.PIXELS_TO_METERS;
     }
@@ -29,11 +31,13 @@ public class Helpers {
     }
 
     public static float getRandomFloat(int min, int max){
-        return new Random().nextFloat() * (max - min) + min;
+        float random = _random.nextFloat() * (max - min) + min;
+        return random;
     }
 
-    public static int getRandomInt(int min, int max){
-        return new Random().nextInt((max - min) + 1) + min;
+    public static int getRandomInt(int min, int max) {
+        int random = _random.nextInt((max - min) + 1) + min;
+        return random;
     }
 
     public static boolean isBodyOutOfBounds(Body body){
