@@ -4,6 +4,7 @@ import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.gameobjects.Enemy;
 import com.alexd.projectgame.gameobjects.Obstacle;
 import com.alexd.projectgame.screens.GameScreen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Matrix4;
@@ -34,9 +35,9 @@ public class Renderer implements Disposable{
         _screen = screen;
 
         // Animation with textureatlas test
-        _animation = new Animation(1/15f, ((TheGame)_screen.getGame()).getAtlas().findRegions("sprite"));
-        _enemyRegion = ((TheGame)_screen.getGame()).getAtlas().findRegion("enemy");
-        _obstacleRegion = ((TheGame)_screen.getGame()).getAtlas().findRegion("obstacle");
+        _animation = AssetsManager.getAnimation("runner");
+        _enemyRegion = AssetsManager.getAtlasRegion("enemy");
+        _obstacleRegion = AssetsManager.getAtlasRegion("obstacle");
 
     }
 
@@ -72,11 +73,6 @@ public class Renderer implements Disposable{
         _batch.end();
 
     }
-
-    public void renderRunner(){
-
-    }
-
 
     public void dispose(){
         _batch.dispose();

@@ -47,15 +47,5 @@ public class IntegrationTests {
         assertFalse("runner.getIsJumping should return false", runner.getIsJumping());
     }
 
-    @Test
-    public void testEnemySpawn(){
-        // Setup
-        GameScreen screen = new GameScreen();
 
-        // act
-        GameObject enemy = screen.spawnEnemy();
-
-        // assert.
-        assertTrue("enemy should be an instance of Enemy class", enemy instanceof Enemy || enemy instanceof Obstacle);
-    }
 }

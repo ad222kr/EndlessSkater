@@ -1,7 +1,6 @@
 package com.alexd.projectgame.screens;
 
 import com.alexd.projectgame.TheGame;
-import com.alexd.projectgame.enums.GameObjectType;
 import com.alexd.projectgame.enums.GameState;
 import com.alexd.projectgame.helpers.Helpers;
 import com.alexd.projectgame.helpers.PhysicsConstants;
@@ -13,7 +12,6 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
@@ -34,13 +32,7 @@ public class GameScreen implements Screen {
     private final int VIEWPORT_HEIGHT = Helpers.convertToMeters(TheGame.APP_HEIGHT);
     private final int TIME_BETWEEN_PLATFORMS = 7;
     private final Vector2 WORLD_GRAVITY = new Vector2(0, -10);
-
-    /**
-     * Vars for variable time step
-     */
     private final float TIME_STEP = 1f / 60f;
-    private final int MAX_STEPS = 5;
-    private float _accumulator;
 
 
     FPSLogger fpsLogger;
@@ -72,7 +64,6 @@ public class GameScreen implements Screen {
     private float _enemySpawnY;
     private float _score;
 
-
     /**
      * Constructors
      * @param game - Instance of the TheGame class
@@ -87,14 +78,11 @@ public class GameScreen implements Screen {
         initiate();
         fpsLogger = new FPSLogger();
 
-
-
     }
 
     public GameScreen(){
         _world = new World(WORLD_GRAVITY, true);
     }
-
 
     /**
      * Initiates the game. Spawns the first platforms and enemy
@@ -152,7 +140,6 @@ public class GameScreen implements Screen {
 
     /**
      * Spawns an enemy
-     * @return - and instance of the Enemy class
      */
     public void spawnEnemy(){
         _lastEnemySpawnTime = TimeUtils.nanoTime();
@@ -166,46 +153,67 @@ public class GameScreen implements Screen {
 
     /**
      * Spawns an obstacle
-     * @return - an instance of the Obstacle class
      */
-    public void spawnObstacle(float x){
+    public void spawnObstacle(){
         _lastEnemySpawnTime = TimeUtils.nanoTime();
         _randomNumber = Helpers.getRandomFloat(2, 5);
+        float x = getObstacleX();
 
-        _obstacles.add(new Obstacle(_world, x, _enemySpawnY,
-                PhysicsConstants.OBSTACLE_WIDTH, PhysicsConstants.OBSTACLE_HEIGHT));
+        Obstacle obstacle = new Obstacle(_world, x, _enemySpawnY, PhysicsConstants.OBSTACLE_WIDTH, PhysicsConstants.OBSTACLE_HEIGHT);
+        Platform platform = _platforms.get(_platforms.size - 1);
 
-        if (_obstacles.get(_obstacles.size - 1).getBody().getPosition().x > _platforms.get(_platforms.size - 1).getBody().getPosition().x +
-                _platforms.get(_platforms.size - 1).getWidth() / 2){
-            _obstacles.get(_obstacles.size - 1).getBody().setTransform(_platforms.get(_platforms.size - 1).getBody().getPosition().x +
-                    _platforms.get(_platforms.size - 1).getWidth() / 2 - _obstacles.get(_obstacles.size - 1).getWidth(), _obstacles.get(_obstacles.size - 1).getY(), 0);
-        }
+        fixObstaclePosition(obstacle, platform);
+
+        _obstacles.add(obstacle);
     }
 
     /**
-     * Spawns a platform
-     * @return - an instance of the Platform class
+     * Spawns a platform.
      */
     public void spawnPlatform(){
-        float randomY = Helpers.getRandomFloat(0, 2);
-        _platforms.add(new Platform(_world, 42, randomY, PhysicsConstants.PLATFORM_WIDTH,
+
+        _platforms.add(new Platform(_world, 42, Helpers.getRandomFloat(0, 2), PhysicsConstants.PLATFORM_WIDTH,
                 PhysicsConstants.PLATFORM_HEIGHT));
-
-
 
         setEnemyPositionY(_platforms.get(_platforms.size - 1));
         if (Helpers.getRandomInt(0, 1) <= 1){
-            spawnObstacle(getObstacleX());
+            spawnObstacle();
         }
 
     }
 
+    /**
+     * Fixes the obstacle position. In other words, makes sure that it's
+     * withing the bounds of the platform it's on, preventing floating
+     * obstacles.
+     * @param obstacle - obstacle to apply fix to
+     * @param platform - platform which the obstacle resides on
+     */
+    public void fixObstaclePosition(Obstacle obstacle, Platform platform){
+        if (obstacle.getBody().getPosition().x > platform.getBody().getPosition().x + platform.getWidth() / 2){
+
+            obstacle.getBody().setTransform(platform.getBody().getPosition().x +
+                    platform.getWidth() / 2 - obstacle.getWidth(), obstacle.getY(), 0);
+        }
+    }
+
+
+
+    /**
+     *  Gets a random number between the last spawned platforms left X and right X coordinates.
+        Add and subtract 5 from those to make sure obstacle is in the bounds of the platform.
+     * @return - the X-position for the obstacle
+     */
     public float getObstacleX(){
-        // Gets a random number between the last spawned platforms left X and right X coordinates.
-        // Add and subtract 5 from those to make sure obstacle is in the bounds of the platform.
-        // 1 obstacle / platform feels good but maybe move this to game-loop rather?
-        return  Helpers.getRandomFloat(5 + (int) (_platforms.get(_platforms.size - 1).getBody().getPosition().x - _platforms.get(_platforms.size - 1).getWidth() / 2),
-                (int) (_platforms.get(_platforms.size - 1).getBody().getPosition().x + _platforms.get(_platforms.size - 1).getWidth() / 2) - 5);
+
+        int min = (int)(_platforms.get(_platforms.size - 1).getBody().getPosition().x -
+                        _platforms.get(_platforms.size - 1).getWidth() / 2) + 5;
+        int max = (int)(_platforms.get(_platforms.size - 1).getBody().getPosition().x +
+                        _platforms.get(_platforms.size - 1).getWidth() / 2) - 5;
+
+
+        return  Helpers.getRandomFloat(min, max);
+
     }
 
     /**
@@ -246,9 +254,8 @@ public class GameScreen implements Screen {
 
                 if (isTimeForEnemySpawn()){
                     spawnEnemy();
+
                 }
-
-
                 if(isTimeForPlatformSpawn()){
                     spawnPlatform();
                     _timeSinceLastPlatform = 0;
@@ -336,7 +343,6 @@ public class GameScreen implements Screen {
 
     }
 
-
     /**
      * Advances the physics-world by a fixed timestep
      * @param delta - The time in seconds since the last render.
@@ -359,21 +365,11 @@ public class GameScreen implements Screen {
         }*/
 
         _world.step(TIME_STEP, 6, 2);
-
-
-
-
-
-
-
-
-
-
-
     }
 
     /**
      * Destroys the physics-bodies that have gone out of bounds.
+     * Removes the gameobj connected to body from it's list as well.
      */
     public void destroyBodies(){
 
@@ -384,7 +380,6 @@ public class GameScreen implements Screen {
         for(Body body : _bodies){
             if(Helpers.isBodyOutOfBounds(body)){
                 obj = ((GameObject)body.getUserData());
-
 
                 switch (obj.getGameObjectType()){
                     case  ENEMY:
@@ -398,19 +393,7 @@ public class GameScreen implements Screen {
                         break;
 
                 }
-                /*if (((GameObject)body.getUserData()).isExpectedType(GameObjectType.ENEMY)){
-                    _enemies.removeValue((Enemy)body.getUserData(), false);
-                }
-                if(((GameObject)body.getUserData()).isExpectedType(GameObjectType.GROUND)){
-                    _platforms.removeValue((Platform)body.getUserData(), false);
-                }
-                if (((GameObject)body.getUserData()).isExpectedType(GameObjectType.OBSTACLE)){
-                    _obstacles.removeValue((Obstacle)body.getUserData(), false);
-                }*/
-
-
                 _world.destroyBody(body);
-
             }
         }
     }
