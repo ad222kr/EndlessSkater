@@ -29,7 +29,7 @@ public class Health extends Actor {
     }
 
 
-    public void initHealthArray(int health){
+    private void initHealthArray(int health){
         _health = new boolean[health];
 
         for (Boolean healthPiece : _health){
@@ -37,7 +37,7 @@ public class Health extends Actor {
         }
     }
 
-    public void updateHealthArray(){
+    private void updateHealthArray(){
         for (int i = 0; i < _health.length; i++){
             if (i < _runner.getHealth()){
                 _health[i] = true;

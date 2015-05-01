@@ -46,7 +46,7 @@ public class Runner extends GameObject {
     }
 
     @Override
-    public void initiate(float x, float y, float width, float height) {
+    protected void initiate(float x, float y, float width, float height) {
         setupMembers(x, y, width, height);
         _gameObjectType = GameObjectType.RUNNER;
         _body = PhysicsFactory.createRunner(_world, this);

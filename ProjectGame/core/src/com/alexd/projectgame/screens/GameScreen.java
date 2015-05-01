@@ -85,7 +85,7 @@ public class GameScreen implements Screen {
     /**
      * Initiates the game. Spawns the first platforms and enemy
      */
-    public void initiate(){
+    private void initiate(){
         _gameState = GameState.RUNNING;
         _platforms = new Array<Platform>(4);
         _enemies = new Array<Enemy>(4);
@@ -99,7 +99,7 @@ public class GameScreen implements Screen {
     /**
      * Creates a physics-world and the runner.
      */
-    public void setUpRunnerAndWorld(){
+    private void setUpRunnerAndWorld(){
         _world = new World(WORLD_GRAVITY, true);
         _runner = new Runner(_world, PhysicsConstants.RUNNER_X, PhysicsConstants.RUNNER_Y,
                 PhysicsConstants.RUNNER_WIDTH, PhysicsConstants.RUNNER_HEIGHT);
@@ -109,7 +109,7 @@ public class GameScreen implements Screen {
     /**
      * Sets up the handles for contact and input
      */
-    public void setUpHandlers(){
+    private void setUpHandlers(){
         Gdx.input.setInputProcessor(new GameInputHandler(_runner));
         _world.setContactListener(new ContactHandler(_runner));
     }
@@ -117,7 +117,7 @@ public class GameScreen implements Screen {
     /**
      * Sets up rendering
      */
-    public void setUpRendering(){
+    private void setUpRendering(){
         _renderer = new Renderer(this);
         _gameHudStage = new GameHudStage(new StretchViewport(TheGame.APP_WIDTH, TheGame.APP_WIDTH), this);
         if (isDebug){
@@ -128,7 +128,7 @@ public class GameScreen implements Screen {
     /**
      * Sets up the camera and the viewport
      */
-    public void setupCamera(){
+    private void setupCamera(){
         _camera = new OrthographicCamera(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         _viewport = new StretchViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, _camera);
 
@@ -142,7 +142,7 @@ public class GameScreen implements Screen {
     /**
      * Spawns an enemy
      */
-    public void spawnEnemy(){
+    private void spawnEnemy(){
         _lastEnemySpawnTime = TimeUtils.nanoTime();
         _randomNumber = Helpers.getRandomFloat(2, 5);
 
@@ -155,7 +155,7 @@ public class GameScreen implements Screen {
     /**
      * Spawns an obstacle
      */
-    public void spawnObstacle(){
+    private void spawnObstacle(){
         _lastEnemySpawnTime = TimeUtils.nanoTime();
         _randomNumber = Helpers.getRandomFloat(2, 5);
         float x = getObstacleX();
@@ -171,7 +171,7 @@ public class GameScreen implements Screen {
     /**
      * Spawns a platform.
      */
-    public void spawnPlatform(){
+    private void spawnPlatform(){
 
         _platforms.add(new Platform(_world, 42, Helpers.getRandomFloat(0, 2), PhysicsConstants.PLATFORM_WIDTH,
                 PhysicsConstants.PLATFORM_HEIGHT));
@@ -190,7 +190,7 @@ public class GameScreen implements Screen {
      * @param obstacle - obstacle to apply fix to
      * @param platform - platform which the obstacle resides on
      */
-    public void fixObstaclePosition(Obstacle obstacle, Platform platform){
+    private void fixObstaclePosition(Obstacle obstacle, Platform platform){
         if (obstacle.getBody().getPosition().x > platform.getBody().getPosition().x + platform.getWidth() / 2){
 
             obstacle.getBody().setTransform(platform.getBody().getPosition().x +
@@ -205,7 +205,7 @@ public class GameScreen implements Screen {
         Add and subtract 5 from those to make sure obstacle is in the bounds of the platform.
      * @return - the X-position for the obstacle
      */
-    public float getObstacleX(){
+    private float getObstacleX(){
 
         int min = (int)(_platforms.get(_platforms.size - 1).getBody().getPosition().x -
                         _platforms.get(_platforms.size - 1).getWidth() / 2) + 5;
@@ -222,7 +222,7 @@ public class GameScreen implements Screen {
      * latest spawned platform
      * @param platform - platform to use for y-positioning
      */
-    public void setEnemyPositionY(Platform platform){
+    private void setEnemyPositionY(Platform platform){
         _enemySpawnY = platform.getBody().getPosition().y + platform.getHeight() / 2 + PhysicsConstants.ENEMY_HEIGHT / 2;
     }
 
@@ -350,7 +350,7 @@ public class GameScreen implements Screen {
      * Advances the physics-world by a fixed timestep
      * @param delta - The time in seconds since the last render.
      */
-    public void doStep(float delta) {
+    private void doStep(float delta) {
 
         // Stepping the physics-simulation, see https://github.com/libgdx/libgdx/wiki/Box2d#stepping-the-simulation
         // fixed time step
@@ -374,7 +374,7 @@ public class GameScreen implements Screen {
      * Destroys the physics-bodies that have gone out of bounds.
      * Removes the gameobj connected to body from it's list as well.
      */
-    public void destroyBodies(){
+    private void destroyBodies(){
 
         GameObject obj;
 
@@ -426,8 +426,6 @@ public class GameScreen implements Screen {
         return _game;
     }
 
-    public float getScore(){
-        return _score;
-    }
+
 
 }

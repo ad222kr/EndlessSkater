@@ -20,7 +20,7 @@ public class Obstacle extends GameObject {
     }
 
     @Override
-    public void initiate(float x, float y, float width, float height) {
+    protected void initiate(float x, float y, float width, float height) {
         float fixedY = y - PhysicsConstants.OBSTACLE_HEIGHT; // else obstacles floats
         setupMembers(x, fixedY, width, height);
         _gameObjectType = GameObjectType.OBSTACLE;

@@ -34,9 +34,9 @@ public abstract class GameObject {
     public GameObject () {}
 
 
-    public abstract void initiate(float x, float y, float width, float height);
+    protected abstract void initiate(float x, float y, float width, float height);
 
-    public void setupMembers(float x, float y, float width, float height){
+    protected void setupMembers(float x, float y, float width, float height){
         _x = x;
         _y = y;
         _width = width;
@@ -56,18 +56,6 @@ public abstract class GameObject {
      */
     public Body getBody(){
         return _body;
-    }
-
-    public void setBody(Body body){
-        _body = body;
-    }
-
-    public World getWorld(){
-        return _world;
-    }
-
-    public void setWorld(World world){
-        _world = world;
     }
 
     public GameObjectType getGameObjectType (){

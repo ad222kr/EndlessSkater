@@ -26,10 +26,8 @@ public class Enemy extends GameObject {
     }
 
 
-
-
     @Override
-    public void initiate(float x, float y, float width, float height) {
+    protected void initiate(float x, float y, float width, float height) {
         setupMembers(x, y, width, height);
         _gameObjectType = GameObjectType.ENEMY;
         _enemyType = EnemyType.getRandomValue();
