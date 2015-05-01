@@ -8,6 +8,7 @@ import com.alexd.projectgame.helpers.Renderer;
 import com.alexd.projectgame.gameobjects.*;
 import com.alexd.projectgame.handlers.ContactHandler;
 import com.alexd.projectgame.handlers.GameInputHandler;
+import com.alexd.projectgame.stages.gamehud.GameHudStage;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
@@ -18,13 +19,12 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.*;
 
-
-import java.util.Random;
-
 /**
  * Created by Alex on 2015-04-07.
  */
 public class GameScreen implements Screen {
+
+    private boolean isDebug = true; // Set to false to hide debugrender
     /**
      * Constants
      */
@@ -55,6 +55,7 @@ public class GameScreen implements Screen {
     private Viewport _viewport;
     private Box2DDebugRenderer _debugRenderer;
     private Renderer _renderer;
+    private GameHudStage _gameHudStage;
 
     // Misc
     private GameState _gameState;
@@ -74,10 +75,7 @@ public class GameScreen implements Screen {
         setUpRunnerAndWorld();
         setupCamera();
         setUpHandlers();
-
         initiate();
-        fpsLogger = new FPSLogger();
-
     }
 
     public GameScreen(){
@@ -121,7 +119,10 @@ public class GameScreen implements Screen {
      */
     public void setUpRendering(){
         _renderer = new Renderer(this);
-        _debugRenderer = new Box2DDebugRenderer();
+        _gameHudStage = new GameHudStage(new StretchViewport(TheGame.APP_WIDTH, TheGame.APP_WIDTH), this);
+        if (isDebug){
+            _debugRenderer = new Box2DDebugRenderer();
+        }
     }
 
     /**
@@ -176,7 +177,7 @@ public class GameScreen implements Screen {
                 PhysicsConstants.PLATFORM_HEIGHT));
 
         setEnemyPositionY(_platforms.get(_platforms.size - 1));
-        if (Helpers.getRandomInt(0, 1) <= 1){
+        if (Helpers.getRandomInt(0, 5) <= 1){
             spawnObstacle();
         }
 
@@ -244,8 +245,7 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(1, 1, 0.5f, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        //Gdx.app.log("Mem usage", "" + ((Gdx.app.getJavaHeap() + Gdx.app.getNativeHeap()) / 1000000));
-        fpsLogger.log();
+        Gdx.app.log("Mem usage", "" + ((Gdx.app.getJavaHeap() + Gdx.app.getNativeHeap()) / 1000000));
         switch (_gameState){
             case RUNNING:
 
@@ -266,6 +266,8 @@ public class GameScreen implements Screen {
                 }
 
                 _renderer.render(_camera.combined, delta);
+                _gameHudStage.act(delta);
+                _gameHudStage.draw();
                 _debugRenderer.render(_world, _camera.combined);
 
                 destroyBodies();
@@ -340,6 +342,7 @@ public class GameScreen implements Screen {
         _world.dispose();
         _renderer.dispose();
         _debugRenderer.dispose();
+        _gameHudStage.dispose();
 
     }
 

@@ -18,10 +18,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 public class Renderer implements Disposable{
 
     private SpriteBatch _batch;
-    private BitmapFont _font;
     private GameScreen _screen;
-
-
     private Animation _animation;
     private AtlasRegion _enemyRegion;
     private AtlasRegion _obstacleRegion;
@@ -30,8 +27,6 @@ public class Renderer implements Disposable{
 
     public Renderer(GameScreen screen){
         _batch = new SpriteBatch();
-        _font = new BitmapFont();
-        _font.setColor(Color.RED);
         _screen = screen;
 
         // Animation with textureatlas test
@@ -44,8 +39,6 @@ public class Renderer implements Disposable{
 
     public void render(Matrix4 projectionMatrix, float delta){
         _batch.setProjectionMatrix(projectionMatrix);
-
-        _font.setScale(0.2f, 0.2f);
 
         _animationElapsed += delta;
 
@@ -66,17 +59,12 @@ public class Renderer implements Disposable{
                     obstacle.getBody().getWorldCenter().y - obstacle.getHeight() / 2, obstacle.getWidth(), obstacle.getHeight());
         }
 
-
-        _font.draw(_batch, ""+(int)Math.floor(_screen.getScore()), 1, 13);
-        _font.draw(_batch, "" + _screen.getRunner().getHealth(), 20, 13);
-
         _batch.end();
 
     }
 
     public void dispose(){
         _batch.dispose();
-        _font.dispose();
     }
 
 

@@ -16,7 +16,7 @@ import com.badlogic.gdx.physics.box2d.World;
 public class Runner extends GameObject {
     /* CONSTANTS */
 
-    public static final int MAX_HEALTH = 1000;
+    public static final int MAX_HEALTH = 5;
 
     private int _health;
     private boolean _isJumping;

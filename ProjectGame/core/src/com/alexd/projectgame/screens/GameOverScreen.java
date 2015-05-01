@@ -24,6 +24,7 @@ public class GameOverScreen implements Screen, InputProcessor {
         _batch = new SpriteBatch();
         _font = new BitmapFont();
         _font.setColor(Color.RED);
+        _game.setScreen(new GameScreen(_game));
     }
 
     @Override
