@@ -57,7 +57,7 @@ public class Health extends Actor {
 
     public void draw(Batch batch, float parentAlpha){
         super.draw(batch, parentAlpha);
-        float x = 10;
+        float x = 30;
 
         for (boolean isFilled : _health){
             if (isFilled){

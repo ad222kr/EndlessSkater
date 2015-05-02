@@ -1,6 +1,7 @@
 package com.alexd.projectgame.helpers;
 
 import com.alexd.projectgame.TheGame;
+import com.alexd.projectgame.enums.GameState;
 import com.alexd.projectgame.gameobjects.Enemy;
 import com.alexd.projectgame.gameobjects.Obstacle;
 import com.alexd.projectgame.screens.GameScreen;
@@ -40,7 +41,10 @@ public class Renderer implements Disposable{
     public void render(Matrix4 projectionMatrix, float delta){
         _batch.setProjectionMatrix(projectionMatrix);
 
-        _animationElapsed += delta;
+        if (_screen.getGameState() == GameState.RUNNING){
+            _animationElapsed += delta;
+        }
+
 
         float x = (_screen.getRunner().getBody().getWorldCenter().x - _screen.getRunner().getWidth() / 2);
         float y = (_screen.getRunner().getBody().getWorldCenter().y - _screen.getRunner().getHeight() / 2);

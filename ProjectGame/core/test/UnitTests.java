@@ -16,29 +16,6 @@ import static org.junit.Assert.assertTrue;
 
 public class UnitTests {
 
-    /**
-     * Test of abstract class GameObject's methods
-     */
-
-    @Test
-    public void testIsExpectedType(){
-        // Setup
-
-        GameObject gameObject = new GameObject() {
-            @Override
-            public void initiate(float x, float y, float width, float height) {
-                _gameObjectType = GameObjectType.ENEMY;
-            }
-        };
-        gameObject.initiate(0,0,0,0);
-
-
-        // act
-        boolean isRightType = gameObject.isExpectedType(GameObjectType.ENEMY);
-
-        assertTrue("Should be true!", isRightType);
-
-    }
 
     /**
      * Test of class Runner

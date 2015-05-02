@@ -62,6 +62,10 @@ public abstract class GameObject {
         return _gameObjectType;
     }
 
+    public void setGameObjectType(GameObjectType value){
+        _gameObjectType = value;
+    }
+
     public float getX(){
         return _x;
     }

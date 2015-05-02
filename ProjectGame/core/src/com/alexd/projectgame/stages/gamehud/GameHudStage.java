@@ -19,7 +19,7 @@ public class GameHudStage extends Stage {
     private Health _health;
 
 
-    public GameHudStage(Viewport viewport, GameScreen screen){
+    public GameHudStage(GameScreen screen){
         super(new StretchViewport(TheGame.APP_WIDTH, TheGame.APP_HEIGHT, new OrthographicCamera(TheGame.APP_WIDTH, TheGame.APP_HEIGHT)));
         _screen = screen;
 
@@ -29,6 +29,18 @@ public class GameHudStage extends Stage {
         addActor(_score);
         addActor(_health);
     }
+
+    @Override
+    public void draw(){
+        super.draw();
+
+    }
+
+    @Override
+    public void act(float delta){
+        super.act(delta);
+    }
+
 
 
 
