@@ -4,35 +4,70 @@ filter: Linear,Linear
 repeat: none
 enemy
   rotate: false
-  xy: 2, 2
+  xy: 734, 2
   size: 72, 101
   orig: 72, 102
   offset: 0, 0
   index: -1
+heart-depleted
+  rotate: false
+  xy: 1056, 39
+  size: 72, 59
+  orig: 74, 60
+  offset: 1, 0
+  index: -1
+heart-filled
+  rotate: false
+  xy: 1130, 39
+  size: 72, 59
+  orig: 74, 60
+  offset: 1, 0
+  index: -1
 obstacle
   rotate: false
-  xy: 76, 2
+  xy: 1056, 2
   size: 123, 35
   orig: 124, 37
   offset: 0, 1
   index: -1
-sprite
+pause-button
   rotate: false
-  xy: 201, 2
+  xy: 910, 2
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: -1
+play-button
+  rotate: false
+  xy: 2, 2
+  size: 364, 106
+  orig: 364, 106
+  offset: 0, 0
+  index: -1
+resume-button
+  rotate: false
+  xy: 368, 2
+  size: 364, 106
+  orig: 364, 106
+  offset: 0, 0
+  index: -1
+runner
+  rotate: false
+  xy: 808, 2
   size: 52, 101
   orig: 52, 101
   offset: 0, 0
   index: -1
-sprite
+runner
   rotate: false
-  xy: 255, 2
+  xy: 862, 2
   size: 46, 96
   orig: 46, 96
   offset: 0, 0
   index: -1
-sprite
+runner
   rotate: false
-  xy: 303, 2
+  xy: 1002, 2
   size: 52, 90
   orig: 52, 90
   offset: 0, 0

@@ -16,7 +16,7 @@ import java.util.SplittableRandom;
  */
 public class AssetsManager {
 
-    private static final String ATLAS_PATH = "spritesheet.txt";
+    private static final String ATLAS_PATH = "testatlas.txt";
     private static final String RUNNER_ANIMATION_NAME = "runner";
     private static final String ENEMY_NAME = "enemy";
     private static final String OBSTACLE_NAME = "obstacle";
@@ -50,6 +50,11 @@ public class AssetsManager {
         // Hearts for health
         _atlasRegionMap.put(HEART_DEPLETED_NAME, _atlas.findRegion(HEART_DEPLETED_NAME));
         _atlasRegionMap.put(HEART_FILLED_NAME, _atlas.findRegion(HEART_FILLED_NAME));
+
+        // Buttons
+        _atlasRegionMap.put("play-button", _atlas.findRegion("play-button"));
+
+
     }
 
     public static void dispose() {

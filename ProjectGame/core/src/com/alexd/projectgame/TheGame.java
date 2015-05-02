@@ -3,6 +3,7 @@ package com.alexd.projectgame;
 
 import com.alexd.projectgame.helpers.AssetsManager;
 import com.alexd.projectgame.screens.GameScreen;
+import com.alexd.projectgame.screens.MainMenuScreen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 
@@ -27,7 +28,7 @@ public class TheGame extends Game {
 		Gdx.graphics.setVSync(true);
 		AssetsManager.initiate();
 
-		setScreen(new GameScreen(this));
+		setScreen(new MainMenuScreen(this));
 
 	}
 

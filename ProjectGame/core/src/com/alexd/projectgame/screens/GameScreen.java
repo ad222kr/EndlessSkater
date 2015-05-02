@@ -10,7 +10,6 @@ import com.alexd.projectgame.handlers.ContactHandler;
 import com.alexd.projectgame.handlers.GameInputHandler;
 import com.alexd.projectgame.stages.gamehud.GameHudStage;
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
@@ -32,7 +31,9 @@ public class GameScreen implements Screen {
     private final int VIEWPORT_HEIGHT = Helpers.convertToMeters(TheGame.APP_HEIGHT);
     private final int TIME_BETWEEN_PLATFORMS = 7;
     private final Vector2 WORLD_GRAVITY = new Vector2(0, -10);
-    private final float TIME_STEP = 1f / 60f;
+    private final float TIME_STEP = 1f / 300;
+
+
 
     /**
      * Members
@@ -45,6 +46,7 @@ public class GameScreen implements Screen {
     private Array<Platform> _platforms;
     private Array<Enemy> _enemies;
     private Array<Body> _bodies;
+    private float accumulator = 0;
 
     // Cam & rendering
     private OrthographicCamera _camera;
@@ -121,7 +123,7 @@ public class GameScreen implements Screen {
      * Sets up the camera and the viewport
      */
     private void setupCamera(){
-        _camera = new OrthographicCamera(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+        _camera = new OrthographicCamera();
         _viewport = new StretchViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, _camera);
 
         _viewport.apply();
@@ -239,11 +241,32 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 1, 0.5f, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        doStep(delta);
 
         //Gdx.app.log("Mem usage", "" + ((Gdx.app.getJavaHeap() + Gdx.app.getNativeHeap()) / 1000000));
         switch (_gameState){
             case RUNNING:
-                update(delta);
+                _timeSinceLastPlatform += delta;
+                if (isTimeForEnemySpawn()){
+                    spawnEnemy();
+
+                }
+                if(isTimeForPlatformSpawn()){
+                    spawnPlatform();
+                    _timeSinceLastPlatform = 0;
+                }
+                if(isGameOver()){
+                    _game.setScreen(new MainMenuScreen(_game));
+                    return;
+                }
+                destroyBodies();
+                _gameHudStage.act(delta);
+
+                _renderer.render(_camera.combined, delta);
+                _gameHudStage.draw();
+                if (isDebug ){
+                    _debugRenderer.render(_world, _camera.combined);
+                }
 
                 break;
             case PAUSED:
@@ -251,33 +274,46 @@ public class GameScreen implements Screen {
                 break;
         }
 
-        draw(delta);
+
+    }
+
+    private void doStep(float delta) {
+
+        /*float frameTime = Math.min(delta, 0.25f);
+        accumulator += frameTime;
+        while (accumulator >= TIME_STEP){
+            _world.step(TIME_STEP, 6, 2);
+        accumulator -= TIME_STEP;
+        }
+
+        interpolate(accumulator / TIME_STEP);*/
+
+        accumulator += delta;
+        while (accumulator >= TIME_STEP * 2){
+            _world.step(TIME_STEP, 6, 2);
+            accumulator -= TIME_STEP;
+        }
+        _world.step(accumulator, 6, 2);
+        accumulator = 0;
+    }
+
+    private void interpolate(float alpha){
+        for (Body body : _bodies){
+            Transform transform = body.getTransform();
+            Vector2 bodyPosition = transform.getPosition();
+
+        }
     }
 
     public void draw(float delta){
-        _renderer.render(_camera.combined, delta);
-        _gameHudStage.draw();
-        _debugRenderer.render(_world, _camera.combined);
+
     }
 
     public void update(float delta){
-        _timeSinceLastPlatform += delta;
-        if (isTimeForEnemySpawn()){
-            spawnEnemy();
 
-        }
-        if(isTimeForPlatformSpawn()){
-            spawnPlatform();
-            _timeSinceLastPlatform = 0;
-        }
-        if(isGameOver()){
-            _game.setScreen(new GameOverScreen(_game));
-            return;
-        }
 
-        destroyBodies();
-        _gameHudStage.act(delta);
-        _world.step(TIME_STEP, 6, 2);
+
+        draw(delta);
     }
 
     private boolean isGameOver() {
@@ -342,7 +378,10 @@ public class GameScreen implements Screen {
     public void dispose() {
         _world.dispose();
         _renderer.dispose();
-        _debugRenderer.dispose();
+        if (isDebug){
+            _debugRenderer.dispose();
+        }
+
         _gameHudStage.dispose();
     }
 

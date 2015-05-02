@@ -1,11 +1,14 @@
 package com.alexd.projectgame.stages.gamehud;
 
 import com.alexd.projectgame.TheGame;
+import com.alexd.projectgame.helpers.AssetsManager;
 import com.alexd.projectgame.screens.GameScreen;
 import com.alexd.projectgame.stages.gamehud.actors.Health;
 import com.alexd.projectgame.stages.gamehud.actors.Score;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -28,6 +31,8 @@ public class GameHudStage extends Stage {
 
         addActor(_score);
         addActor(_health);
+
+
     }
 
     @Override
