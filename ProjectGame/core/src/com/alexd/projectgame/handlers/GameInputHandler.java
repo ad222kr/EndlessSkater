@@ -1,6 +1,8 @@
 package com.alexd.projectgame.handlers;
 
+import com.alexd.projectgame.enums.GameState;
 import com.alexd.projectgame.gameobjects.Runner;
+import com.alexd.projectgame.screens.GameScreen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -16,16 +18,18 @@ import java.security.Key;
 public class GameInputHandler implements InputProcessor {
 
     private Runner _runner;
+    private GameStateHandler _gsh;
 
 
-    public GameInputHandler(Runner runner){
+    public GameInputHandler(Runner runner, GameStateHandler gsh){
         _runner = runner;
+        _gsh = gsh;
     }
 
     @Override
     public boolean keyDown(int keycode) {
 
-        if (keycode == Input.Keys.SPACE){
+        if (keycode == Input.Keys.SPACE && _gsh.getState() == GameState.RUNNING){
             _runner.jump();
         }
 
@@ -44,7 +48,10 @@ public class GameInputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        _runner.jump();
+        if (_gsh.getState() == GameState.RUNNING){
+            _runner.jump();
+
+        }
         return true;
     }
 

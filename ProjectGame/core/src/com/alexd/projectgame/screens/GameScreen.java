@@ -2,6 +2,7 @@ package com.alexd.projectgame.screens;
 
 import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.enums.GameState;
+import com.alexd.projectgame.handlers.GameStateHandler;
 import com.alexd.projectgame.helpers.Helpers;
 import com.alexd.projectgame.helpers.PhysicsConstants;
 import com.alexd.projectgame.helpers.Renderer;
@@ -24,21 +25,15 @@ import com.badlogic.gdx.utils.viewport.*;
 public class GameScreen implements Screen {
 
     private boolean isDebug = true; // Set to false to hide debugrender
-    /**
-     * Constants
-     */
+
     private final int VIEWPORT_WIDTH = Helpers.convertToMeters(TheGame.APP_WIDTH);
     private final int VIEWPORT_HEIGHT = Helpers.convertToMeters(TheGame.APP_HEIGHT);
     private final int TIME_BETWEEN_PLATFORMS = 7;
     private final Vector2 WORLD_GRAVITY = new Vector2(0, -10);
+
     private final float TIME_STEP = 1f / 300;
+    private float accumulator = 0;
 
-
-
-    /**
-     * Members
-     */
-    // Physics
     private Game _game;
     private World _world;
     private Runner _runner;
@@ -46,41 +41,33 @@ public class GameScreen implements Screen {
     private Array<Platform> _platforms;
     private Array<Enemy> _enemies;
     private Array<Body> _bodies;
-    private float accumulator = 0;
 
-    // Cam & rendering
+
     private OrthographicCamera _camera;
     private Viewport _viewport;
     private Box2DDebugRenderer _debugRenderer;
     private Renderer _renderer;
     private GameHudStage _gameHudStage;
 
-    // Misc
-    private GameState _gameState;
-    private long _lastEnemySpawnTime;
+    private GameStateHandler _gsh;
+    private float _lastEnemySpawnTime;
     private float _timeSinceLastPlatform;
-    private float _randomNumber;
+    private float _timeBetweenEnemies;
     private float _enemySpawnY;
-    private float _score;
 
-    /**
-     * Constructors
-     * @param game - Instance of the TheGame class
-     */
     public GameScreen(Game game) {
         _game = game;
-
-        setUpRunnerAndWorld();
+        _gsh = new GameStateHandler();
+        setupPhysics();
+        setupRunner();
         setupCamera();
-        setUpHandlers();
+        _gameHudStage = new GameHudStage(this, _gsh);
+        setupHandlers();
         initiate();
     }
 
-    /**
-     * Initiates the game. Spawns the first platforms and enemy
-     */
     private void initiate(){
-        _gameState = GameState.RUNNING;
+        _gsh.setState(GameState.RUNNING);
         _platforms = new Array<Platform>(4);
         _enemies = new Array<Enemy>(4);
         _obstacles = new Array<Obstacle>(4);
@@ -90,40 +77,37 @@ public class GameScreen implements Screen {
         spawnEnemy();
     }
 
-    /**
-     * Creates a physics-world and the runner.
-     */
-    private void setUpRunnerAndWorld(){
-        _world = new World(WORLD_GRAVITY, true);
+    public void setupRunner(){
         _runner = new Runner(_world, PhysicsConstants.RUNNER_X, PhysicsConstants.RUNNER_Y,
-                PhysicsConstants.RUNNER_WIDTH, PhysicsConstants.RUNNER_HEIGHT);
+                             PhysicsConstants.RUNNER_WIDTH, PhysicsConstants.RUNNER_HEIGHT);
+    }
+
+    private void setupPhysics(){
+        _world = new World(WORLD_GRAVITY, true);
         _bodies = new Array<Body>();
     }
 
-    /**
-     * Sets up the handles for contact and input
-     */
-    private void setUpHandlers(){
-        Gdx.input.setInputProcessor(new GameInputHandler(_runner));
+    private void setupHandlers(){
+        InputProcessor gameInputProcessor = new GameInputHandler(_runner, _gsh);
+        InputMultiplexer inputMultiplexer = new InputMultiplexer();
+        inputMultiplexer.addProcessor(_gameHudStage);
+        inputMultiplexer.addProcessor(gameInputProcessor);
+
+        Gdx.input.setInputProcessor(inputMultiplexer);
         _world.setContactListener(new ContactHandler(_runner));
     }
 
-    /**
-     * Sets up rendering
-     */
     private void setUpRendering(){
-        _renderer = new Renderer(this);
-        _gameHudStage = new GameHudStage(this);
+        _renderer = new Renderer(this, _gsh);
+
         if (isDebug){
             _debugRenderer = new Box2DDebugRenderer();
         }
     }
 
-    /**
-     * Sets up the camera and the viewport
-     */
     private void setupCamera(){
         _camera = new OrthographicCamera();
+        // viewport to support multiple screen sizes
         _viewport = new StretchViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, _camera);
 
         _viewport.apply();
@@ -132,77 +116,35 @@ public class GameScreen implements Screen {
 
     }
 
-
-    /**
-     * Spawns an enemy
-     */
     private void spawnEnemy(){
-        _lastEnemySpawnTime = TimeUtils.nanoTime();
-        _randomNumber = Helpers.getRandomFloat(2, 5);
+        _timeBetweenEnemies = Helpers.getRandomFloat(2, 5);
 
         _enemies.add(new Enemy(_world, PhysicsConstants.ENEMY_X, _enemySpawnY,
                 PhysicsConstants.ENEMY_WIDTH, PhysicsConstants.ENEMY_HEIGHT));
-
-
     }
 
-    /**
-     * Spawns an obstacle
-     */
     private void spawnObstacle(){
-        _lastEnemySpawnTime = TimeUtils.nanoTime();
-        _randomNumber = Helpers.getRandomFloat(2, 5);
         float x = getObstacleX();
 
-        Obstacle obstacle = new Obstacle(_world, x, _enemySpawnY,
-                            PhysicsConstants.OBSTACLE_WIDTH, PhysicsConstants.OBSTACLE_HEIGHT);
-        Platform platform = _platforms.get(_platforms.size - 1);
-
-        fixObstaclePosition(obstacle, platform);
-
-        _obstacles.add(obstacle);
+        _obstacles.add(new Obstacle(_world, x, _enemySpawnY, PhysicsConstants.OBSTACLE_WIDTH,
+                       PhysicsConstants.OBSTACLE_HEIGHT));
     }
 
-    /**
-     * Spawns a platform.
-     */
     private void spawnPlatform(){
 
         _platforms.add(new Platform(_world, 42, Helpers.getRandomFloat(0, 2), PhysicsConstants.PLATFORM_WIDTH,
                 PhysicsConstants.PLATFORM_HEIGHT));
 
         setEnemyPositionY(_platforms.get(_platforms.size - 1));
-        if (Helpers.getRandomInt(0, 5) <= 1){
+        if (Helpers.getRandomInt(0, 1) <= 1){
             spawnObstacle();
         }
 
     }
 
-    /**
-     * Fixes the obstacle position. In other words, makes sure that it's
-     * withing the bounds of the platform it's on, preventing floating
-     * obstacles.
-     * @param obstacle - obstacle to apply fix to
-     * @param platform - platform which the obstacle resides on
-     */
-    private void fixObstaclePosition(Obstacle obstacle, Platform platform){
-        if (obstacle.getBody().getPosition().x >
-            platform.getBody().getPosition().x + platform.getWidth() / 2){
-
-            obstacle.getBody().setTransform(platform.getBody().getPosition().x +
-                    platform.getWidth() / 2 - obstacle.getWidth(), obstacle.getY(), 0);
-        }
-    }
-
-
-
-    /**
-     *  Gets a random number between the last spawned platforms left X and right X coordinates.
-        Add and subtract 5 from those to make sure obstacle is in the bounds of the platform.
-     * @return - the X-position for the obstacle
-     */
     private float getObstacleX(){
-
+        // Helper for calculating obstacles X-pos to keep it inside the bounds of the
+        // platform it resides on, otherwise it could be floating in the air
         int min = (int)(_platforms.get(_platforms.size - 1).getBody().getPosition().x -
                         _platforms.get(_platforms.size - 1).getWidth() / 2) + 5;
         int max = (int)(_platforms.get(_platforms.size - 1).getBody().getPosition().x +
@@ -213,43 +155,34 @@ public class GameScreen implements Screen {
 
     }
 
-    /**
-     * Sets the y-position for enemies & obstacles according to the
-     * latest spawned platform
-     * @param platform - platform to use for y-positioning
-     */
     private void setEnemyPositionY(Platform platform){
+        // Helper for calculating the right Y-position for the enemies/obstacles
+        // otherwise they are floating (at least obstacles since they are kinematic)
         _enemySpawnY = platform.getBody().getPosition().y +
                        platform.getHeight() / 2 + PhysicsConstants.ENEMY_HEIGHT / 2;
     }
 
-    /**
-     * Called when the screen is first shown, set's up rendering
-     */
     @Override
     public void show() {
         setUpRendering();
     }
 
-    /**
-     * The main "game-loop". Called every .25 seconds (i think)
-     * All rendering and logig-method calls happens here. This method
-     * also calls the doStep method
-     * @param delta - The time in seconds since the last render.
-     */
     @Override
     public void render(float delta) {
+        // Main game loop
         Gdx.gl.glClearColor(1, 1, 0.5f, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        doStep(delta);
+
 
         //Gdx.app.log("Mem usage", "" + ((Gdx.app.getJavaHeap() + Gdx.app.getNativeHeap()) / 1000000));
-        switch (_gameState){
+        switch (_gsh.getState()){
             case RUNNING:
                 _timeSinceLastPlatform += delta;
+                _lastEnemySpawnTime += delta;
+
                 if (isTimeForEnemySpawn()){
                     spawnEnemy();
-
+                    _lastEnemySpawnTime = 0;
                 }
                 if(isTimeForPlatformSpawn()){
                     spawnPlatform();
@@ -261,59 +194,42 @@ public class GameScreen implements Screen {
                 }
                 destroyBodies();
                 _gameHudStage.act(delta);
-
-                _renderer.render(_camera.combined, delta);
-                _gameHudStage.draw();
-                if (isDebug ){
-                    _debugRenderer.render(_world, _camera.combined);
-                }
-
+                doStep(delta);
                 break;
             case PAUSED:
                 // Pause menu logic and rendering here
                 break;
         }
 
+        _renderer.render(_camera.combined, delta);
+        _gameHudStage.draw();
+        if (isDebug ){
+            _debugRenderer.render(_world, _camera.combined);
+        }
 
+        draw(delta);
     }
 
     private void doStep(float delta) {
-
-        /*float frameTime = Math.min(delta, 0.25f);
-        accumulator += frameTime;
-        while (accumulator >= TIME_STEP){
-            _world.step(TIME_STEP, 6, 2);
-        accumulator -= TIME_STEP;
-        }
-
-        interpolate(accumulator / TIME_STEP);*/
+        // Advances the physics world by a fixed timestep
 
         accumulator += delta;
         while (accumulator >= TIME_STEP * 2){
             _world.step(TIME_STEP, 6, 2);
             accumulator -= TIME_STEP;
         }
+        // Step it again with whats left of the accumulator, this prevents
+        // the stuttering
         _world.step(accumulator, 6, 2);
         accumulator = 0;
     }
 
-    private void interpolate(float alpha){
-        for (Body body : _bodies){
-            Transform transform = body.getTransform();
-            Vector2 bodyPosition = transform.getPosition();
-
+    private void draw(float delta){
+        _renderer.render(_camera.combined, delta);
+        _gameHudStage.draw();
+        if (isDebug ){
+            _debugRenderer.render(_world, _camera.combined);
         }
-    }
-
-    public void draw(float delta){
-
-    }
-
-    public void update(float delta){
-
-
-
-        draw(delta);
     }
 
     private boolean isGameOver() {
@@ -325,15 +241,9 @@ public class GameScreen implements Screen {
     }
 
     private boolean isTimeForEnemySpawn() {
-        return (TimeUtils.nanoTime() - _lastEnemySpawnTime) / 1000000000 > _randomNumber;
+        return _lastEnemySpawnTime > _timeBetweenEnemies;
     }
 
-    /**
-     * Called when the window is resized, updates the viewport
-     * and set's camera position according to that
-     * @param width - the new width
-     * @param height - the new height
-     */
     @Override
     public void resize(int width, int height) {
         _gameHudStage.getViewport().update(width, height, true); // True sets (0, 0) in bottom left corner.
@@ -341,41 +251,26 @@ public class GameScreen implements Screen {
         _camera.position.set(_camera.viewportWidth / 2, _camera.viewportHeight / 2, 0);
     }
 
-    /**
-     * Called when the application is paused
-     * (home-button pressed in android etc)
-     */
     @Override
     public void pause() {
-        _gameState = GameState.PAUSED;
+        _gsh.setState(GameState.PAUSED);
     }
 
-    /**
-     * Called when the application is resumed
-     */
     @Override
     public void resume() {
-        //TODO: Recreate from states here?
-        _gameState = GameState.RUNNING;
+
 
     }
 
-    /**
-     * Called when the Screen is destroyed. Important
-     * to clean up resources here
-     */
     @Override
     public void hide() {
         dispose();
     }
 
 
-    /**
-     * This is NOT called automatically. Clean up of
-     * resources that the GC won't handle
-     */
     @Override
     public void dispose() {
+        // cleans up resources not handled by the GC
         _world.dispose();
         _renderer.dispose();
         if (isDebug){
@@ -385,10 +280,6 @@ public class GameScreen implements Screen {
         _gameHudStage.dispose();
     }
 
-    /**
-     * Destroys the physics-bodies that have gone out of bounds.
-     * Removes the gameobj connected to body from it's list as well.
-     */
     private void destroyBodies(){
         _world.getBodies(_bodies);
 
@@ -400,25 +291,17 @@ public class GameScreen implements Screen {
         }
     }
 
-    /**
-     * Removes a gameobject from it's associated Array
-     * @param object - to be removed
-     */
     private void removeValueFromGameObjArray(GameObject object){
         switch (object.getGameObjectType()){
             case  ENEMY:
                 _enemies.removeValue((Enemy)object, false);
-                Gdx.app.log("Enemy: ", "removed");
                 break;
             case OBSTACLE:
                 _obstacles.removeValue((Obstacle)object, false);
-                Gdx.app.log("Obstacle: ", "removed");
                 break;
             case GROUND:
                 _platforms.removeValue((Platform)object, false);
-                Gdx.app.log("Platform: ", "removed");
                 break;
-
         }
     }
 
@@ -446,11 +329,6 @@ public class GameScreen implements Screen {
     public Game getGame(){
         return _game;
     }
-
-    public GameState getGameState(){
-        return _gameState;
-    }
-
 
 
 }

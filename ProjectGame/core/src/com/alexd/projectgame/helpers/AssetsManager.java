@@ -53,6 +53,7 @@ public class AssetsManager {
 
         // Buttons
         _atlasRegionMap.put("play-button", _atlas.findRegion("play-button"));
+        _atlasRegionMap.put("pause-button", _atlas.findRegion("pause-button"));
 
 
     }

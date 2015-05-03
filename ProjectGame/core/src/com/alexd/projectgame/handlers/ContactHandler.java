@@ -24,7 +24,6 @@ public class ContactHandler implements ContactListener {
 
         if (checkTypes(objA, objB, GameObjectType.RUNNER, GameObjectType.GROUND)){
             _runner.landed();
-            Gdx.app.log("Runner: ", "LANDED");
         }
 
         if (checkTypes(objA, objB, GameObjectType.ENEMY, GameObjectType.RUNNER) ||

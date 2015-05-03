@@ -4,6 +4,7 @@ import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.enums.GameState;
 import com.alexd.projectgame.gameobjects.Enemy;
 import com.alexd.projectgame.gameobjects.Obstacle;
+import com.alexd.projectgame.handlers.GameStateHandler;
 import com.alexd.projectgame.screens.GameScreen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
@@ -20,15 +21,18 @@ public class Renderer implements Disposable{
 
     private SpriteBatch _batch;
     private GameScreen _screen;
+    private GameStateHandler _gsh;
     private Animation _animation;
     private AtlasRegion _enemyRegion;
     private AtlasRegion _obstacleRegion;
     private float _animationElapsed = 0f;
 
 
-    public Renderer(GameScreen screen){
+    public Renderer(GameScreen screen, GameStateHandler gsh){
         _batch = new SpriteBatch();
         _screen = screen;
+        _gsh = gsh;
+
 
         // Animation with textureatlas test
         _animation = AssetsManager.getAnimation("runner");
@@ -41,8 +45,8 @@ public class Renderer implements Disposable{
     public void render(Matrix4 projectionMatrix, float delta){
         _batch.setProjectionMatrix(projectionMatrix);
 
-        if (_screen.getGameState() == GameState.RUNNING){
-            _animationElapsed += delta;
+        if (_gsh.getState() == GameState.RUNNING){
+            _animationElapsed += delta / 10;
         }
 
 
