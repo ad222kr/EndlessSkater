@@ -39,23 +39,32 @@ public class AssetsManager {
 
     public static void loadAssets(){
         // Runner animation
-        _animationMap.put(RUNNER_ANIMATION_NAME, new Animation(1/15f, _atlas.findRegions(RUNNER_ANIMATION_NAME)));
+
+        loadAnimation(1/15f, RUNNER_ANIMATION_NAME);
 
         // Enemy sprite
-        _atlasRegionMap.put(ENEMY_NAME, _atlas.findRegion(ENEMY_NAME));
+        loadTexture(ENEMY_NAME);
 
         // Obstacle
-        _atlasRegionMap.put(OBSTACLE_NAME, _atlas.findRegion(OBSTACLE_NAME));
+        loadTexture(OBSTACLE_NAME);
 
         // Hearts for health
-        _atlasRegionMap.put(HEART_DEPLETED_NAME, _atlas.findRegion(HEART_DEPLETED_NAME));
-        _atlasRegionMap.put(HEART_FILLED_NAME, _atlas.findRegion(HEART_FILLED_NAME));
+        loadTexture(HEART_DEPLETED_NAME);
+        loadTexture(HEART_FILLED_NAME);
 
         // Buttons
-        _atlasRegionMap.put("play-button", _atlas.findRegion("play-button"));
-        _atlasRegionMap.put("pause-button", _atlas.findRegion("pause-button"));
+        loadTexture("play-button");
+        loadTexture("pause-button");
 
 
+    }
+
+    private static void loadAnimation(float animationStep, String key){
+        _animationMap.put(key, new Animation(animationStep, _atlas.findRegions(key)));
+    }
+
+    private static void loadTexture(String key){
+        _atlasRegionMap.put(key, _atlas.findRegion(key));
     }
 
     public static void dispose() {

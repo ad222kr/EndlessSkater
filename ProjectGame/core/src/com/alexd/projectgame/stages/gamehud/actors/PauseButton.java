@@ -27,8 +27,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
  */
 public class PauseButton extends Button {
     private final int Y = 650;
-    private final int X = 30;
-    private final int WIDTH = 40;
+    private final int X = 20;
+    private final int WIDTH = 64;
     private final int HEIGHT = WIDTH;
 
     private AtlasRegion _pauseTexture;

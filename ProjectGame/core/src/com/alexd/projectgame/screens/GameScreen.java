@@ -77,7 +77,7 @@ public class GameScreen implements Screen {
         spawnEnemy();
     }
 
-    public void setupRunner(){
+    private void setupRunner(){
         _runner = new Runner(_world, PhysicsConstants.RUNNER_X, PhysicsConstants.RUNNER_Y,
                              PhysicsConstants.RUNNER_WIDTH, PhysicsConstants.RUNNER_HEIGHT);
     }
@@ -136,7 +136,7 @@ public class GameScreen implements Screen {
                 PhysicsConstants.PLATFORM_HEIGHT));
 
         setEnemyPositionY(_platforms.get(_platforms.size - 1));
-        if (Helpers.getRandomInt(0, 1) <= 1){
+        if (Helpers.getRandomInt(0, 5) <= 1){
             spawnObstacle();
         }
 
