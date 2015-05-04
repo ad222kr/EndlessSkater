@@ -1,22 +1,14 @@
-package com.alexd.projectgame.stages.gamehud;
+package com.alexd.projectgame.gameinterface.gamehud;
 
 import com.alexd.projectgame.TheGame;
-import com.alexd.projectgame.enums.GameState;
 import com.alexd.projectgame.handlers.GameStateHandler;
-import com.alexd.projectgame.helpers.AssetsManager;
 import com.alexd.projectgame.screens.GameScreen;
-import com.alexd.projectgame.stages.gamehud.actors.Health;
-import com.alexd.projectgame.stages.gamehud.actors.PauseButton;
-import com.alexd.projectgame.stages.gamehud.actors.Score;
-import com.badlogic.gdx.Gdx;
+import com.alexd.projectgame.gameinterface.gamehud.actors.Health;
+import com.alexd.projectgame.gameinterface.gamehud.actors.PauseButton;
+import com.alexd.projectgame.gameinterface.gamehud.actors.Score;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
  * Created by Alex on 2015-05-01.

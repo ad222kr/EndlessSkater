@@ -9,14 +9,13 @@ import com.alexd.projectgame.helpers.Renderer;
 import com.alexd.projectgame.gameobjects.*;
 import com.alexd.projectgame.handlers.ContactHandler;
 import com.alexd.projectgame.handlers.GameInputHandler;
-import com.alexd.projectgame.stages.gamehud.GameHudStage;
+import com.alexd.projectgame.gameinterface.gamehud.GameHudStage;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.*;
 
 /**

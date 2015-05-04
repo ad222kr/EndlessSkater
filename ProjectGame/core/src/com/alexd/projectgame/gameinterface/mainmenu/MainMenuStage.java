@@ -1,4 +1,4 @@
-package com.alexd.projectgame.stages.mainmenu;
+package com.alexd.projectgame.gameinterface.mainmenu;
 
 import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.helpers.AssetsManager;

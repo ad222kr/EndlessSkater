@@ -1,15 +1,10 @@
-package com.alexd.projectgame.stages.gamehud.actors;
+package com.alexd.projectgame.gameinterface.gamehud.actors;
 
 import com.alexd.projectgame.gameobjects.Runner;
 import com.alexd.projectgame.helpers.AssetsManager;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 /**
  * Created by Alex on 2015-05-01.

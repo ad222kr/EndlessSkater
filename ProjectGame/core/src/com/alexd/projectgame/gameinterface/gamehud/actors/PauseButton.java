@@ -1,21 +1,11 @@
-package com.alexd.projectgame.stages.gamehud.actors;
+package com.alexd.projectgame.gameinterface.gamehud.actors;
 
-import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.enums.GameState;
 import com.alexd.projectgame.handlers.GameStateHandler;
 import com.alexd.projectgame.helpers.AssetsManager;
-import com.alexd.projectgame.screens.GameScreen;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
