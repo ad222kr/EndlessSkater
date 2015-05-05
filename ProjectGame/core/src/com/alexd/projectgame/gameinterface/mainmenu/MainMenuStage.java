@@ -1,7 +1,7 @@
 package com.alexd.projectgame.gameinterface.mainmenu;
 
 import com.alexd.projectgame.TheGame;
-import com.alexd.projectgame.helpers.AssetsManager;
+import com.alexd.projectgame.utils.AssetsManager;
 import com.alexd.projectgame.screens.GameScreen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;

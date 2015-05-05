@@ -28,7 +28,7 @@ public class GameHudStage extends Stage {
         _screen = screen;
         _gsh = gsh;
         _score = new Score();
-        _health = new Health(_screen.getRunner());
+        _health = new Health(_screen.getRunner().getHealth());
         _pauseButton = new PauseButton(_gsh);
 
         addActor(_score);
@@ -49,6 +49,7 @@ public class GameHudStage extends Stage {
     @Override
     public void act(float delta){
         super.act(delta);
+        _health.updateHealthArray(_screen.getRunner().getHealth());
     }
 
 

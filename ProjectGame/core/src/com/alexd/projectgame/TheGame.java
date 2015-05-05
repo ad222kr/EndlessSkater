@@ -1,11 +1,9 @@
 package com.alexd.projectgame;
 
 
-import com.alexd.projectgame.helpers.AssetsManager;
-import com.alexd.projectgame.screens.GameScreen;
+import com.alexd.projectgame.utils.AssetsManager;
 import com.alexd.projectgame.screens.MainMenuScreen;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 
 
 public class TheGame extends Game {
@@ -18,6 +16,8 @@ public class TheGame extends Game {
 	public static final int RUNNER_BIT = 0x0001;
 	public static final int ENEMY_BIT = 0x0002;
 	public static final int PLATFORM_BIT = 0x0003;
+	public static final int ENEMY_SENSOR_BIT = 0x0004;
+
 
 
 

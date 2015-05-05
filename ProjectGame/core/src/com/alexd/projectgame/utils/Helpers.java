@@ -1,9 +1,7 @@
-package com.alexd.projectgame.helpers;
+package com.alexd.projectgame.utils;
 
 import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.gameobjects.GameObject;
-import com.alexd.projectgame.screens.GameScreen;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Body;
 
 import java.util.Random;

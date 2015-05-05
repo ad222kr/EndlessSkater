@@ -1,6 +1,6 @@
 package com.alexd.projectgame.gameinterface.gamehud.actors;
 
-import com.alexd.projectgame.helpers.AssetsManager;
+import com.alexd.projectgame.utils.AssetsManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;

@@ -1,4 +1,4 @@
-package com.alexd.projectgame.helpers;
+package com.alexd.projectgame.utils;
 
 import com.badlogic.gdx.math.Vector2;
 

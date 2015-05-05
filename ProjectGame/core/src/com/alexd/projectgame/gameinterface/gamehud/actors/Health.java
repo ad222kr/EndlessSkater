@@ -1,7 +1,6 @@
 package com.alexd.projectgame.gameinterface.gamehud.actors;
 
-import com.alexd.projectgame.gameobjects.Runner;
-import com.alexd.projectgame.helpers.AssetsManager;
+import com.alexd.projectgame.utils.AssetsManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -12,16 +11,16 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 public class Health extends Actor {
 
     private final float Y = 650f;
-    private Runner _runner;
+    private int _maxHealth;
     private boolean[] _hearts;
     private AtlasRegion _filledHeart;
     private AtlasRegion _depletedHeart;
 
-    public Health(Runner runner){
-        _runner = runner;
+    public Health(int maxHealth){
+        _maxHealth = maxHealth;
         _filledHeart = AssetsManager.getAtlasRegion("heart-filled");
         _depletedHeart = AssetsManager.getAtlasRegion("heart-depleted");
-        initHealthArray(runner.getHealth());
+        initHealthArray(_maxHealth);
 
 
     }
@@ -35,9 +34,9 @@ public class Health extends Actor {
         }
     }
 
-    private void updateHealthArray(){
+    public void updateHealthArray(int currentHealth){
         for (int i = 0; i < _hearts.length; i++){
-            if (i < _runner.getHealth()){
+            if (i < currentHealth){
                 _hearts[i] = true;
             }
             else {
@@ -46,12 +45,7 @@ public class Health extends Actor {
         }
     }
 
-    @Override
-    public void act(float delta){
-        super.act(delta);
 
-        updateHealthArray();
-    }
 
     public void draw(Batch batch, float parentAlpha){
         super.draw(batch, parentAlpha);

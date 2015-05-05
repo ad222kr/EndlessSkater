@@ -1,15 +1,12 @@
-package com.alexd.projectgame.helpers;
+package com.alexd.projectgame.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.graphics.g2d.Animation;
 
 import java.util.HashMap;
-import java.util.SplittableRandom;
 
 /**
  * Created by Alex on 2015-05-01.

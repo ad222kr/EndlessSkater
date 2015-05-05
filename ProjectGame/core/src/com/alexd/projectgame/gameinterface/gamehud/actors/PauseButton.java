@@ -2,7 +2,7 @@ package com.alexd.projectgame.gameinterface.gamehud.actors;
 
 import com.alexd.projectgame.enums.GameState;
 import com.alexd.projectgame.handlers.GameStateHandler;
-import com.alexd.projectgame.helpers.AssetsManager;
+import com.alexd.projectgame.utils.AssetsManager;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;

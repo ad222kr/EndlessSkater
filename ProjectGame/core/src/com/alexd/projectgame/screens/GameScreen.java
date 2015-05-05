@@ -3,9 +3,9 @@ package com.alexd.projectgame.screens;
 import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.enums.GameState;
 import com.alexd.projectgame.handlers.GameStateHandler;
-import com.alexd.projectgame.helpers.Helpers;
-import com.alexd.projectgame.helpers.PhysicsConstants;
-import com.alexd.projectgame.helpers.Renderer;
+import com.alexd.projectgame.utils.Helpers;
+import com.alexd.projectgame.utils.PhysicsConstants;
+import com.alexd.projectgame.utils.GameRenderer;
 import com.alexd.projectgame.gameobjects.*;
 import com.alexd.projectgame.handlers.ContactHandler;
 import com.alexd.projectgame.handlers.GameInputHandler;
@@ -45,7 +45,7 @@ public class GameScreen implements Screen {
     private OrthographicCamera _camera;
     private Viewport _viewport;
     private Box2DDebugRenderer _debugRenderer;
-    private Renderer _renderer;
+    private GameRenderer _renderer;
     private GameHudStage _gameHudStage;
 
     private GameStateHandler _gsh;
@@ -97,7 +97,7 @@ public class GameScreen implements Screen {
     }
 
     private void setUpRendering(){
-        _renderer = new Renderer(this, _gsh);
+        _renderer = new GameRenderer(this, _gsh);
 
         if (isDebug){
             _debugRenderer = new Box2DDebugRenderer();

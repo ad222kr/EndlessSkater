@@ -1,9 +1,11 @@
 package com.alexd.projectgame.handlers;
 
+import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.enums.GameObjectType;
 import com.alexd.projectgame.gameobjects.GameObject;
 import com.alexd.projectgame.gameobjects.Runner;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
 /**
@@ -26,10 +28,28 @@ public class ContactHandler implements ContactListener {
             _runner.landed();
         }
 
-        if (checkTypes(objA, objB, GameObjectType.ENEMY, GameObjectType.RUNNER) ||
-            checkTypes(objA, objB, GameObjectType.OBSTACLE, GameObjectType.RUNNER)){
+        if ((contact.getFixtureA().getFilterData().categoryBits == TheGame.ENEMY_BIT &&
+             contact.getFixtureB().getFilterData().categoryBits == TheGame.RUNNER_BIT) ||
+             contact.getFixtureA().getFilterData().categoryBits == TheGame.RUNNER_BIT &&
+             contact.getFixtureB().getFilterData().categoryBits == TheGame.ENEMY_BIT){
+            Gdx.app.log("BodyA: ", "" + objA.toString());
+            Gdx.app.log("BodyB: ", "" + objB.toString());
+
             _runner.removeHealth();
+
+
         }
+        else if ((contact.getFixtureA().getFilterData().categoryBits == TheGame.RUNNER_BIT &&
+                  contact.getFixtureB().getFilterData().categoryBits == TheGame.ENEMY_SENSOR_BIT)
+               || contact.getFixtureB().getFilterData().categoryBits == TheGame.RUNNER_BIT &&
+                  contact.getFixtureA().getFilterData().categoryBits == TheGame.ENEMY_SENSOR_BIT){
+            if ( objA.isExpectedType(GameObjectType.RUNNER) && (objA.getBody().getLinearVelocity().y < 0) &&
+                 objA.getBody().getPosition().y - objA.getHeight() / 2 > objB.getBody().getPosition().y + objB.getHeight() / 2||
+                 objB.isExpectedType(GameObjectType.RUNNER) && (objA.getBody().getLinearVelocity().y < 0)  &&
+                 objB.getBody().getPosition().y - objB.getHeight() / 2 > objA.getBody().getPosition().y + objA.getHeight() / 2)
+            _runner.getBody().applyLinearImpulse(new Vector2(0, 20f), _runner.getBody().getWorldCenter(), true);
+        }
+
     }
 
     @Override
