@@ -54,18 +54,14 @@ public class Runner extends GameObject {
         // Jumping code translated from http://www.iforce2d.net/b2dtut/constant-speed
         if(!_isJumping && _isOnGround){
 
-            /*Vector2 vel = getBody().getLinearVelocity();
-            float desiredVel = Math.max(vel.y + 0.1f, 8f);
-            float velChange = desiredVel - vel.y;
-            float impulse = getBody().getMass() * velChange;
-
-            getBody().applyLinearImpulse(new Vector2(0f, impulse), getBody().getWorldCenter(), true);*/
-
             _isJumping = true;
             _isOnGround = false;
             _body.applyLinearImpulse(PhysicsConstants.RUNNER_JUMPING_IMPULSE, _body.getWorldCenter(), true);
-
         }
+    }
+
+    public void bumpOffEnemy(){
+        _body.applyLinearImpulse(PhysicsConstants.RUNNER_BUMP_IMPULSE, _body.getWorldCenter(), true);
     }
 
     public void landed(){
@@ -87,4 +83,7 @@ public class Runner extends GameObject {
     }
 
 
+    public boolean isFalling() {
+       return _body.getLinearVelocity().y < 0;
+    }
 }

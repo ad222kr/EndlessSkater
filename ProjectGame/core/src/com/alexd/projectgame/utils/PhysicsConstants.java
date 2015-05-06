@@ -16,6 +16,7 @@ public class PhysicsConstants {
     public static final float RUNNER_HEIGHT = 2f;
     public static final float RUNNER_DENSITY = 0.5f;
     public static final Vector2 RUNNER_JUMPING_IMPULSE = new Vector2(0, 16f);
+    public static final Vector2 RUNNER_BUMP_IMPULSE = new Vector2(0, 18f);
 
 
 

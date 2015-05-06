@@ -24,7 +24,8 @@ public class PhysicsFactory {
         PolygonShape shape = getBox(enemy.getWidth(), enemy.getHeight());
         Body body = world.createBody(bodyDef);
         FixtureDef fixtureDef = getFixtureDef(false, shape, PhysicsConstants.ENEMY_DENSITY);
-        fixtureDef.filter.categoryBits = TheGame.ENEMY_BIT;
+        fixtureDef.filter.categoryBits = TheGame.ENEMY_BIT; // I am
+        fixtureDef.filter.maskBits = TheGame.PLATFORM_BIT | TheGame.RUNNER_BIT; // I collide with
 
 
         body.createFixture(fixtureDef);
@@ -35,7 +36,9 @@ public class PhysicsFactory {
         PolygonShape sensorShape = new PolygonShape();
         sensorShape.setAsBox(enemy.getWidth() / 5, 0.05f, new Vector2( 0, enemy.getHeight() / 2f + 0.05f), 0f);
         FixtureDef sensorDef = getFixtureDef(true, shape, 0);
-        sensorDef.filter.categoryBits = TheGame.ENEMY_SENSOR_BIT; // just for test
+        sensorDef.filter.categoryBits = TheGame.ENEMY_SENSOR_BIT; // I am
+        sensorDef.filter.maskBits = TheGame.RUNNER_BIT;
+
         body.createFixture(sensorDef);
         body.setLinearVelocity(enemy.getEnemyType().getSpeed());
         sensorShape.dispose();
@@ -56,6 +59,7 @@ public class PhysicsFactory {
         Body body = world.createBody(bodyDef);
         FixtureDef fixtureDef = getFixtureDef(true, shape, PhysicsConstants.OBSTACLE_DENSITY);
         fixtureDef.filter.categoryBits = TheGame.ENEMY_BIT;
+        fixtureDef.filter.maskBits = TheGame.PLATFORM_BIT | TheGame.RUNNER_BIT;
         body.setLinearVelocity(PhysicsConstants.OBSTACLE_LINEAR_VELOCITY);
         body.createFixture(fixtureDef);
         body.resetMassData();
@@ -78,6 +82,7 @@ public class PhysicsFactory {
         FixtureDef fixtureDef = getFixtureDef(false, shape, PhysicsConstants.PLATFORM_DENSITY);
         fixtureDef.friction = 0f;
         fixtureDef.filter.categoryBits = TheGame.PLATFORM_BIT;
+        fixtureDef.filter.maskBits = TheGame.RUNNER_BIT | TheGame.ENEMY_BIT;
 
         body.setLinearVelocity(PhysicsConstants.PLATFORM_LINEAR_VELOCITY);
         body.createFixture(fixtureDef);
@@ -101,6 +106,7 @@ public class PhysicsFactory {
         Body body = world.createBody(bodyDef);
         FixtureDef fixtureDef = getFixtureDef(false, shape, PhysicsConstants.RUNNER_DENSITY);
         fixtureDef.filter.categoryBits = TheGame.RUNNER_BIT;
+        fixtureDef.filter.maskBits = TheGame.PLATFORM_BIT | TheGame.ENEMY_SENSOR_BIT | TheGame.ENEMY_BIT;
         body.createFixture(fixtureDef);
         body.setGravityScale(1.70f);
         body.resetMassData();

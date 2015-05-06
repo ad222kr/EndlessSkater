@@ -2,6 +2,7 @@ package com.alexd.projectgame.handlers;
 
 import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.enums.GameObjectType;
+import com.alexd.projectgame.gameobjects.Enemy;
 import com.alexd.projectgame.gameobjects.GameObject;
 import com.alexd.projectgame.gameobjects.Runner;
 import com.badlogic.gdx.Gdx;
@@ -19,37 +20,40 @@ public class ContactHandler implements ContactListener {
         _runner = runner;
     }
 
+
+    private boolean shouldTrigger(Fixture fixtureA, Fixture fixtureB, int bitOne, int bitTwo){
+        int firstBit = fixtureA.getFilterData().categoryBits;
+        int secondBit = fixtureB.getFilterData().categoryBits;
+
+        return (firstBit == bitOne && secondBit == bitTwo) || (firstBit == bitTwo && secondBit == bitOne);
+    }
+
+    private boolean isRunnerAboveEnemy(Fixture fixtureA, Fixture fixtureB) {
+        Enemy enemy = fixtureA.getBody().getUserData() instanceof Enemy ?
+                (Enemy) fixtureA.getBody().getUserData() :
+                (Enemy) fixtureB.getBody().getUserData();
+        float runnerPos = _runner.getBody().getPosition().y - _runner.getHeight() / 2;
+        float enemyPos = enemy.getBody().getPosition().y + enemy.getHeight() / 2;
+
+        return runnerPos > enemyPos;
+    }
     @Override
     public void beginContact(Contact contact) {
-        GameObject objA = (GameObject) contact.getFixtureA().getBody().getUserData();
-        GameObject objB = (GameObject) contact.getFixtureB().getBody().getUserData();
+        Fixture fixtureA = contact.getFixtureA();
+        Fixture fixtureB = contact.getFixtureB();
 
-        if (checkTypes(objA, objB, GameObjectType.RUNNER, GameObjectType.GROUND)){
+        if (shouldTrigger(fixtureA, fixtureB, TheGame.RUNNER_BIT, TheGame.PLATFORM_BIT)){
             _runner.landed();
         }
 
-        if ((contact.getFixtureA().getFilterData().categoryBits == TheGame.ENEMY_BIT &&
-             contact.getFixtureB().getFilterData().categoryBits == TheGame.RUNNER_BIT) ||
-             contact.getFixtureA().getFilterData().categoryBits == TheGame.RUNNER_BIT &&
-             contact.getFixtureB().getFilterData().categoryBits == TheGame.ENEMY_BIT){
-            Gdx.app.log("BodyA: ", "" + objA.toString());
-            Gdx.app.log("BodyB: ", "" + objB.toString());
-
+        if (shouldTrigger(fixtureA, fixtureB, TheGame.RUNNER_BIT, TheGame.ENEMY_BIT)){
             _runner.removeHealth();
-
-
-        }
-        else if ((contact.getFixtureA().getFilterData().categoryBits == TheGame.RUNNER_BIT &&
-                  contact.getFixtureB().getFilterData().categoryBits == TheGame.ENEMY_SENSOR_BIT)
-               || contact.getFixtureB().getFilterData().categoryBits == TheGame.RUNNER_BIT &&
-                  contact.getFixtureA().getFilterData().categoryBits == TheGame.ENEMY_SENSOR_BIT){
-            if ( objA.isExpectedType(GameObjectType.RUNNER) && (objA.getBody().getLinearVelocity().y < 0) &&
-                 objA.getBody().getPosition().y - objA.getHeight() / 2 > objB.getBody().getPosition().y + objB.getHeight() / 2||
-                 objB.isExpectedType(GameObjectType.RUNNER) && (objA.getBody().getLinearVelocity().y < 0)  &&
-                 objB.getBody().getPosition().y - objB.getHeight() / 2 > objA.getBody().getPosition().y + objA.getHeight() / 2)
-            _runner.getBody().applyLinearImpulse(new Vector2(0, 20f), _runner.getBody().getWorldCenter(), true);
         }
 
+        if (shouldTrigger(fixtureA, fixtureB, TheGame.RUNNER_BIT, TheGame.ENEMY_SENSOR_BIT) &&
+            _runner.isFalling() && isRunnerAboveEnemy(fixtureA, fixtureB)){
+            _runner.bumpOffEnemy();
+        }
     }
 
     @Override
@@ -58,7 +62,8 @@ public class ContactHandler implements ContactListener {
         GameObject objB = (GameObject) contact.getFixtureB().getBody().getUserData();
 
         if (checkTypes(objA, objB, GameObjectType.RUNNER, GameObjectType.GROUND)){
-            _runner.setIsOnGround(false); // what?
+            _runner.setIsOnGround(false); // no idea why i do this
+
         }
     }
 
