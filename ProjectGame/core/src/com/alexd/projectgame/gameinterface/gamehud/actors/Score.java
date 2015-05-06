@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  * Created by Alex on 2015-05-01.
  */
 public class Score extends Actor {
-    private final int SCORE_MULTIPLYER = 5;
+    private final int SCORE_MULTIPLIER = 10;
     private final float Y = 690f;
     private final float X = 1160f;
 
@@ -34,7 +34,7 @@ public class Score extends Actor {
     @Override
     public void act(float delta){
         super.act(delta);
-        _score += (delta * SCORE_MULTIPLYER);
+        _score += (delta * SCORE_MULTIPLIER);
     }
 
 

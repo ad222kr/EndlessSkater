@@ -1,12 +1,10 @@
 package com.alexd.projectgame.handlers;
 
 import com.alexd.projectgame.TheGame;
+import com.alexd.projectgame.entities.Entity;
 import com.alexd.projectgame.enums.GameObjectType;
-import com.alexd.projectgame.gameobjects.Enemy;
-import com.alexd.projectgame.gameobjects.GameObject;
-import com.alexd.projectgame.gameobjects.Runner;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector2;
+import com.alexd.projectgame.entities.Enemy;
+import com.alexd.projectgame.entities.Runner;
 import com.badlogic.gdx.physics.box2d.*;
 
 /**
@@ -35,7 +33,11 @@ public class ContactHandler implements ContactListener {
         float runnerPos = _runner.getBody().getPosition().y - _runner.getHeight() / 2;
         float enemyPos = enemy.getBody().getPosition().y + enemy.getHeight() / 2;
 
-        return runnerPos > enemyPos;
+        if (runnerPos > enemyPos){
+            enemy.setFlaggedForDeath(true);
+            return true;
+        }
+        return false;
     }
     @Override
     public void beginContact(Contact contact) {
@@ -58,8 +60,8 @@ public class ContactHandler implements ContactListener {
 
     @Override
     public void endContact(Contact contact) {
-        GameObject objA = (GameObject) contact.getFixtureA().getBody().getUserData();
-        GameObject objB = (GameObject) contact.getFixtureB().getBody().getUserData();
+        Entity objA = (Entity) contact.getFixtureA().getBody().getUserData();
+        Entity objB = (Entity) contact.getFixtureB().getBody().getUserData();
 
         if (checkTypes(objA, objB, GameObjectType.RUNNER, GameObjectType.GROUND)){
             _runner.setIsOnGround(false); // no idea why i do this
@@ -69,13 +71,13 @@ public class ContactHandler implements ContactListener {
 
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
-        GameObject objA = (GameObject) contact.getFixtureA().getBody().getUserData();
-        GameObject objB = (GameObject) contact.getFixtureB().getBody().getUserData();
+        Entity objA = (Entity) contact.getFixtureA().getBody().getUserData();
+        Entity objB = (Entity) contact.getFixtureB().getBody().getUserData();
 
-        if ((objA.isExpectedType(GameObjectType.ENEMY) && objB.isExpectedType(GameObjectType.RUNNER)) ||
-            (objA.isExpectedType(GameObjectType.RUNNER) && objB.isExpectedType(GameObjectType.ENEMY))){
+        if ((checkTypes(objA, objB, GameObjectType.ENEMY, GameObjectType.RUNNER))){
             contact.setEnabled(false);
         }
+
     }
 
     @Override
@@ -83,7 +85,7 @@ public class ContactHandler implements ContactListener {
 
     }
 
-    public boolean checkTypes(GameObject a, GameObject b, GameObjectType typeA, GameObjectType typeB){
+    public boolean checkTypes(Entity a, Entity b, GameObjectType typeA, GameObjectType typeB){
         return ((a.isExpectedType(typeA) && b.isExpectedType(typeB)) ||
                 (b.isExpectedType(typeA) && a.isExpectedType(typeB)));
     }

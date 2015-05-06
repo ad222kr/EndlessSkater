@@ -1,4 +1,4 @@
-package com.alexd.projectgame.gameobjects;
+package com.alexd.projectgame.entities;
 
 import com.alexd.projectgame.enums.EnemyType;
 import com.alexd.projectgame.enums.GameObjectType;
@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.*;
 /**
  * Created by Alex on 2015-04-13.
  */
-public class Enemy extends GameObject {
+public class Enemy extends Entity {
 
     private EnemyType _enemyType;
 
@@ -17,8 +17,10 @@ public class Enemy extends GameObject {
         return _enemyType;
     }
 
+
+
     public Enemy(World world, float x, float y, float width, float height){
-        super(world);
+        super(world, x, y, width, height);
         initiate(x, y, width, height);
 
     }
@@ -26,10 +28,13 @@ public class Enemy extends GameObject {
 
     @Override
     protected void initiate(float x, float y, float width, float height) {
-        setupMembers(x, y, width, height);
         _gameObjectType = GameObjectType.ENEMY;
         _enemyType = EnemyType.getRandomValue();
         _body = PhysicsFactory.createEnemy(_world, this);
+
+    }
+
+    public void die(){
 
     }
 }

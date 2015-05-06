@@ -1,12 +1,14 @@
 package com.alexd.projectgame.utils;
 
+import com.alexd.projectgame.entities.Entity;
 import com.alexd.projectgame.enums.GameState;
-import com.alexd.projectgame.gameobjects.Enemy;
-import com.alexd.projectgame.gameobjects.Obstacle;
+import com.alexd.projectgame.entities.Enemy;
+import com.alexd.projectgame.entities.Obstacle;
 import com.alexd.projectgame.handlers.GameStateHandler;
 import com.alexd.projectgame.screens.GameScreen;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
@@ -22,6 +24,7 @@ public class GameRenderer implements Disposable{
     private Animation _animation;
     private AtlasRegion _enemyRegion;
     private AtlasRegion _obstacleRegion;
+    private Vector2 _currentEntityPos;
     private float _animationElapsed = 0f;
 
 
@@ -55,8 +58,11 @@ public class GameRenderer implements Disposable{
         _batch.draw(_animation.getKeyFrame(_animationElapsed, true), x, y, 1.5f, 2f);
 
         for (Enemy enemy : _screen.getEnemies()){
+
             _batch.draw(_enemyRegion, enemy.getBody().getWorldCenter().x - enemy.getWidth() / 2,
                     enemy.getBody().getWorldCenter().y - enemy.getHeight() / 2, enemy.getWidth(), enemy.getHeight());
+
+
         }
 
         for (Obstacle obstacle : _screen.getObstacles()){
@@ -64,9 +70,14 @@ public class GameRenderer implements Disposable{
                     obstacle.getBody().getWorldCenter().y - obstacle.getHeight() / 2, obstacle.getWidth(), obstacle.getHeight());
         }
 
+
+
+
         _batch.end();
 
     }
+
+
 
     public void dispose(){
         _batch.dispose();

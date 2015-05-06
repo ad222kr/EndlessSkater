@@ -1,4 +1,4 @@
-package com.alexd.projectgame.gameobjects;
+package com.alexd.projectgame.entities;
 
 import com.alexd.projectgame.enums.GameObjectType;
 import com.alexd.projectgame.utils.PhysicsConstants;
@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.World;
 /**
  * Created by Alex on 2015-04-11.
  */
-public class Runner extends GameObject {
+public class Runner extends Entity {
     /* CONSTANTS */
 
     public static final int MAX_HEALTH = 5;
@@ -16,7 +16,6 @@ public class Runner extends GameObject {
     private int _health;
     private boolean _isJumping;
     private boolean _isOnGround;
-
 
     public int getHealth(){ return _health; }
 
@@ -31,7 +30,7 @@ public class Runner extends GameObject {
 
     /* Constructor */
     public Runner(World world, float x, float y, float width, float height){
-        super(world);
+        super(world, x, y, width, height);
         initiate(x, y, width, height);
 
     }
@@ -42,7 +41,6 @@ public class Runner extends GameObject {
 
     @Override
     protected void initiate(float x, float y, float width, float height) {
-        setupMembers(x, y, width, height);
         _gameObjectType = GameObjectType.RUNNER;
         _body = PhysicsFactory.createRunner(_world, this);
         _health = MAX_HEALTH;
@@ -86,4 +84,8 @@ public class Runner extends GameObject {
     public boolean isFalling() {
        return _body.getLinearVelocity().y < 0;
     }
+
+
+
+
 }

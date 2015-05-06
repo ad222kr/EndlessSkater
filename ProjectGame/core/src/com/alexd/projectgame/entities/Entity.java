@@ -1,17 +1,14 @@
-package com.alexd.projectgame.gameobjects;
+package com.alexd.projectgame.entities;
 
 import com.alexd.projectgame.enums.GameObjectType;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 /**
  * Abstract base-class for game objects
  */
-public abstract class GameObject {
+public abstract class Entity {
 
     /**
      * Members
@@ -23,30 +20,24 @@ public abstract class GameObject {
     protected float _y;
     protected float _width;
     protected float _height;
+    protected boolean _flaggedForDeath;
 
     /**
      * Constructors
      */
-    public GameObject (World world){
+    public Entity(World world, float x, float y, float width, float height){
         _world = world;
-    }
-
-    public GameObject () {}
-
-
-    protected abstract void initiate(float x, float y, float width, float height);
-
-    protected void setupMembers(float x, float y, float width, float height){
         _x = x;
         _y = y;
         _width = width;
         _height = height;
     }
 
-    /**
-     * @param type - GameObjectType to compare against
-     * @return - wheter the object is specified type
-     */
+    public Entity() {}
+
+
+    protected abstract void initiate(float x, float y, float width, float height);
+
     public boolean isExpectedType(GameObjectType type){
         return _gameObjectType == type;
     }
@@ -60,10 +51,6 @@ public abstract class GameObject {
 
     public GameObjectType getGameObjectType (){
         return _gameObjectType;
-    }
-
-    public void setGameObjectType(GameObjectType value){
-        _gameObjectType = value;
     }
 
     public float getX(){
@@ -80,6 +67,14 @@ public abstract class GameObject {
 
     public float getHeight(){
         return _height;
+    }
+
+    public boolean getFlaggedForDeath(){
+        return _flaggedForDeath;
+    }
+
+    public void setFlaggedForDeath(boolean value){
+        _flaggedForDeath = value;
     }
 
 

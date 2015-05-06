@@ -1,7 +1,7 @@
 package com.alexd.projectgame.utils;
 
 import com.alexd.projectgame.TheGame;
-import com.alexd.projectgame.gameobjects.GameObject;
+import com.alexd.projectgame.entities.Entity;
 import com.badlogic.gdx.physics.box2d.Body;
 
 import java.util.Random;
@@ -39,9 +39,9 @@ public class Helpers {
     }
 
     public static boolean isBodyOutOfBounds(Body body){
-        GameObject gameObject = (GameObject) body.getUserData();
-        return ((body.getPosition().x + gameObject.getWidth() / 2) < 0) ||
-                ((body.getPosition().y + gameObject.getHeight() / 2) < 0);
+        Entity entity = (Entity) body.getUserData();
+        return ((body.getPosition().x + entity.getWidth() / 2) < 0) ||
+                ((body.getPosition().y + entity.getHeight() / 2) < 0);
     }
 
 

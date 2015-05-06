@@ -1,16 +1,9 @@
 package com.alexd.projectgame.handlers;
 
 import com.alexd.projectgame.enums.GameState;
-import com.alexd.projectgame.gameobjects.Runner;
-import com.alexd.projectgame.screens.GameScreen;
-import com.badlogic.gdx.Gdx;
+import com.alexd.projectgame.entities.Runner;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.TimeUtils;
-
-import java.security.Key;
 
 /**
  * Class handling the input

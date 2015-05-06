@@ -4,7 +4,7 @@
 
 
 
-import com.alexd.projectgame.gameobjects.Runner;
+import com.alexd.projectgame.entities.Runner;
 import com.alexd.projectgame.utils.Helpers;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;

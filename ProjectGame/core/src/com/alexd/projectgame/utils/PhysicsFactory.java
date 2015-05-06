@@ -1,7 +1,7 @@
 package com.alexd.projectgame.utils;
 
 import com.alexd.projectgame.TheGame;
-import com.alexd.projectgame.gameobjects.*;
+import com.alexd.projectgame.entities.*;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -21,6 +21,7 @@ public class PhysicsFactory {
      */
     public static Body createEnemy(World world, Enemy enemy){
         BodyDef bodyDef = getBodyDef(enemy.getX(), enemy.getY(), BodyType.DynamicBody);
+        bodyDef.fixedRotation = true;
         PolygonShape shape = getBox(enemy.getWidth(), enemy.getHeight());
         Body body = world.createBody(bodyDef);
         FixtureDef fixtureDef = getFixtureDef(false, shape, PhysicsConstants.ENEMY_DENSITY);

@@ -6,7 +6,7 @@ import com.alexd.projectgame.handlers.GameStateHandler;
 import com.alexd.projectgame.utils.Helpers;
 import com.alexd.projectgame.utils.PhysicsConstants;
 import com.alexd.projectgame.utils.GameRenderer;
-import com.alexd.projectgame.gameobjects.*;
+import com.alexd.projectgame.entities.*;
 import com.alexd.projectgame.handlers.ContactHandler;
 import com.alexd.projectgame.handlers.GameInputHandler;
 import com.alexd.projectgame.gameinterface.gamehud.GameHudStage;
@@ -72,7 +72,7 @@ public class GameScreen implements Screen {
         _obstacles = new Array<Obstacle>(4);
         _platforms.add(new Platform(_world, PhysicsConstants.PLATFORM_INIT_X, PhysicsConstants.PLATFORM_INIT_Y,
                 PhysicsConstants.PLATFORM_INIT_WIDTH, PhysicsConstants.PLATFORM_HEIGHT));
-        setEnemyPositionY(_platforms.get(0));
+
         spawnEnemy();
     }
 
@@ -117,25 +117,28 @@ public class GameScreen implements Screen {
 
     private void spawnEnemy(){
         _timeBetweenEnemies = Helpers.getRandomFloat(2, 5);
+        float y = getEnemyPositionY(_platforms.get(_platforms.size - 1), true);
 
-        _enemies.add(new Enemy(_world, PhysicsConstants.ENEMY_X, _enemySpawnY,
+        _enemies.add(new Enemy(_world, PhysicsConstants.ENEMY_X, y,
                 PhysicsConstants.ENEMY_WIDTH, PhysicsConstants.ENEMY_HEIGHT));
     }
 
     private void spawnObstacle(){
         float x = getObstacleX();
+        float y = getEnemyPositionY(_platforms.get(_platforms.size - 1), false);
 
-        _obstacles.add(new Obstacle(_world, x, _enemySpawnY, PhysicsConstants.OBSTACLE_WIDTH,
-                       PhysicsConstants.OBSTACLE_HEIGHT));
+        _obstacles.add(new Obstacle(_world, x, y, PhysicsConstants.OBSTACLE_WIDTH,
+                PhysicsConstants.OBSTACLE_HEIGHT));
     }
 
     private void spawnPlatform(){
 
+
         _platforms.add(new Platform(_world, 42, Helpers.getRandomFloat(0, 2), PhysicsConstants.PLATFORM_WIDTH,
                 PhysicsConstants.PLATFORM_HEIGHT));
 
-        setEnemyPositionY(_platforms.get(_platforms.size - 1));
-        if (Helpers.getRandomInt(0, 5) <= 1){
+
+        if (Helpers.getRandomInt(0, 5 ) <= 1){
             spawnObstacle();
         }
 
@@ -154,11 +157,11 @@ public class GameScreen implements Screen {
 
     }
 
-    private void setEnemyPositionY(Platform platform){
+    private float getEnemyPositionY(Platform platform, boolean isEnemy){
         // Helper for calculating the right Y-position for the enemies/obstacles
         // otherwise they are floating (at least obstacles since they are kinematic)
-        _enemySpawnY = platform.getBody().getPosition().y +
-                       platform.getHeight() / 2 + PhysicsConstants.ENEMY_HEIGHT / 2;
+        return platform.getBody().getPosition().y + platform.getHeight() / 2 +
+              (isEnemy ? PhysicsConstants.ENEMY_HEIGHT : PhysicsConstants.OBSTACLE_HEIGHT) / 2;
     }
 
     @Override
@@ -283,14 +286,15 @@ public class GameScreen implements Screen {
         _world.getBodies(_bodies);
 
         for(Body body : _bodies){
-            if(Helpers.isBodyOutOfBounds(body)){
-                removeValueFromGameObjArray((GameObject)body.getUserData());
+            if(Helpers.isBodyOutOfBounds(body)){((Entity)body.getUserData()).setFlaggedForDeath(true);}
+            if(((Entity)body.getUserData()).getFlaggedForDeath())  {
+                removeValueFromGameObjArray((Entity)body.getUserData());
                 _world.destroyBody(body);
             }
         }
     }
 
-    private void removeValueFromGameObjArray(GameObject object){
+    private void removeValueFromGameObjArray(Entity object){
         switch (object.getGameObjectType()){
             case  ENEMY:
                 _enemies.removeValue((Enemy)object, false);
