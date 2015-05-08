@@ -1,7 +1,7 @@
 package com.alexd.projectgame.gameinterface.gamehud;
 
 import com.alexd.projectgame.TheGame;
-import com.alexd.projectgame.handlers.GameStateHandler;
+import com.alexd.projectgame.utils.GameStateManager;
 import com.alexd.projectgame.screens.GameScreen;
 import com.alexd.projectgame.gameinterface.gamehud.actors.Health;
 import com.alexd.projectgame.gameinterface.gamehud.actors.PauseButton;
@@ -19,10 +19,10 @@ public class GameHudStage extends Stage {
     private Score _score;
     private Health _health;
     private PauseButton _pauseButton;
-    private GameStateHandler _gsh;
+    private GameStateManager _gsh;
 
 
-    public GameHudStage(GameScreen screen, GameStateHandler gsh){
+    public GameHudStage(GameScreen screen, GameStateManager gsh){
         super(new StretchViewport(TheGame.APP_WIDTH, TheGame.APP_HEIGHT, new OrthographicCamera(TheGame.APP_WIDTH, TheGame.APP_HEIGHT)));
 
         _screen = screen;

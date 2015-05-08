@@ -2,7 +2,7 @@ package com.alexd.projectgame.screens;
 
 import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.enums.GameState;
-import com.alexd.projectgame.handlers.GameStateHandler;
+import com.alexd.projectgame.utils.GameStateManager;
 import com.alexd.projectgame.utils.Helpers;
 import com.alexd.projectgame.utils.PhysicsConstants;
 import com.alexd.projectgame.utils.GameRenderer;
@@ -13,9 +13,10 @@ import com.alexd.projectgame.gameinterface.gamehud.GameHudStage;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Vector2;
+
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
+
 import com.badlogic.gdx.utils.viewport.*;
 
 /**
@@ -23,14 +24,14 @@ import com.badlogic.gdx.utils.viewport.*;
  */
 public class GameScreen implements Screen {
 
+
     private boolean isDebug = true; // Set to false to hide debugrender
 
     private final int VIEWPORT_WIDTH = Helpers.convertToMeters(TheGame.APP_WIDTH);
     private final int VIEWPORT_HEIGHT = Helpers.convertToMeters(TheGame.APP_HEIGHT);
-    private final int TIME_BETWEEN_PLATFORMS = 7;
-    private final Vector2 WORLD_GRAVITY = new Vector2(0, -10);
 
-    private final float TIME_STEP = 1f / 300;
+
+    private final float TIME_STEP = 1 / 300f;
     private float accumulator = 0;
 
     private Game _game;
@@ -48,84 +49,71 @@ public class GameScreen implements Screen {
     private GameRenderer _renderer;
     private GameHudStage _gameHudStage;
 
-    private GameStateHandler _gsh;
+    private GameStateManager _gsm;
     private float _lastEnemySpawnTime;
-    private float _timeSinceLastPlatform;
     private float _timeBetweenEnemies;
-    private float _enemySpawnY;
 
     public GameScreen(Game game) {
         _game = game;
-        _gsh = new GameStateHandler();
-        setupPhysics();
-        setupRunner();
-        setupCamera();
-        _gameHudStage = new GameHudStage(this, _gsh);
-        setupHandlers();
+        setUp();
         initiate();
     }
 
     private void initiate(){
-        _gsh.setState(GameState.RUNNING);
-        _platforms = new Array<Platform>(4);
-        _enemies = new Array<Enemy>(4);
-        _obstacles = new Array<Obstacle>(4);
+        _gsm.setState(GameState.RUNNING);
+
         _platforms.add(new Platform(_world, PhysicsConstants.PLATFORM_INIT_X, PhysicsConstants.PLATFORM_INIT_Y,
                 PhysicsConstants.PLATFORM_INIT_WIDTH, PhysicsConstants.PLATFORM_HEIGHT));
 
         spawnEnemy();
     }
 
-    private void setupRunner(){
+    private void setUp(){
+         _gsm = new GameStateManager();
+
+        // Physics & entities
+        _world = new World(PhysicsConstants.WORLD_GRAVITY, true);
         _runner = new Runner(_world, PhysicsConstants.RUNNER_X, PhysicsConstants.RUNNER_Y,
-                             PhysicsConstants.RUNNER_WIDTH, PhysicsConstants.RUNNER_HEIGHT);
-    }
-
-    private void setupPhysics(){
-        _world = new World(WORLD_GRAVITY, true);
+                PhysicsConstants.RUNNER_WIDTH, PhysicsConstants.RUNNER_HEIGHT);
         _bodies = new Array<Body>();
-    }
+        _platforms = new Array<Platform>(4);
+        _enemies = new Array<Enemy>(4);
+        _obstacles = new Array<Obstacle>(4);
 
-    private void setupHandlers(){
-        InputProcessor gameInputProcessor = new GameInputHandler(_runner, _gsh);
+        // Rendering
+        _renderer = new GameRenderer(this, _gsm);
+        if (isDebug){
+            _debugRenderer = new Box2DDebugRenderer();
+        }
+
+        // Cam and HUD
+        _camera = new OrthographicCamera();
+        _viewport = new StretchViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, _camera);
+        _viewport.apply();
+        _camera.position.set(_camera.viewportWidth / 2, _camera.viewportHeight / 2, 0f);
+        _camera.update();
+        _gameHudStage = new GameHudStage(this, _gsm);
+
+        // Input & Contact
+        InputProcessor gameInputProcessor = new GameInputHandler(_runner, _gsm);
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(_gameHudStage);
         inputMultiplexer.addProcessor(gameInputProcessor);
-
         Gdx.input.setInputProcessor(inputMultiplexer);
         _world.setContactListener(new ContactHandler(_runner));
     }
 
-    private void setUpRendering(){
-        _renderer = new GameRenderer(this, _gsh);
-
-        if (isDebug){
-            _debugRenderer = new Box2DDebugRenderer();
-        }
-    }
-
-    private void setupCamera(){
-        _camera = new OrthographicCamera();
-        // viewport to support multiple screen sizes
-        _viewport = new StretchViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, _camera);
-
-        _viewport.apply();
-        _camera.position.set(_camera.viewportWidth / 2, _camera.viewportHeight / 2, 0f);
-        _camera.update();
-
-    }
-
     private void spawnEnemy(){
         _timeBetweenEnemies = Helpers.getRandomFloat(2, 5);
-        float y = getEnemyPositionY(_platforms.get(_platforms.size - 1), true);
+        float y = getCorrectYPos(true);
 
         _enemies.add(new Enemy(_world, PhysicsConstants.ENEMY_X, y,
                 PhysicsConstants.ENEMY_WIDTH, PhysicsConstants.ENEMY_HEIGHT));
     }
 
     private void spawnObstacle(){
-        float x = getObstacleX();
-        float y = getEnemyPositionY(_platforms.get(_platforms.size - 1), false);
+        float x = getCorrectXPos();
+        float y = getCorrectYPos(false);
 
         _obstacles.add(new Obstacle(_world, x, y, PhysicsConstants.OBSTACLE_WIDTH,
                 PhysicsConstants.OBSTACLE_HEIGHT));
@@ -144,29 +132,29 @@ public class GameScreen implements Screen {
 
     }
 
-    private float getObstacleX(){
+    private float getCorrectXPos(){
         // Helper for calculating obstacles X-pos to keep it inside the bounds of the
         // platform it resides on, otherwise it could be floating in the air
-        int min = (int)(_platforms.get(_platforms.size - 1).getBody().getPosition().x -
-                        _platforms.get(_platforms.size - 1).getWidth() / 2) + 5;
-        int max = (int)(_platforms.get(_platforms.size - 1).getBody().getPosition().x +
-                        _platforms.get(_platforms.size - 1).getWidth() / 2) - 5;
+        int min = (int)(getCurrentPlatform().getBody().getPosition().x -
+                        getCurrentPlatform().getWidth() / 2) + 5;
+        int max = (int)(getCurrentPlatform().getBody().getPosition().x +
+                        getCurrentPlatform().getWidth() / 2) - 5;
 
 
         return  Helpers.getRandomFloat(min, max);
 
     }
 
-    private float getEnemyPositionY(Platform platform, boolean isEnemy){
+    private float getCorrectYPos(boolean isEnemy){
         // Helper for calculating the right Y-position for the enemies/obstacles
         // otherwise they are floating (at least obstacles since they are kinematic)
-        return platform.getBody().getPosition().y + platform.getHeight() / 2 +
+        return getCurrentPlatform().getBody().getPosition().y + getCurrentPlatform().getHeight() / 2 +
               (isEnemy ? PhysicsConstants.ENEMY_HEIGHT : PhysicsConstants.OBSTACLE_HEIGHT) / 2;
     }
 
     @Override
     public void show() {
-        setUpRendering();
+
     }
 
     @Override
@@ -174,12 +162,11 @@ public class GameScreen implements Screen {
         // Main game loop
         Gdx.gl.glClearColor(1, 1, 0.5f, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        draw(delta);
 
         //Gdx.app.log("Mem usage", "" + ((Gdx.app.getJavaHeap() + Gdx.app.getNativeHeap()) / 1000000));
-        switch (_gsh.getState()){
+        switch (_gsm.getState()){
             case RUNNING:
-                _timeSinceLastPlatform += delta;
                 _lastEnemySpawnTime += delta;
 
                 if (isTimeForEnemySpawn()){
@@ -188,7 +175,6 @@ public class GameScreen implements Screen {
                 }
                 if(isTimeForPlatformSpawn()){
                     spawnPlatform();
-                    _timeSinceLastPlatform = 0;
                 }
                 if(isGameOver()){
                     _game.setScreen(new MainMenuScreen(_game));
@@ -203,13 +189,15 @@ public class GameScreen implements Screen {
                 break;
         }
 
-        _renderer.render(_camera.combined, delta);
-        _gameHudStage.draw();
-        if (isDebug ){
-            _debugRenderer.render(_world, _camera.combined);
-        }
 
-        draw(delta);
+
+
+    }
+
+
+
+    private void singleStep(float dt){
+
     }
 
     private void doStep(float delta) {
@@ -224,6 +212,9 @@ public class GameScreen implements Screen {
         // the stuttering
         _world.step(accumulator, 6, 2);
         accumulator = 0;
+
+        //_world.step(1/60f, 8, 3);
+
     }
 
     private void draw(float delta){
@@ -239,7 +230,8 @@ public class GameScreen implements Screen {
     }
 
     private boolean isTimeForPlatformSpawn() {
-        return _timeSinceLastPlatform > TIME_BETWEEN_PLATFORMS;
+        return (getCurrentPlatform().getBody().getPosition().x + getCurrentPlatform().getWidth() / 2) < 21;
+
     }
 
     private boolean isTimeForEnemySpawn() {
@@ -255,7 +247,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
-        _gsh.setState(GameState.PAUSED);
+        _gsm.setState(GameState.PAUSED);
     }
 
     @Override
@@ -331,6 +323,10 @@ public class GameScreen implements Screen {
 
     public Game getGame(){
         return _game;
+    }
+
+    public Platform getCurrentPlatform(){
+        return _platforms.get(_platforms.size - 1);
     }
 
 

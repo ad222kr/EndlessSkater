@@ -1,7 +1,7 @@
 package com.alexd.projectgame.gameinterface.gamehud.actors;
 
 import com.alexd.projectgame.enums.GameState;
-import com.alexd.projectgame.handlers.GameStateHandler;
+import com.alexd.projectgame.utils.GameStateManager;
 import com.alexd.projectgame.utils.AssetsManager;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -22,8 +22,8 @@ public class PauseButton extends Button {
     private final int HEIGHT = WIDTH;
 
     private AtlasRegion _pauseTexture;
-    private GameStateHandler _gsh;
-    public PauseButton(GameStateHandler gsh){
+    private GameStateManager _gsh;
+    public PauseButton(GameStateManager gsh){
         _gsh = gsh;
         _pauseTexture = AssetsManager.getAtlasRegion("pause-button");
         ButtonStyle style = new ButtonStyle();

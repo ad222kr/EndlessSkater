@@ -51,21 +51,21 @@ resume-button
   orig: 364, 106
   offset: 0, 0
   index: -1
-runner
+runner0
   rotate: false
   xy: 808, 2
   size: 52, 101
   orig: 52, 101
   offset: 0, 0
   index: -1
-runner
+runner1
   rotate: false
   xy: 862, 2
   size: 46, 96
   orig: 46, 96
   offset: 0, 0
   index: -1
-runner
+runner2
   rotate: false
   xy: 1002, 2
   size: 52, 90

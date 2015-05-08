@@ -1,10 +1,8 @@
 package com.alexd.projectgame.utils;
 
-import com.alexd.projectgame.entities.Entity;
 import com.alexd.projectgame.enums.GameState;
 import com.alexd.projectgame.entities.Enemy;
 import com.alexd.projectgame.entities.Obstacle;
-import com.alexd.projectgame.handlers.GameStateHandler;
 import com.alexd.projectgame.screens.GameScreen;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Matrix4;
@@ -20,24 +18,27 @@ public class GameRenderer implements Disposable{
 
     private SpriteBatch _batch;
     private GameScreen _screen;
-    private GameStateHandler _gsh;
-    private Animation _animation;
+    private GameStateManager _gsh;
+    private SpriteAnimation _runnerAnimation;
+    private SpriteAnimation _enemyAnimation;
+    private AtlasRegion _runnerJumpRegion;
     private AtlasRegion _enemyRegion;
     private AtlasRegion _obstacleRegion;
-    private Vector2 _currentEntityPos;
     private float _animationElapsed = 0f;
 
 
-    public GameRenderer(GameScreen screen, GameStateHandler gsh){
+    public GameRenderer(GameScreen screen, GameStateManager gsh){
         _batch = new SpriteBatch();
         _screen = screen;
         _gsh = gsh;
 
 
         // Animation with textureatlas test
-        _animation = AssetsManager.getAnimation("runner");
+        _runnerAnimation = AssetsManager.getAnimation("player");
         _enemyRegion = AssetsManager.getAtlasRegion("enemy");
         _obstacleRegion = AssetsManager.getAtlasRegion("obstacle");
+        _runnerJumpRegion = AssetsManager.getAtlasRegion("playerjump");
+        _enemyAnimation = AssetsManager.getAnimation("enemy");
 
     }
 
@@ -46,7 +47,7 @@ public class GameRenderer implements Disposable{
         _batch.setProjectionMatrix(projectionMatrix);
 
         if (_gsh.getState() == GameState.RUNNING){
-            _animationElapsed += delta / 10;
+            _animationElapsed += delta ;
         }
 
 
@@ -55,19 +56,40 @@ public class GameRenderer implements Disposable{
 
 
         _batch.begin();
-        _batch.draw(_animation.getKeyFrame(_animationElapsed, true), x, y, 1.5f, 2f);
+        if (!_screen.getRunner().getIsJumping()){
+
+            ((SpriteAnimation) _runnerAnimation).draw(_animationElapsed, _batch, x, y);
+
+            /*_batch.draw(_animation.getKeyFrame(_animationElapsed, true), x, y,
+                    Helpers.convertToMeters((float)_animation.getKeyFrame(_animationElapsed, true).getRegionWidth()),
+                    Helpers.convertToMeters((float)_animation.getKeyFrame(_animationElapsed, true).getRegionHeight()));*/
+
+        }
+        else{
+            //jumping just using one of animation sprites
+            // TODO: FIX new sprite for jumping
+            _batch.draw(_runnerJumpRegion,
+                    _screen.getRunner().getBody().getWorldCenter().x -
+                            Helpers.convertToMeters((float)_runnerJumpRegion.getRegionWidth() / 2),
+                    _screen.getRunner().getBody().getWorldCenter().y -
+                            Helpers.convertToMeters((float)_runnerJumpRegion.getRegionHeight() / 2),
+                    1.5f, 2f);
+        }
 
         for (Enemy enemy : _screen.getEnemies()){
 
-            _batch.draw(_enemyRegion, enemy.getBody().getWorldCenter().x - enemy.getWidth() / 2,
-                    enemy.getBody().getWorldCenter().y - enemy.getHeight() / 2, enemy.getWidth(), enemy.getHeight());
+            /*_batch.draw(_enemyRegion, enemy.getBody().getWorldCenter().x - enemy.getWidth() / 2,
+                    enemy.getBody().getWorldCenter().y - enemy.getHeight() / 2, enemy.getWidth(), enemy.getHeight());*/
+            _enemyAnimation.draw(_animationElapsed, _batch,enemy.getBody().getWorldCenter().x - enemy.getWidth() / 2,
+                    enemy.getBody().getWorldCenter().y - enemy.getHeight() / 2);
 
 
         }
 
         for (Obstacle obstacle : _screen.getObstacles()){
             _batch.draw(_obstacleRegion, obstacle.getBody().getWorldCenter().x - obstacle.getWidth() / 2,
-                    obstacle.getBody().getWorldCenter().y - obstacle.getHeight() / 2, obstacle.getWidth(), obstacle.getHeight());
+                    obstacle.getBody().getWorldCenter().y - obstacle.getHeight() / 2,
+                    obstacle.getWidth(), obstacle.getHeight());
         }
 
 

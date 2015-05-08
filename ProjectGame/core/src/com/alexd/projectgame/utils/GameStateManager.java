@@ -1,14 +1,14 @@
-package com.alexd.projectgame.handlers;
+package com.alexd.projectgame.utils;
 
 import com.alexd.projectgame.enums.GameState;
 
 /**
  * Created by Alex on 2015-05-03.
  */
-public class GameStateHandler {
+public class GameStateManager {
     private GameState _state;
 
-    public GameStateHandler(){
+    public GameStateManager(){
         _state = GameState.INDEFINITE;
     }
 

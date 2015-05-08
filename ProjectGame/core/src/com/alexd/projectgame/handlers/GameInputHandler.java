@@ -2,6 +2,7 @@ package com.alexd.projectgame.handlers;
 
 import com.alexd.projectgame.enums.GameState;
 import com.alexd.projectgame.entities.Runner;
+import com.alexd.projectgame.utils.GameStateManager;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 
@@ -11,10 +12,10 @@ import com.badlogic.gdx.InputProcessor;
 public class GameInputHandler implements InputProcessor {
 
     private Runner _runner;
-    private GameStateHandler _gsh;
+    private GameStateManager _gsh;
 
 
-    public GameInputHandler(Runner runner, GameStateHandler gsh){
+    public GameInputHandler(Runner runner, GameStateManager gsh){
         _runner = runner;
         _gsh = gsh;
     }
