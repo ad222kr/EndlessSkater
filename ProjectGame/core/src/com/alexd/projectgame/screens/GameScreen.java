@@ -1,6 +1,7 @@
 package com.alexd.projectgame.screens;
 
 import com.alexd.projectgame.TheGame;
+import com.alexd.projectgame.enums.GameState;
 import com.alexd.projectgame.utils.*;
 import com.alexd.projectgame.entities.*;
 import com.alexd.projectgame.handlers.ContactHandler;
@@ -10,6 +11,8 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 
@@ -43,6 +46,7 @@ public class GameScreen implements Screen {
     private Viewport _viewport;
     private Box2DDebugRenderer _debugRenderer;
     private GameRenderer _renderer;
+    private Batch _batch;
     private GameHudStage _gameHudStage;
 
     private float _lastEnemySpawnTime;
@@ -90,7 +94,9 @@ public class GameScreen implements Screen {
         _gameHudStage = new GameHudStage(this);
 
         // Rendering
-        _renderer = new GameRenderer(this, _camera.combined);
+        _renderer = new GameRenderer();
+        _batch = new SpriteBatch();
+        _batch.setProjectionMatrix(_camera.combined);
         if (isDebug){
             _debugRenderer = new Box2DDebugRenderer();
         }
@@ -247,7 +253,26 @@ public class GameScreen implements Screen {
     }
 
     private void draw(float delta){
-        _renderer.render(_camera.combined, delta);
+        if (GameManager.getInstance().getState() == GameState.RUNNING){
+            _renderer.updateAnimation(delta);
+        }
+        _batch.begin();
+
+        _renderer.drawRunner(_batch, _runner.getBody().getWorldCenter().x - Constants.RUNNER_WIDTH / 2,
+                _runner.getBody().getWorldCenter().y - Constants.RUNNER_HEIGHT / 2, _runner.getIsJumping());
+
+        for (Enemy enemy : _enemies){
+            _renderer.drawEnemy(_batch, enemy.getBody().getWorldCenter().x - Constants.ENEMY_WIDTH / 2,
+                    enemy.getBody().getWorldCenter().y - Constants.ENEMY_HEIGHT / 2);
+        }
+
+        for (Obstacle obstacle : _obstacles){
+            _renderer.drawObstacle(_batch, obstacle.getBody().getWorldCenter().x - Constants.OBSTACLE_WIDTH / 2,
+                    obstacle.getBody().getWorldCenter().y - Constants.OBSTACLE_HEIGHT / 2);
+        }
+
+        _batch.end();
+
         _gameHudStage.draw();
         if (isDebug ){
             _debugRenderer.render(_world, _camera.combined);
@@ -276,7 +301,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
-        GameManager.getInstance().setPaused();
+        GameManager.getInstance().setState(GameState.PAUSED);
     }
 
     @Override

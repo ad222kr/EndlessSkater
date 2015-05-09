@@ -39,11 +39,11 @@ public class PauseButton extends Button {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 
-                if (GameManager.getInstance().isRunning()) {
-                    GameManager.getInstance().setPaused();
+                if (GameManager.getInstance().getState() == GameState.RUNNING) {
+                    GameManager.getInstance().setState(GameState.PAUSED);
                 }
                 else {
-                    GameManager.getInstance().setRunning();
+                    GameManager.getInstance().setState(GameState.RUNNING);
                 }
 
 
