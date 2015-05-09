@@ -1,6 +1,7 @@
 package com.alexd.projectgame.gameinterface.gamehud.actors;
 
 import com.alexd.projectgame.utils.AssetsManager;
+import com.alexd.projectgame.utils.GameManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -34,7 +35,8 @@ public class Score extends Actor {
     @Override
     public void act(float delta){
         super.act(delta);
-        _score += (delta * SCORE_MULTIPLIER);
+        // Const multiplyer is standard, GameManagers multiplier is increased for every difficulty
+        _score += (delta * (SCORE_MULTIPLIER)) * GameManager.getInstance().getMultiplyer();
     }
 
     public int getScore(){

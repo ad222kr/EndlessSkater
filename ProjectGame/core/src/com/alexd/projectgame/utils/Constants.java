@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Created by Alex on 2015-04-24.
  */
-public class PhysicsConstants {
+public class Constants {
 
     /**
      * World
@@ -24,8 +24,6 @@ public class PhysicsConstants {
     public static final Vector2 RUNNER_JUMPING_IMPULSE = new Vector2(0, 8f);
     public static final Vector2 RUNNER_BUMP_IMPULSE = new Vector2(0, 10f);
 
-
-
     /**
      * Enemy constants
      */
@@ -37,24 +35,21 @@ public class PhysicsConstants {
 
 
     /**
-     * Obstacle constants
-     */
-
-    public static final float OBSTACLE_WIDTH = 2.5f;
-    public static final float OBSTACLE_HEIGHT = ENEMY_HEIGHT / 3;
-    public static final float OBSTACLE_DENSITY = 0.5f;
-    public static final Vector2 OBSTACLE_LINEAR_VELOCITY = new Vector2(-6f, 0);
-
-
-    /**
      * Platform constants
      */
-
     public static final float PLATFORM_INIT_X = -3f;
     public static final float PLATFORM_INIT_Y = 0f;
     public static final float PLATFORM_WIDTH = 30f;
     public static final float PLATFORM_INIT_WIDTH = PLATFORM_WIDTH * 2;
     public static final float PLATFORM_HEIGHT = 6f;
     public static final float PLATFORM_DENSITY = 0f;
-    public static final Vector2 PLATFORM_LINEAR_VELOCITY = new Vector2(-12f, 0);
+    public static final Vector2 PLATFORM_LINEAR_VELOCITY = new Vector2(-6f, 0);
+
+    /**
+     * Obstacle constants
+     */
+    public static final float OBSTACLE_WIDTH = 2.5f;
+    public static final float OBSTACLE_HEIGHT = ENEMY_HEIGHT / 3;
+    public static final float OBSTACLE_DENSITY = 0.5f;
+    public static final Vector2 OBSTACLE_LINEAR_VELOCITY = PLATFORM_LINEAR_VELOCITY;
 }

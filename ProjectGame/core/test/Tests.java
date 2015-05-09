@@ -5,6 +5,7 @@
 
 
 import com.alexd.projectgame.entities.Runner;
+import com.alexd.projectgame.enums.Difficulty;
 import com.alexd.projectgame.utils.Helpers;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -16,6 +17,16 @@ import static org.junit.Assert.assertTrue;
 
 public class Tests {
 
+    /**
+     * Test of enum difficulty
+     */
+
+    @Test
+    public void testDifficultyIsMax(){
+        Difficulty difficulty = Difficulty.TENTH;
+
+        assertTrue("Should be true", difficulty.isMax());
+    }
 
     /**
      * Test of class Runner

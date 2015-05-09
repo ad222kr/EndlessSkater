@@ -1,6 +1,8 @@
 package com.alexd.projectgame.gameinterface.gamehud.actors;
 
 import com.alexd.projectgame.enums.GameState;
+import com.alexd.projectgame.gameinterface.gamehud.GameHudStage;
+import com.alexd.projectgame.utils.GameManager;
 import com.alexd.projectgame.utils.GameStateManager;
 import com.alexd.projectgame.utils.AssetsManager;
 
@@ -22,9 +24,8 @@ public class PauseButton extends Button {
     private final int HEIGHT = WIDTH;
 
     private AtlasRegion _pauseTexture;
-    private GameStateManager _gsh;
-    public PauseButton(GameStateManager gsh){
-        _gsh = gsh;
+    public PauseButton(){
+
         _pauseTexture = AssetsManager.getAtlasRegion("pause-button");
         ButtonStyle style = new ButtonStyle();
         style.up = new TextureRegionDrawable(_pauseTexture);
@@ -38,11 +39,11 @@ public class PauseButton extends Button {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 
-                if (_gsh.getState() == GameState.RUNNING) {
-                    _gsh.setState(GameState.PAUSED);
+                if (GameManager.getInstance().isRunning()) {
+                    GameManager.getInstance().setPaused();
                 }
                 else {
-                    _gsh.setState(GameState.RUNNING);
+                    GameManager.getInstance().setRunning();
                 }
 
 

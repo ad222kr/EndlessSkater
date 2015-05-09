@@ -18,7 +18,6 @@ public class GameRenderer implements Disposable{
 
     private SpriteBatch _batch;
     private GameScreen _screen;
-    private GameStateManager _gsh;
     private SpriteAnimation _runnerAnimation;
     private SpriteAnimation _enemyAnimation;
     private AtlasRegion _runnerJumpRegion;
@@ -27,10 +26,10 @@ public class GameRenderer implements Disposable{
     private float _animationElapsed = 0f;
 
 
-    public GameRenderer(GameScreen screen, GameStateManager gsh){
+    public GameRenderer(GameScreen screen, Matrix4 projectionMatrix){
         _batch = new SpriteBatch();
+        _batch.setProjectionMatrix(projectionMatrix);
         _screen = screen;
-        _gsh = gsh;
 
 
         // Animation with textureatlas test
@@ -42,11 +41,23 @@ public class GameRenderer implements Disposable{
 
     }
 
+    public void drawRunner(boolean isRunning, float delta){
+        if (isRunning){
+            _animationElapsed += delta;
+        }
+        float runnerX = _screen.getRunner().getBody().getWorldCenter().x -
+                Helpers.convertToMeters((float)_runnerAnimation.getKeyFrame(_animationElapsed, true).getRegionWidth())/ 2 ;
+        float runnerY = _screen.getRunner().getBody().getWorldCenter().y -
+                Helpers.convertToMeters((float)_runnerAnimation.getKeyFrame(_animationElapsed, true).getRegionHeight()) / 2;
+
+
+    }
+
 
     public void render(Matrix4 projectionMatrix, float delta){
         _batch.setProjectionMatrix(projectionMatrix);
 
-        if (_gsh.getState() == GameState.RUNNING){
+        if (GameManager.getInstance().isRunning()){
             _animationElapsed += delta ;
         }
 

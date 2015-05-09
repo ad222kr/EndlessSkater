@@ -1,11 +1,7 @@
 package com.alexd.projectgame.screens;
 
 import com.alexd.projectgame.TheGame;
-import com.alexd.projectgame.enums.GameState;
-import com.alexd.projectgame.utils.GameStateManager;
-import com.alexd.projectgame.utils.Helpers;
-import com.alexd.projectgame.utils.PhysicsConstants;
-import com.alexd.projectgame.utils.GameRenderer;
+import com.alexd.projectgame.utils.*;
 import com.alexd.projectgame.entities.*;
 import com.alexd.projectgame.handlers.ContactHandler;
 import com.alexd.projectgame.handlers.GameInputHandler;
@@ -49,9 +45,10 @@ public class GameScreen implements Screen {
     private GameRenderer _renderer;
     private GameHudStage _gameHudStage;
 
-    private GameStateManager _gsm;
     private float _lastEnemySpawnTime;
     private float _timeBetweenEnemies;
+    private float _totalTime;
+    private float _timeForDifficultyChange; // test difficulty change
 
     public GameScreen(Game game) {
         _game = game;
@@ -60,32 +57,29 @@ public class GameScreen implements Screen {
     }
 
     private void initiate(){
-        _gsm.setState(GameState.RUNNING);
+        GameManager.getInstance().setRunning();
 
-        _platforms.add(new Platform(_world, PhysicsConstants.PLATFORM_INIT_X, PhysicsConstants.PLATFORM_INIT_Y,
-                PhysicsConstants.PLATFORM_INIT_WIDTH, PhysicsConstants.PLATFORM_HEIGHT));
+        _platforms.add(new Platform(_world, Constants.PLATFORM_INIT_X, Constants.PLATFORM_INIT_Y,
+                Constants.PLATFORM_INIT_WIDTH,
+                Constants.PLATFORM_HEIGHT));
 
         _lastEnemySpawnTime = 0;
         _timeBetweenEnemies = 5;
+        _timeForDifficultyChange = 20;
     }
 
     private void setUp(){
-         _gsm = new GameStateManager();
 
         // Physics & entities
-        _world = new World(PhysicsConstants.WORLD_GRAVITY, true);
-        _runner = new Runner(_world, PhysicsConstants.RUNNER_X, PhysicsConstants.RUNNER_Y,
-                PhysicsConstants.RUNNER_WIDTH, PhysicsConstants.RUNNER_HEIGHT);
+        _world = new World(Constants.WORLD_GRAVITY, true);
+        _runner = new Runner(_world, Constants.RUNNER_X, Constants.RUNNER_Y,
+                Constants.RUNNER_WIDTH, Constants.RUNNER_HEIGHT);
         _bodies = new Array<Body>();
         _platforms = new Array<Platform>(4);
         _enemies = new Array<Enemy>(4);
         _obstacles = new Array<Obstacle>(4);
 
-        // Rendering
-        _renderer = new GameRenderer(this, _gsm);
-        if (isDebug){
-            _debugRenderer = new Box2DDebugRenderer();
-        }
+
 
         // Cam and HUD
         _camera = new OrthographicCamera();
@@ -93,10 +87,16 @@ public class GameScreen implements Screen {
         _viewport.apply();
         _camera.position.set(_camera.viewportWidth / 2, _camera.viewportHeight / 2, 0f);
         _camera.update();
-        _gameHudStage = new GameHudStage(this, _gsm);
+        _gameHudStage = new GameHudStage(this);
+
+        // Rendering
+        _renderer = new GameRenderer(this, _camera.combined);
+        if (isDebug){
+            _debugRenderer = new Box2DDebugRenderer();
+        }
 
         // Input & Contact
-        InputProcessor gameInputProcessor = new GameInputHandler(_runner, _gsm);
+        InputProcessor gameInputProcessor = new GameInputHandler(_runner);
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(_gameHudStage);
         inputMultiplexer.addProcessor(gameInputProcessor);
@@ -108,23 +108,24 @@ public class GameScreen implements Screen {
         _timeBetweenEnemies = Helpers.getRandomFloat(2, 5);
         float y = getCorrectYPos(true);
 
-        _enemies.add(new Enemy(_world, PhysicsConstants.ENEMY_X, y,
-                PhysicsConstants.ENEMY_WIDTH, PhysicsConstants.ENEMY_HEIGHT));
+        _enemies.add(new Enemy(_world, Constants.ENEMY_X, y,
+                Constants.ENEMY_WIDTH, Constants.ENEMY_HEIGHT));
     }
 
     private void spawnObstacle(){
         float x = getCorrectXPos();
         float y = getCorrectYPos(false);
 
-        _obstacles.add(new Obstacle(_world, x, y, PhysicsConstants.OBSTACLE_WIDTH,
-                PhysicsConstants.OBSTACLE_HEIGHT));
+        _obstacles.add(new Obstacle(_world, x, y, Constants.OBSTACLE_WIDTH,
+                Constants.OBSTACLE_HEIGHT));
     }
 
     private void spawnPlatform(){
 
 
-        _platforms.add(new Platform(_world, 42, Helpers.getRandomFloat(0, 2), PhysicsConstants.PLATFORM_WIDTH,
-                PhysicsConstants.PLATFORM_HEIGHT));
+        _platforms.add(new Platform(_world, 42, Helpers.getRandomFloat(0, 2), Constants.PLATFORM_WIDTH,
+                Constants.PLATFORM_HEIGHT));
+
 
 
         if (Helpers.getRandomInt(0, 5 ) <= 1){
@@ -150,7 +151,7 @@ public class GameScreen implements Screen {
         // Helper for calculating the right Y-position for the enemies/obstacles
         // otherwise they are floating (at least obstacles since they are kinematic)
         return getCurrentPlatform().getBody().getPosition().y + getCurrentPlatform().getHeight() / 2 +
-              (isEnemy ? PhysicsConstants.ENEMY_HEIGHT : PhysicsConstants.OBSTACLE_HEIGHT) / 2;
+              (isEnemy ? Constants.ENEMY_HEIGHT : Constants.OBSTACLE_HEIGHT) / 2;
     }
 
     @Override
@@ -165,11 +166,31 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         draw(delta);
 
-
-        Gdx.app.log("Mem usage", "" + ((Gdx.app.getJavaHeap() + Gdx.app.getNativeHeap()) / 1000000));
-        switch (_gsm.getState()){
+        switch (GameManager.getInstance().getState()){
             case RUNNING:
                 _lastEnemySpawnTime += delta;
+                _totalTime += delta;
+                if (_totalTime > _timeForDifficultyChange){
+                    GameManager.getInstance().nextDifficulty();
+                    Gdx.app.log("DIFFICULTY INCREASE", "HEH");
+                    _timeForDifficultyChange += 5;
+                    for (Platform platform : _platforms){
+
+
+                        platform.getBody().setLinearVelocity(
+                                Constants.PLATFORM_LINEAR_VELOCITY.x * GameManager.getInstance().getMultiplyer(), 0);
+
+                    }
+                    for (Obstacle obstacle : _obstacles){
+                        obstacle.getBody().setLinearVelocity(
+                                Constants.OBSTACLE_LINEAR_VELOCITY.x * GameManager.getInstance().getMultiplyer(), 0);
+                    }
+
+
+                }
+                for (Platform platform : _platforms){
+                    Gdx.app.log("Platform speed: ",""+ platform.getBody().getLinearVelocity().x);
+                }
 
                 if (isTimeForEnemySpawn()){
                     spawnEnemy();
@@ -180,6 +201,7 @@ public class GameScreen implements Screen {
                 }
                 if(isGameOver()){
                     _game.setScreen(new MainMenuScreen(_game));
+                    GameManager.getInstance().resetDifficulty();
                     return;
                 }
                 destroyBodies();
@@ -188,6 +210,11 @@ public class GameScreen implements Screen {
                 break;
             case PAUSED:
                 // Pause menu logic and rendering here
+                break;
+            case GAMEOVER:
+
+
+
                 break;
         }
 
@@ -249,7 +276,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
-        _gsm.setState(GameState.PAUSED);
+        GameManager.getInstance().setPaused();
     }
 
     @Override

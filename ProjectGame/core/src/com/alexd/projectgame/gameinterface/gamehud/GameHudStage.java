@@ -19,17 +19,16 @@ public class GameHudStage extends Stage {
     private Score _score;
     private Health _health;
     private PauseButton _pauseButton;
-    private GameStateManager _gsh;
+    private GameStateManager _gsm;
 
 
-    public GameHudStage(GameScreen screen, GameStateManager gsh){
+    public GameHudStage(GameScreen screen){
         super(new StretchViewport(TheGame.APP_WIDTH, TheGame.APP_HEIGHT, new OrthographicCamera(TheGame.APP_WIDTH, TheGame.APP_HEIGHT)));
 
         _screen = screen;
-        _gsh = gsh;
         _score = new Score();
         _health = new Health(_screen.getRunner().getHealth());
-        _pauseButton = new PauseButton(_gsh);
+        _pauseButton = new PauseButton();
 
         addActor(_score);
         addActor(_health);
@@ -55,6 +54,14 @@ public class GameHudStage extends Stage {
     public int getScore(){
         return _score.getScore();
     }
+
+
+
+
+
+
+
+
 
 
 

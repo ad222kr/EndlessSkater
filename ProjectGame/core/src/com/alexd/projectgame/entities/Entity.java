@@ -20,6 +20,7 @@ public abstract class Entity {
     protected float _y;
     protected float _width;
     protected float _height;
+    protected float _multiplier;
     protected boolean _flaggedForDeath;
 
     /**
@@ -36,7 +37,7 @@ public abstract class Entity {
     public Entity() {}
 
 
-    protected abstract void initiate(float x, float y, float width, float height);
+    protected abstract void initiate();
 
     public boolean isExpectedType(GameObjectType type){
         return _gameObjectType == type;
@@ -51,6 +52,10 @@ public abstract class Entity {
 
     public GameObjectType getGameObjectType (){
         return _gameObjectType;
+    }
+
+    public float getMultiplier(){
+        return _multiplier;
     }
 
     public float getX(){

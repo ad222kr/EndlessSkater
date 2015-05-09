@@ -11,11 +11,11 @@ public class Platform extends Entity {
 
     public Platform(World world, float x, float y, float width, float height){
         super(world, x, y, width, height);
-        initiate(x, y, width, height);
+        initiate();
     }
 
     @Override
-    protected void initiate(float x, float y, float width, float height) {
+    protected void initiate() {
 
         _gameObjectType = GameObjectType.GROUND;
         _body = PhysicsFactory.createPlatform(_world, this);

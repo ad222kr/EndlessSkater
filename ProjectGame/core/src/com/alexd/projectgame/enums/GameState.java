@@ -6,6 +6,7 @@ package com.alexd.projectgame.enums;
 public enum GameState {
     RUNNING,
     PAUSED,
-    INDEFINITE
+    INDEFINITE,
+    GAMEOVER
 
 }

@@ -1,7 +1,7 @@
 package com.alexd.projectgame.entities;
 
 import com.alexd.projectgame.enums.GameObjectType;
-import com.alexd.projectgame.utils.PhysicsConstants;
+import com.alexd.projectgame.utils.Constants;
 import com.alexd.projectgame.utils.PhysicsFactory;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -31,7 +31,7 @@ public class Runner extends Entity {
     /* Constructor */
     public Runner(World world, float x, float y, float width, float height){
         super(world, x, y, width, height);
-        initiate(x, y, width, height);
+        initiate();
 
     }
 
@@ -40,7 +40,7 @@ public class Runner extends Entity {
     }
 
     @Override
-    protected void initiate(float x, float y, float width, float height) {
+    protected void initiate() {
         _gameObjectType = GameObjectType.RUNNER;
         _body = PhysicsFactory.createRunner(_world, this);
         _health = MAX_HEALTH;
@@ -54,12 +54,12 @@ public class Runner extends Entity {
 
             _isJumping = true;
             _isOnGround = false;
-            _body.applyLinearImpulse(PhysicsConstants.RUNNER_JUMPING_IMPULSE, _body.getWorldCenter(), true);
+            _body.applyLinearImpulse(Constants.RUNNER_JUMPING_IMPULSE, _body.getWorldCenter(), true);
         }
     }
 
     public void bumpOffEnemy(){
-        _body.applyLinearImpulse(PhysicsConstants.RUNNER_BUMP_IMPULSE, _body.getWorldCenter(), true);
+        _body.applyLinearImpulse(Constants.RUNNER_BUMP_IMPULSE, _body.getWorldCenter(), true);
     }
 
     public void landed(){

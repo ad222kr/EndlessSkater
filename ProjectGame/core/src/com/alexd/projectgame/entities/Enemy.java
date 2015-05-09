@@ -21,13 +21,13 @@ public class Enemy extends Entity {
 
     public Enemy(World world, float x, float y, float width, float height){
         super(world, x, y, width, height);
-        initiate(x, y, width, height);
+        initiate();
 
     }
 
 
     @Override
-    protected void initiate(float x, float y, float width, float height) {
+    protected void initiate() {
         _gameObjectType = GameObjectType.ENEMY;
         _enemyType = EnemyType.getRandomValue();
         _body = PhysicsFactory.createEnemy(_world, this);
