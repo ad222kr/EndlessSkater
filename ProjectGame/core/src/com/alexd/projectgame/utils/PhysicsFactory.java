@@ -28,21 +28,24 @@ public class PhysicsFactory {
         fixtureDef.filter.categoryBits = TheGame.ENEMY_BIT; // I am
         fixtureDef.filter.maskBits = TheGame.PLATFORM_BIT | TheGame.RUNNER_BIT; // I collide with
 
+        PolygonShape sensorShape = new PolygonShape();
+        sensorShape.setAsBox(enemy.getWidth() / 4, 0.05f, new Vector2(0, 1), 0f);
+        FixtureDef sensorDef = getFixtureDef(true, sensorShape, 0);
+        sensorDef.filter.categoryBits = TheGame.ENEMY_SENSOR_BIT; // I am
+        sensorDef.filter.maskBits = TheGame.RUNNER_BIT;
+
+        body.createFixture(sensorDef);
+        sensorShape.dispose();
+
 
         body.createFixture(fixtureDef);
         body.resetMassData();
         body.setUserData(enemy);
         shape.dispose();
 
-        PolygonShape sensorShape = new PolygonShape();
-        sensorShape.setAsBox(enemy.getWidth() / 4, 0.05f, new Vector2( 0, enemy.getHeight() / 2f + 0.05f), 0f);
-        FixtureDef sensorDef = getFixtureDef(true, shape, 0);
-        sensorDef.filter.categoryBits = TheGame.ENEMY_SENSOR_BIT; // I am
-        sensorDef.filter.maskBits = TheGame.RUNNER_SENSOR_BIT;
 
-        body.createFixture(sensorDef);
         body.setLinearVelocity(enemy.getEnemyType().getSpeed());
-        sensorShape.dispose();
+
 
         return body;
 
@@ -103,25 +106,36 @@ public class PhysicsFactory {
     public static Body createRunner(World world, Runner runner){
         BodyDef bodyDef = getBodyDef(runner.getX(), runner.getY(), BodyType.DynamicBody);
         bodyDef.fixedRotation = true;
-        PolygonShape shape = getBox(runner.getWidth(), runner.getHeight());
+
         Body body = world.createBody(bodyDef);
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(runner.getWidth() / 4, runner.getHeight() / 2);
         FixtureDef fixtureDef = getFixtureDef(false, shape, PhysicsConstants.RUNNER_DENSITY);
         fixtureDef.filter.categoryBits = TheGame.RUNNER_BIT;
-        fixtureDef.filter.maskBits = TheGame.PLATFORM_BIT | TheGame.ENEMY_BIT;
+        fixtureDef.filter.maskBits = TheGame.PLATFORM_BIT | TheGame.ENEMY_BIT | TheGame.ENEMY_SENSOR_BIT;
         body.createFixture(fixtureDef);
+
+
+
+
+
         body.setGravityScale(1.70f);
         body.resetMassData();
         body.setUserData(runner);
         shape.dispose();
 
+
+
+
+/*
         PolygonShape sensorShape = new PolygonShape();
-        sensorShape.setAsBox(runner.getWidth() / 4, 0.05f, new Vector2( 0, -runner.getHeight() / 2f - 0.05f), 0f);
+        sensorShape.setAsBox(runner.getWidth() / 4, 0.05f, new Vector2( 0, -1), 0f);
         FixtureDef sensorDef = getFixtureDef(true, shape, 0);
         sensorDef.filter.categoryBits = TheGame.RUNNER_SENSOR_BIT; // I am
         sensorDef.filter.maskBits = TheGame.ENEMY_SENSOR_BIT;
 
         body.createFixture(sensorDef);
-        sensorShape.dispose();
+        sensorShape.dispose();*/
 
         return body;
     }

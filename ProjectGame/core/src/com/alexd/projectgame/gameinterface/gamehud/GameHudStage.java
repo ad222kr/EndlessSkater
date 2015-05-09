@@ -52,6 +52,10 @@ public class GameHudStage extends Stage {
         _health.updateHealthArray(_screen.getRunner().getHealth());
     }
 
+    public int getScore(){
+        return _score.getScore();
+    }
+
 
 
 

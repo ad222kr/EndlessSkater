@@ -65,7 +65,8 @@ public class GameScreen implements Screen {
         _platforms.add(new Platform(_world, PhysicsConstants.PLATFORM_INIT_X, PhysicsConstants.PLATFORM_INIT_Y,
                 PhysicsConstants.PLATFORM_INIT_WIDTH, PhysicsConstants.PLATFORM_HEIGHT));
 
-        spawnEnemy();
+        _lastEnemySpawnTime = 0;
+        _timeBetweenEnemies = 5;
     }
 
     private void setUp(){
@@ -164,7 +165,8 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         draw(delta);
 
-        //Gdx.app.log("Mem usage", "" + ((Gdx.app.getJavaHeap() + Gdx.app.getNativeHeap()) / 1000000));
+
+        Gdx.app.log("Mem usage", "" + ((Gdx.app.getJavaHeap() + Gdx.app.getNativeHeap()) / 1000000));
         switch (_gsm.getState()){
             case RUNNING:
                 _lastEnemySpawnTime += delta;

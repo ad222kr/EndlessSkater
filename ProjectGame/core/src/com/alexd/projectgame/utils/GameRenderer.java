@@ -51,14 +51,16 @@ public class GameRenderer implements Disposable{
         }
 
 
-        float x = (_screen.getRunner().getBody().getWorldCenter().x - _screen.getRunner().getWidth() / 2);
-        float y = (_screen.getRunner().getBody().getWorldCenter().y - _screen.getRunner().getHeight() / 2);
+        float runnerX = _screen.getRunner().getBody().getWorldCenter().x -
+                Helpers.convertToMeters((float)_runnerAnimation.getKeyFrame(_animationElapsed, true).getRegionWidth())/ 2 ;
+        float runnerY = _screen.getRunner().getBody().getWorldCenter().y -
+                Helpers.convertToMeters((float)_runnerAnimation.getKeyFrame(_animationElapsed, true).getRegionHeight()) / 2;
 
 
         _batch.begin();
         if (!_screen.getRunner().getIsJumping()){
 
-            ((SpriteAnimation) _runnerAnimation).draw(_animationElapsed, _batch, x, y);
+            _runnerAnimation.draw(_animationElapsed, _batch, runnerX, runnerY);
 
             /*_batch.draw(_animation.getKeyFrame(_animationElapsed, true), x, y,
                     Helpers.convertToMeters((float)_animation.getKeyFrame(_animationElapsed, true).getRegionWidth()),
@@ -68,6 +70,7 @@ public class GameRenderer implements Disposable{
         else{
             //jumping just using one of animation sprites
             // TODO: FIX new sprite for jumping
+
             _batch.draw(_runnerJumpRegion,
                     _screen.getRunner().getBody().getWorldCenter().x -
                             Helpers.convertToMeters((float)_runnerJumpRegion.getRegionWidth() / 2),
@@ -78,10 +81,10 @@ public class GameRenderer implements Disposable{
 
         for (Enemy enemy : _screen.getEnemies()){
 
-            /*_batch.draw(_enemyRegion, enemy.getBody().getWorldCenter().x - enemy.getWidth() / 2,
-                    enemy.getBody().getWorldCenter().y - enemy.getHeight() / 2, enemy.getWidth(), enemy.getHeight());*/
-            _enemyAnimation.draw(_animationElapsed, _batch,enemy.getBody().getWorldCenter().x - enemy.getWidth() / 2,
-                    enemy.getBody().getWorldCenter().y - enemy.getHeight() / 2);
+
+            _enemyAnimation.draw(_animationElapsed, _batch,enemy.getBody().getWorldCenter().x -
+                    Helpers.convertToMeters((float)_enemyAnimation.getKeyFrame(_animationElapsed).getRegionWidth() / 2),
+                    enemy.getBody().getWorldCenter().y - Helpers.convertToMeters((float)_enemyAnimation.getKeyFrame(_animationElapsed).getRegionHeight() / 2));
 
 
         }

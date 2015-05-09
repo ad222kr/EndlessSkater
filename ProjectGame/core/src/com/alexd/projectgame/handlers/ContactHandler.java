@@ -48,13 +48,13 @@ public class ContactHandler implements ContactListener {
             _runner.landed();
         }
 
-        if (shouldTrigger(fixtureA, fixtureB, TheGame.RUNNER_BIT, TheGame.ENEMY_BIT)){
-            _runner.removeHealth();
-        }
 
-        if (shouldTrigger(fixtureA, fixtureB, TheGame.RUNNER_SENSOR_BIT, TheGame.ENEMY_SENSOR_BIT) &&
+        if (shouldTrigger(fixtureA, fixtureB, TheGame.RUNNER_BIT, TheGame.ENEMY_SENSOR_BIT) &&
             _runner.isFalling() && isRunnerAboveEnemy(fixtureA, fixtureB)){
             _runner.bumpOffEnemy();
+        }
+        else if (shouldTrigger(fixtureA, fixtureB, TheGame.RUNNER_BIT, TheGame.ENEMY_BIT)){
+            _runner.removeHealth();
         }
     }
 

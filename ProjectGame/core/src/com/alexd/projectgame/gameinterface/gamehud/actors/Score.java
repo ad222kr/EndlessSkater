@@ -27,7 +27,7 @@ public class Score extends Actor {
         super.draw(batch, parentAlpha);
         _font.setScale(0.90f, 0.90f);
 
-        _font.draw(batch, "" + (int) Math.floor(_score), X, Y);
+        _font.draw(batch, "" + getScore(), X, Y);
 
     }
 
@@ -35,6 +35,10 @@ public class Score extends Actor {
     public void act(float delta){
         super.act(delta);
         _score += (delta * SCORE_MULTIPLIER);
+    }
+
+    public int getScore(){
+        return (int)Math.floor(_score);
     }
 
 
