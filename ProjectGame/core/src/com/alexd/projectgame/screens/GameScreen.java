@@ -62,14 +62,14 @@ public class GameScreen implements Screen {
 
     private void initiate(){
         GameManager.getInstance().setRunning();
-
+        GameManager.getInstance().resetDifficulty();
         _platforms.add(new Platform(_world, Constants.PLATFORM_INIT_X, Constants.PLATFORM_INIT_Y,
                 Constants.PLATFORM_INIT_WIDTH,
                 Constants.PLATFORM_HEIGHT));
 
         _lastEnemySpawnTime = 0;
         _timeBetweenEnemies = 5;
-        _timeForDifficultyChange = 20;
+        _timeForDifficultyChange = 30;
     }
 
     private void setUp(){
@@ -176,27 +176,7 @@ public class GameScreen implements Screen {
             case RUNNING:
                 _lastEnemySpawnTime += delta;
                 _totalTime += delta;
-                if (_totalTime > _timeForDifficultyChange){
-                    GameManager.getInstance().nextDifficulty();
-                    Gdx.app.log("DIFFICULTY INCREASE", "HEH");
-                    _timeForDifficultyChange += 5;
-                    for (Platform platform : _platforms){
-
-
-                        platform.getBody().setLinearVelocity(
-                                Constants.PLATFORM_LINEAR_VELOCITY.x * GameManager.getInstance().getMultiplyer(), 0);
-
-                    }
-                    for (Obstacle obstacle : _obstacles){
-                        obstacle.getBody().setLinearVelocity(
-                                Constants.OBSTACLE_LINEAR_VELOCITY.x * GameManager.getInstance().getMultiplyer(), 0);
-                    }
-
-
-                }
-                for (Platform platform : _platforms){
-                    Gdx.app.log("Platform speed: ",""+ platform.getBody().getLinearVelocity().x);
-                }
+                updateDifficulty();
 
                 if (isTimeForEnemySpawn()){
                     spawnEnemy();
@@ -206,9 +186,9 @@ public class GameScreen implements Screen {
                     spawnPlatform();
                 }
                 if(isGameOver()){
-                    _game.setScreen(new MainMenuScreen(_game));
-                    GameManager.getInstance().resetDifficulty();
-                    return;
+
+                    GameManager.getInstance().setState(GameState.GAMEOVER);
+
                 }
                 destroyBodies();
                 _gameHudStage.act(delta);
@@ -218,7 +198,8 @@ public class GameScreen implements Screen {
                 // Pause menu logic and rendering here
                 break;
             case GAMEOVER:
-
+                Gdx.app.log("Game over ", "yo");
+                _game.setScreen(new MainMenuScreen(_game));
 
 
                 break;
@@ -229,10 +210,29 @@ public class GameScreen implements Screen {
 
     }
 
+    private void updateDifficulty(){
 
+        if (_totalTime > _timeForDifficultyChange){
+            GameManager.getInstance().nextDifficulty();
+            Gdx.app.log("DIFFICULTY INCREASE", "HEH");
+            _timeForDifficultyChange += 30;
 
-    private void singleStep(float dt){
+            updateMovingSpeed();
 
+        }
+    }
+
+    private void updateMovingSpeed(){
+        // On difficultychange, updatres speed of the platforms that are
+        // already on screen
+        for (Platform platform : _platforms){
+            platform.getBody().setLinearVelocity(
+                    Constants.PLATFORM_LINEAR_VELOCITY.x * GameManager.getInstance().getMultiplyer(), 0);
+        }
+        for (Obstacle obstacle : _obstacles){
+            obstacle.getBody().setLinearVelocity(
+                    Constants.OBSTACLE_LINEAR_VELOCITY.x * GameManager.getInstance().getMultiplyer(), 0);
+        }
     }
 
     private void doStep(float delta) {
@@ -324,7 +324,7 @@ public class GameScreen implements Screen {
         if (isDebug){
             _debugRenderer.dispose();
         }
-
+        _batch.dispose();
         _gameHudStage.dispose();
     }
 
