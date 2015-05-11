@@ -20,7 +20,6 @@ public abstract class Entity {
     protected float _y;
     protected float _width;
     protected float _height;
-    protected float _multiplier;
     protected boolean _flaggedForDeath;
 
     /**
@@ -54,9 +53,6 @@ public abstract class Entity {
         return _gameObjectType;
     }
 
-    public float getMultiplier(){
-        return _multiplier;
-    }
 
     public float getX(){
         return _x;

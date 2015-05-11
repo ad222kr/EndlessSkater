@@ -28,7 +28,7 @@ public class Helpers {
         return number * TheGame.PIXELS_TO_METERS;
     }
 
-    public static float getRandomFloat(int min, int max){
+    public static float getRandomFloat(float min, float max){
         float random = _random.nextFloat() * (max - min) + min;
         return random;
     }

@@ -3,6 +3,8 @@ package com.alexd.projectgame.utils;
 import com.alexd.projectgame.enums.Difficulty;
 import com.alexd.projectgame.enums.GameState;
 
+import java.util.Random;
+
 /**
  * Singleton handling the state and difficulty of the game
  */
@@ -15,6 +17,7 @@ public class GameManager {
 
     private GameState _gameState;
     private Difficulty _difficulty;
+
 
     private GameManager() {
         _gameState = GameState.INDEFINITE;
@@ -30,17 +33,20 @@ public class GameManager {
     }
 
     public void nextDifficulty(){
-        _difficulty.nextDifficulty();
+        _difficulty = _difficulty.next();
     }
 
-    public void resetDifficulty(){
-        _difficulty.reset();
+    public void resetDifficulty(){ _difficulty = Difficulty.FIRST; }
 
-    }
+    public float getEnemyMaxSeconds(){ return _difficulty.getEnemyMaxSeconds(); }
+
+    public float getEnemyMinSeconds(){ return _difficulty.getEnemyMinSeconds(); }
 
     public float getMultiplyer(){
         return _difficulty.getMultiplier();
     }
+
+    public String getDifficulty() { return _difficulty.toString(); }
 
     public boolean isMaxDifficulty(){
         return _difficulty.isMax();
@@ -59,6 +65,14 @@ public class GameManager {
     }
 
     public void setPaused(){
-        _gameState = GameState.RUNNING;
+        _gameState = GameState.PAUSED;
+    }
+
+    public float getEnemySpeed(){
+        return Helpers.getRandomFloat(_difficulty.getEnemyMinSpeed(), _difficulty.getEnemyMaxSpeed());
+    }
+
+    public float getStaticObjectSpeed(){
+        return _difficulty.getPlatformAndObstacleSpeed();
     }
 }

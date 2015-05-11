@@ -1,9 +1,7 @@
 package com.alexd.projectgame.handlers;
 
-import com.alexd.projectgame.enums.GameState;
 import com.alexd.projectgame.entities.Runner;
 import com.alexd.projectgame.utils.GameManager;
-import com.alexd.projectgame.utils.GameStateManager;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 

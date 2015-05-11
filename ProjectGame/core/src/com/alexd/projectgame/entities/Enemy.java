@@ -2,7 +2,10 @@ package com.alexd.projectgame.entities;
 
 import com.alexd.projectgame.enums.EnemyType;
 import com.alexd.projectgame.enums.GameObjectType;
+import com.alexd.projectgame.utils.Constants;
+import com.alexd.projectgame.utils.GameManager;
 import com.alexd.projectgame.utils.PhysicsFactory;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
 /**
@@ -34,7 +37,7 @@ public class Enemy extends Entity {
 
     }
 
-    public void die(){
-
+    public void jump(){
+        _body.applyLinearImpulse(Constants.ENEMY_JUMPING_IMPULSE, _body.getWorldCenter(), true);
     }
 }

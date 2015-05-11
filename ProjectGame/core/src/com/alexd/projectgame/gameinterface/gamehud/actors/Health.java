@@ -35,6 +35,8 @@ public class Health extends Actor {
     }
 
     public void updateHealthArray(int currentHealth){
+        // This is kinda custom act method, though it doesn't need
+        // delta time and uses current health of runner as arg instead
         for (int i = 0; i < _hearts.length; i++){
             if (i < currentHealth){
                 _hearts[i] = true;
@@ -46,7 +48,7 @@ public class Health extends Actor {
     }
 
 
-
+    @Override
     public void draw(Batch batch, float parentAlpha){
         super.draw(batch, parentAlpha);
         float x = 100;
@@ -63,4 +65,5 @@ public class Health extends Actor {
         }
 
     }
+
 }

@@ -56,12 +56,13 @@ public class GameScreen implements Screen {
 
     public GameScreen(Game game) {
         _game = game;
+        GameManager.getInstance().setRunning();
         setUp();
         initiate();
     }
 
     private void initiate(){
-        GameManager.getInstance().setRunning();
+
         GameManager.getInstance().resetDifficulty();
         _platforms.add(new Platform(_world, Constants.PLATFORM_INIT_X, Constants.PLATFORM_INIT_Y,
                 Constants.PLATFORM_INIT_WIDTH,
@@ -111,11 +112,14 @@ public class GameScreen implements Screen {
     }
 
     private void spawnEnemy(){
-        _timeBetweenEnemies = Helpers.getRandomFloat(2, 5);
+        _timeBetweenEnemies = Helpers.getRandomFloat(GameManager.getInstance().getEnemyMinSeconds(),
+                GameManager.getInstance().getEnemyMaxSeconds());
         float y = getCorrectYPos(true);
+        Enemy enemy = new Enemy(_world, Constants.ENEMY_X, y,
+                Constants.ENEMY_WIDTH, Constants.ENEMY_HEIGHT);
+        Gdx.app.log("Enemy speed: ", ""+enemy.getBody().getLinearVelocity().x);
 
-        _enemies.add(new Enemy(_world, Constants.ENEMY_X, y,
-                Constants.ENEMY_WIDTH, Constants.ENEMY_HEIGHT));
+        _enemies.add(enemy);
     }
 
     private void spawnObstacle(){
@@ -128,9 +132,10 @@ public class GameScreen implements Screen {
 
     private void spawnPlatform(){
 
-
-        _platforms.add(new Platform(_world, 42, Helpers.getRandomFloat(0, 2), Constants.PLATFORM_WIDTH,
-                Constants.PLATFORM_HEIGHT));
+        Platform platform = new Platform(_world, 42, Helpers.getRandomFloat(0, 2), Constants.PLATFORM_WIDTH,
+                Constants.PLATFORM_HEIGHT);
+        Gdx.app.log("Platform speed: ", ""+platform.getBody().getLinearVelocity().x);
+        _platforms.add(platform);
 
 
 
@@ -178,6 +183,7 @@ public class GameScreen implements Screen {
                 _totalTime += delta;
                 updateDifficulty();
 
+
                 if (isTimeForEnemySpawn()){
                     spawnEnemy();
                     _lastEnemySpawnTime = 0;
@@ -212,11 +218,11 @@ public class GameScreen implements Screen {
 
     private void updateDifficulty(){
 
-        if (_totalTime > _timeForDifficultyChange){
+        if (_totalTime > _timeForDifficultyChange && !GameManager.getInstance().isMaxDifficulty()){
             GameManager.getInstance().nextDifficulty();
-            Gdx.app.log("DIFFICULTY INCREASE", "HEH");
+            Gdx.app.log("Multiplyer:", "" + GameManager.getInstance().getMultiplyer());
+            Gdx.app.log("Difficulty: ", ""+GameManager.getInstance().getDifficulty());
             _timeForDifficultyChange += 30;
-
             updateMovingSpeed();
 
         }
@@ -227,11 +233,11 @@ public class GameScreen implements Screen {
         // already on screen
         for (Platform platform : _platforms){
             platform.getBody().setLinearVelocity(
-                    Constants.PLATFORM_LINEAR_VELOCITY.x * GameManager.getInstance().getMultiplyer(), 0);
+                    Constants.PLATFORM_SPEED * GameManager.getInstance().getMultiplyer(), 0);
         }
         for (Obstacle obstacle : _obstacles){
             obstacle.getBody().setLinearVelocity(
-                    Constants.OBSTACLE_LINEAR_VELOCITY.x * GameManager.getInstance().getMultiplyer(), 0);
+                    Constants.OBSTACLE_SPEED* GameManager.getInstance().getMultiplyer(), 0);
         }
     }
 
@@ -266,11 +272,10 @@ public class GameScreen implements Screen {
                     enemy.getBody().getWorldCenter().y - Constants.ENEMY_HEIGHT / 2);
         }
 
-        for (Obstacle obstacle : _obstacles){
+       /* for (Obstacle obstacle : _obstacles){
             _renderer.drawObstacle(_batch, obstacle.getBody().getWorldCenter().x - Constants.OBSTACLE_WIDTH / 2,
                     obstacle.getBody().getWorldCenter().y - Constants.OBSTACLE_HEIGHT / 2);
-        }
-
+        }*/
         _batch.end();
 
         _gameHudStage.draw();
@@ -284,12 +289,13 @@ public class GameScreen implements Screen {
     }
 
     private boolean isTimeForPlatformSpawn() {
-        return (getCurrentPlatform().getBody().getPosition().x + getCurrentPlatform().getWidth() / 2) < 21;
-
+        return (getCurrentPlatform().getBody().getPosition().x + getCurrentPlatform().getWidth() / 2) < 22;
     }
 
     private boolean isTimeForEnemySpawn() {
-        return _lastEnemySpawnTime > _timeBetweenEnemies;
+        // Second condition checks so that the enemy has a platform to stand on
+        return (_lastEnemySpawnTime > _timeBetweenEnemies) && (
+                getCurrentPlatform().getBody().getPosition().x + getCurrentPlatform().getWidth() / 2) > Constants.ENEMY_X;
     }
 
     @Override
@@ -306,7 +312,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void resume() {
-
 
     }
 
@@ -332,7 +337,11 @@ public class GameScreen implements Screen {
         _world.getBodies(_bodies);
 
         for(Body body : _bodies){
-            if(Helpers.isBodyOutOfBounds(body)){((Entity)body.getUserData()).setFlaggedForDeath(true);}
+            // First update the body, check if it needs removing
+            if(Helpers.isBodyOutOfBounds(body)){
+                ((Entity)body.getUserData()).setFlaggedForDeath(true);
+            }
+            // Then remove it from the world
             if(((Entity)body.getUserData()).getFlaggedForDeath())  {
                 removeValueFromGameObjArray((Entity)body.getUserData());
                 _world.destroyBody(body);
@@ -354,34 +363,13 @@ public class GameScreen implements Screen {
         }
     }
 
+    public Runner getRunner(){ return _runner; }
 
-    public Runner getRunner(){
-        return _runner;
-    }
+    public World getWorld(){ return _world; }
 
-    public Array<Platform> getPlatforms(){
-        return _platforms;
-    }
+    public Game getGame(){ return _game; }
 
-    public Array<Enemy> getEnemies(){
-        return _enemies;
-    }
-
-    public Array<Obstacle> getObstacles(){
-        return _obstacles;
-    }
-
-    public World getWorld(){
-        return _world;
-    }
-
-    public Game getGame(){
-        return _game;
-    }
-
-    public Platform getCurrentPlatform(){
-        return _platforms.get(_platforms.size - 1);
-    }
+    public Platform getCurrentPlatform(){ return _platforms.get(_platforms.size - 1); }
 
 
 }

@@ -1,6 +1,7 @@
 package com.alexd.projectgame.enums;
 
 import com.alexd.projectgame.utils.GameManager;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -10,9 +11,9 @@ public enum EnemyType {
     /**
      * EnemyTypes
      */
-    FAST_SPEED(-9f),
-    MEDIUM_SPEED(-8f),
-    SLOW_SPEED(-7f);
+    FAST_SPEED(1),
+    MEDIUM_SPEED(2),
+    SLOW_SPEED(3);
 
     private float _speed;
 
@@ -21,7 +22,7 @@ public enum EnemyType {
     }
 
     public float getSpeed(){
-        return _speed;
+        return _speed * GameManager.getInstance().getMultiplyer();
     }
 
     /**

@@ -3,6 +3,7 @@ package com.alexd.projectgame.utils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 
 import java.util.HashMap;
@@ -24,6 +25,7 @@ public class AssetsManager {
     private static HashMap<String, AtlasRegion> _atlasRegionMap;
     private static BitmapFont _font;
     private static TextureAtlas _atlas;
+    private static Skin _skin;
 
 
     public static void initiate(){
@@ -31,6 +33,7 @@ public class AssetsManager {
         _animationMap = new HashMap<String, SpriteAnimation>();
         _atlasRegionMap = new HashMap<String, AtlasRegion>();
         _font = new BitmapFont(Gdx.files.internal("fonts/thefont.fnt"), Gdx.files.internal("fonts/thefont_0.png"), false);
+        _skin = new Skin(_atlas);
         loadAssets();
     }
 
@@ -53,6 +56,7 @@ public class AssetsManager {
         // Buttons
         loadTexture("play-button");
         loadTexture("pause-button");
+        loadTexture("resume-button");
 
 
     }
@@ -74,6 +78,7 @@ public class AssetsManager {
     public static void dispose() {
         _atlas.dispose();
         _font.dispose();
+        _skin.dispose();
     }
 
     public static TextureAtlas getTextureAtlas(){
@@ -90,6 +95,11 @@ public class AssetsManager {
 
     public static BitmapFont getFont(){
         return _font;
+    }
+
+    public static Skin getSkin(){
+        // TODO: Own atlas for ui later?
+        return _skin;
     }
 
 

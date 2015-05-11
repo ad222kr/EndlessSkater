@@ -46,7 +46,7 @@ public class GameRenderer {
     }
 
     public void drawEnemy(Batch batch, float x, float y){
-        _enemyAnimation.draw(_animationElapsed, batch,  x, y);
+            _enemyAnimation.draw(_animationElapsed, batch, x, y);
     }
 
     public void drawObstacle(Batch batch, float x, float y){

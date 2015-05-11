@@ -24,6 +24,7 @@ public class SpriteAnimation extends Animation {
 
     public void draw(float stateTime, Batch batch, float x, float y){
         TextureRegion region = getKeyFrame(stateTime);
+
         batch.draw(region, x, y, Helpers.convertToMeters(region.getRegionWidth() * _scaling),
                 Helpers.convertToMeters(region.getRegionHeight() * _scaling));
     }

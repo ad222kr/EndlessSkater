@@ -17,7 +17,7 @@ public class TheGame extends Game {
 	public static final int ENEMY_BIT = 0x0002;
 	public static final int PLATFORM_BIT = 0x0004;
 	public static final int ENEMY_SENSOR_BIT = 0x0008;
-	public static final int RUNNER_SENSOR_BIT = 0x0010;
+	public static final int PLATFORM_SENSOR_BIT = 0x0010;
 
 
 
