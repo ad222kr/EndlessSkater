@@ -4,6 +4,7 @@ import com.alexd.projectgame.enums.GameState;
 import com.alexd.projectgame.entities.Enemy;
 import com.alexd.projectgame.entities.Obstacle;
 import com.alexd.projectgame.screens.GameScreen;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
@@ -21,6 +22,7 @@ public class GameRenderer {
     private AtlasRegion _runnerJumpRegion;
     private AtlasRegion _obstacleRegion;
     private float _animationElapsed = 0f;
+    private Texture _background;
 
 
     public GameRenderer(){
@@ -29,7 +31,7 @@ public class GameRenderer {
         _obstacleRegion = AssetsManager.getAtlasRegion("obstacle");
         _runnerJumpRegion = AssetsManager.getAtlasRegion("playerjump");
         _enemyAnimation = AssetsManager.getAnimation("enemy");
-
+        _background = AssetsManager.getBackground();
     }
 
     public void updateAnimation(float delta){
@@ -51,6 +53,10 @@ public class GameRenderer {
 
     public void drawObstacle(Batch batch, float x, float y){
         batch.draw(_obstacleRegion, x, y, Constants.OBSTACLE_WIDTH, Constants.OBSTACLE_HEIGHT);
+    }
+
+    public void drawBackground(Batch batch){
+        batch.draw(_background, 0, 0, Helpers.convertToMeters(1280), Helpers.convertToMeters(720));
     }
 
     public void dispose(){

@@ -2,9 +2,11 @@ package com.alexd.projectgame.handlers;
 
 import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.entities.Entity;
+import com.alexd.projectgame.entities.Life;
 import com.alexd.projectgame.enums.GameObjectType;
 import com.alexd.projectgame.entities.Enemy;
 import com.alexd.projectgame.entities.Runner;
+import com.alexd.projectgame.gameinterface.gamehud.actors.Health;
 import com.badlogic.gdx.physics.box2d.*;
 
 /**
@@ -46,6 +48,14 @@ public class ContactHandler implements ContactListener {
 
         if (shouldTrigger(fixtureA, fixtureB, TheGame.RUNNER_BIT, TheGame.PLATFORM_BIT)){
             _runner.landed();
+        }
+
+        if (shouldTrigger(fixtureA, fixtureB, TheGame.RUNNER_BIT, TheGame.LIFE_BIT)){
+            _runner.addHealth();
+            Life life = fixtureA.getBody().getUserData() instanceof Life ? (Life)fixtureA.getBody().getUserData() :
+                    (Life)fixtureB.getBody().getUserData();
+            life.setFlaggedForDeath(true);
+
         }
 
 

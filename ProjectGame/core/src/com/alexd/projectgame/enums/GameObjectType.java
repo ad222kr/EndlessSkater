@@ -9,4 +9,5 @@ public enum GameObjectType {
     RUNNER,
     ENEMY,
     OBSTACLE,
+    LIFE
 }

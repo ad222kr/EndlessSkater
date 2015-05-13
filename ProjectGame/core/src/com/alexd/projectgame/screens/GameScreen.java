@@ -8,6 +8,7 @@ import com.alexd.projectgame.handlers.ContactHandler;
 import com.alexd.projectgame.handlers.GameInputHandler;
 import com.alexd.projectgame.gameinterface.gamehud.GameHudStage;
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
@@ -17,6 +18,8 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 
 import com.badlogic.gdx.utils.viewport.*;
+
+
 
 /**
  * Created by Alex on 2015-04-07.
@@ -39,8 +42,10 @@ public class GameScreen implements Screen {
     private Array<Obstacle> _obstacles;
     private Array<Platform> _platforms;
     private Array<Enemy> _enemies;
+
     private Array<Body> _bodies;
 
+    private Life _life;
 
     private OrthographicCamera _camera;
     private Viewport _viewport;
@@ -179,9 +184,15 @@ public class GameScreen implements Screen {
 
         switch (GameManager.getInstance().getState()){
             case RUNNING:
+                _batch.setColor(Color.WHITE);
+
                 _lastEnemySpawnTime += delta;
                 _totalTime += delta;
                 updateDifficulty();
+
+                if (isTimeForPlatformSpawn() && Helpers.getRandomInt(0, 5) == 5){
+                    _life = new Life(_world, 35, getCorrectYPos(false) + 3, 0.5f, 0.5f);
+                }
 
 
                 if (isTimeForEnemySpawn()){
@@ -201,7 +212,7 @@ public class GameScreen implements Screen {
                 doStep(delta);
                 break;
             case PAUSED:
-                // Pause menu logic and rendering here
+                _batch.setColor(0.5f, 0.5f, 0.5f, 1f);
                 break;
             case GAMEOVER:
                 Gdx.app.log("Game over ", "yo");
@@ -263,6 +274,8 @@ public class GameScreen implements Screen {
             _renderer.updateAnimation(delta);
         }
         _batch.begin();
+
+        _renderer.drawBackground(_batch);
 
         _renderer.drawRunner(_batch, _runner.getBody().getWorldCenter().x - Constants.RUNNER_WIDTH / 2,
                 _runner.getBody().getWorldCenter().y - Constants.RUNNER_HEIGHT / 2, _runner.getIsJumping());
@@ -360,6 +373,7 @@ public class GameScreen implements Screen {
             case GROUND:
                 _platforms.removeValue((Platform)object, false);
                 break;
+
         }
     }
 

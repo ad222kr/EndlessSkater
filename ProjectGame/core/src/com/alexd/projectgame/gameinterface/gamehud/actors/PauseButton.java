@@ -12,13 +12,24 @@ import com.badlogic.gdx.Game;
 public class PauseButton extends GameButton {
 
 
-    public PauseButton(Game game, float x, float y, float height, float width, String skinKey) {
-        super(game, x, y, height, width, skinKey);
+    public PauseButton(Game game, float x, float y, float width, float height) {
+        super(game, x, y, width, height);
+        setBounds(x, y, width, height);
     }
 
     @Override
     protected void onClick() {
         GameManager.getInstance().setPaused();
+    }
+
+    @Override
+    protected String getUpDrawableKey() {
+        return "pause";
+    }
+
+    @Override
+    protected String getDownDrawableKey() {
+        return "pause";
     }
 
 

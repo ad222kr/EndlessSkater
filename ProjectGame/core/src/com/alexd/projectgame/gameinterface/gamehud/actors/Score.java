@@ -2,6 +2,7 @@ package com.alexd.projectgame.gameinterface.gamehud.actors;
 
 import com.alexd.projectgame.utils.AssetsManager;
 import com.alexd.projectgame.utils.GameManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -27,6 +28,12 @@ public class Score extends Actor {
     public void draw(Batch batch, float parentAlpha){
         super.draw(batch, parentAlpha);
         _font.setScale(0.90f, 0.90f);
+        if (GameManager.getInstance().isPaused()){
+            batch.setColor(0.5f, 0.5f, 0.5f, 1f);
+        }
+        else {
+            batch.setColor(Color.WHITE);
+        }
 
         _font.draw(batch, "" + getScore(), X, Y);
 

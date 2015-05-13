@@ -1,11 +1,13 @@
 package com.alexd.projectgame.utils;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 
+import javax.xml.soap.Text;
 import java.util.HashMap;
 
 /**
@@ -14,26 +16,28 @@ import java.util.HashMap;
 public class AssetsManager {
 
     private static final String ATLAS_PATH = "spritesheet.txt";
+    private static final String UI_PATH ="uiatlas.txt";
     private static final String RUNNER_ANIMATION_NAME = "player";
     private static final String ENEMY_ANIMATION_NAME = "enemy";
     private static final String OBSTACLE_NAME = "obstacle";
-    private static final String HEART_FILLED_NAME = "heart-filled";
-    private static final String HEART_DEPLETED_NAME = "heart-depleted";
     private static final String RUNNER_JUMP_NAME = "playerjump";
+    private static final String BACKGROUND = "background.png";
 
     private static HashMap<String, SpriteAnimation> _animationMap;
     private static HashMap<String, AtlasRegion> _atlasRegionMap;
     private static BitmapFont _font;
     private static TextureAtlas _atlas;
     private static Skin _skin;
+    private static Texture _background;
 
 
     public static void initiate(){
         _atlas = new TextureAtlas(ATLAS_PATH);
+        _background = new Texture(BACKGROUND);
         _animationMap = new HashMap<String, SpriteAnimation>();
         _atlasRegionMap = new HashMap<String, AtlasRegion>();
         _font = new BitmapFont(Gdx.files.internal("fonts/thefont.fnt"), Gdx.files.internal("fonts/thefont_0.png"), false);
-        _skin = new Skin(_atlas);
+        _skin = new Skin(new TextureAtlas(UI_PATH));
         loadAssets();
     }
 
@@ -49,14 +53,6 @@ public class AssetsManager {
         // Obstacle
         loadTexture(OBSTACLE_NAME);
 
-        // Hearts for health
-        loadTexture(HEART_DEPLETED_NAME);
-        loadTexture(HEART_FILLED_NAME);
-
-        // Buttons
-        loadTexture("play-button");
-        loadTexture("pause-button");
-        loadTexture("resume-button");
 
 
     }
@@ -96,6 +92,8 @@ public class AssetsManager {
     public static BitmapFont getFont(){
         return _font;
     }
+
+    public static Texture getBackground(){ return _background; }
 
     public static Skin getSkin(){
         // TODO: Own atlas for ui later?

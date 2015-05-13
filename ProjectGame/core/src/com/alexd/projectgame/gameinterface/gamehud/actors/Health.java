@@ -1,8 +1,11 @@
 package com.alexd.projectgame.gameinterface.gamehud.actors;
 
 import com.alexd.projectgame.utils.AssetsManager;
+import com.alexd.projectgame.utils.GameManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
@@ -13,13 +16,13 @@ public class Health extends Actor {
     private final float Y = 650f;
     private int _maxHealth;
     private boolean[] _hearts;
-    private AtlasRegion _filledHeart;
-    private AtlasRegion _depletedHeart;
+    private TextureRegion _filledHeart;
+    private TextureRegion _depletedHeart;
 
     public Health(int maxHealth){
         _maxHealth = maxHealth;
-        _filledHeart = AssetsManager.getAtlasRegion("heart-filled");
-        _depletedHeart = AssetsManager.getAtlasRegion("heart-depleted");
+        _filledHeart = AssetsManager.getSkin().getRegion("heart-filled");
+        _depletedHeart = AssetsManager.getSkin().getRegion("heart-depleted");
         initHealthArray(_maxHealth);
 
 
@@ -52,6 +55,13 @@ public class Health extends Actor {
     public void draw(Batch batch, float parentAlpha){
         super.draw(batch, parentAlpha);
         float x = 100;
+
+        if (GameManager.getInstance().isPaused()){
+            batch.setColor(0.5f, 0.5f, 0.5f, 1f);
+        }
+        else {
+            batch.setColor(Color.WHITE);
+        }
 
         for (boolean isFilled : _hearts){
             if (isFilled){

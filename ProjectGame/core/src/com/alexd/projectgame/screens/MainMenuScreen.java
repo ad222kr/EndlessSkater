@@ -17,6 +17,7 @@ public class MainMenuScreen implements Screen {
     public MainMenuScreen(Game game){
         _game = game;
         _stage = new MainMenuStage(_game);
+        Gdx.input.setInputProcessor(_stage);
     }
 
     @Override

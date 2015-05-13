@@ -4,10 +4,13 @@ import com.alexd.projectgame.utils.AssetsManager;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+
 
 /**
  * Base class for buttons
@@ -19,37 +22,37 @@ public abstract class GameButton extends Button {
     protected float _x;
     protected float _y;
     protected Game _game;
+    protected Skin _skin;
 
-    public GameButton(Game game,  float x, float y, float width, float height, String skinKey){
+    public GameButton(Game game,  float x, float y, float width, float height){
         _game = game;
         _x = x;
         _y = y;
         _width = width;
         _height = height;
-        setUp(skinKey);
+        _skin = AssetsManager.getSkin();
+        setUp();
+        setButtonStyle();
+
     }
 
-    protected void setUp(String skinKey){
-        ButtonStyle style = new ButtonStyle();
-        style.up = new TextureRegionDrawable(AssetsManager.getAtlasRegion(skinKey));
-        setStyle(style);
+    protected void setUp(){
 
-        setBounds(_x - _width / 2, _y - _height / 2, _width, _height);
+
+
 
         addListener(new ClickListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
+            //@Override
+            //public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+              //  return false;
+           // }
 
             @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                super.touchDown(event, x, y, pointer, button);
-                if (clickInBounds(x, y)) {
-                    onClick();
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                onClick();
 
-                }
-                Gdx.app.log("", "" + getTapSquareSize());
+
                 Gdx.app.log("X: " + x, "Y: " + y);
             }
         });
@@ -58,10 +61,16 @@ public abstract class GameButton extends Button {
     }
 
     protected abstract void onClick();
+    protected abstract String getUpDrawableKey();
+    protected abstract String getDownDrawableKey();
 
-    private boolean clickInBounds(float x, float y){
-        return x > 0 && x < getWidth() && y > 0 && y < getHeight();
+    protected void setButtonStyle(){
+        ButtonStyle style = new ButtonStyle();
+        style.up = _skin.getDrawable(getUpDrawableKey());
+        style.down = _skin.getDrawable(getDownDrawableKey());
+        setStyle(style);
     }
+
 
     public void enable(){
         setVisible(true);
@@ -72,4 +81,6 @@ public abstract class GameButton extends Button {
         setVisible(false);
         setTouchable(Touchable.disabled);
     }
+
+
 }

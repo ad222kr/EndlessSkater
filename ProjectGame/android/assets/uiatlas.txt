@@ -1,0 +1,130 @@
+uiatlas.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+exit-pressed
+  rotate: false
+  xy: 417, 147
+  size: 413, 143
+  orig: 413, 143
+  offset: 0, 0
+  index: -1
+exit-unpressed
+  rotate: false
+  xy: 1246, 2
+  size: 413, 143
+  orig: 413, 143
+  offset: 0, 0
+  index: -1
+heart-depleted
+  rotate: false
+  xy: 2, 2
+  size: 74, 60
+  orig: 74, 60
+  offset: 0, 0
+  index: -1
+heart-filled
+  rotate: false
+  xy: 78, 2
+  size: 74, 60
+  orig: 74, 60
+  offset: 0, 0
+  index: -1
+musicoff-pressed
+  rotate: false
+  xy: 527, 2
+  size: 141, 141
+  orig: 141, 141
+  offset: 0, 0
+  index: -1
+musicon-pressed
+  rotate: false
+  xy: 384, 2
+  size: 141, 141
+  orig: 141, 141
+  offset: 0, 0
+  index: -1
+musicon-unpressed
+  rotate: false
+  xy: 241, 2
+  size: 141, 141
+  orig: 141, 141
+  offset: 0, 0
+  index: -1
+outfits-pressed
+  rotate: false
+  xy: 2, 147
+  size: 413, 143
+  orig: 413, 143
+  offset: 0, 0
+  index: -1
+outfits-unpressed
+  rotate: false
+  xy: 832, 147
+  size: 413, 143
+  orig: 413, 143
+  offset: 0, 0
+  index: -1
+pause
+  rotate: false
+  xy: 154, 2
+  size: 85, 97
+  orig: 85, 97
+  offset: 0, 0
+  index: -1
+play-pressed
+  rotate: false
+  xy: 2, 292
+  size: 413, 143
+  orig: 413, 143
+  offset: 0, 0
+  index: -1
+play-unpressed
+  rotate: false
+  xy: 832, 292
+  size: 413, 143
+  orig: 413, 143
+  offset: 0, 0
+  index: -1
+resume-pressed
+  rotate: false
+  xy: 417, 292
+  size: 413, 143
+  orig: 413, 143
+  offset: 0, 0
+  index: -1
+resume-unpressed
+  rotate: false
+  xy: 1247, 147
+  size: 413, 143
+  orig: 413, 143
+  offset: 0, 0
+  index: -1
+soundoff-pressed
+  rotate: false
+  xy: 958, 2
+  size: 142, 141
+  orig: 142, 141
+  offset: 0, 0
+  index: -1
+soundoff-unpressed
+  rotate: false
+  xy: 814, 2
+  size: 142, 141
+  orig: 142, 141
+  offset: 0, 0
+  index: -1
+soundon-pressed
+  rotate: false
+  xy: 670, 2
+  size: 142, 141
+  orig: 142, 141
+  offset: 0, 0
+  index: -1
+soundon-unpressed
+  rotate: false
+  xy: 1102, 2
+  size: 142, 141
+  orig: 142, 141
+  offset: 0, 0
+  index: -1

@@ -17,6 +17,8 @@ public class GameManager {
 
     private GameState _gameState;
     private Difficulty _difficulty;
+    private boolean _isSoundEnabled = true; // for testing sound btn
+    private boolean _isMusicEnabled = true; // for testing sound btn
 
 
     private GameManager() {
@@ -75,4 +77,9 @@ public class GameManager {
     public float getStaticObjectSpeed(){
         return _difficulty.getPlatformAndObstacleSpeed();
     }
+
+    public boolean isSoundEnabled(){ return _isSoundEnabled; } // for testing sound btn
+    public boolean isMusicEnabled(){ return _isMusicEnabled; }// for testing sound btn
+    public void setSound(boolean value){ _isSoundEnabled = value; }
+    public void setMusic(boolean value){ _isMusicEnabled = value; }
 }

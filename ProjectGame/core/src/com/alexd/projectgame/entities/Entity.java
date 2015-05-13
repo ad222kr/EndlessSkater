@@ -78,7 +78,4 @@ public abstract class Entity {
         _flaggedForDeath = value;
     }
 
-
-
-
 }

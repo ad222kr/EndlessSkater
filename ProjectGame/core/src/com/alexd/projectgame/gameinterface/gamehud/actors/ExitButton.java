@@ -1,33 +1,36 @@
 package com.alexd.projectgame.gameinterface.gamehud.actors;
 
 import com.alexd.projectgame.gameinterface.shared.GameButton;
+import com.alexd.projectgame.screens.MainMenuScreen;
+import com.alexd.projectgame.utils.AssetsManager;
 import com.alexd.projectgame.utils.GameManager;
 import com.badlogic.gdx.Game;
 
 /**
  * Created by Alex on 2015-05-10.
  */
-public class ResumeButton extends GameButton {
+public class ExitButton extends GameButton {
 
 
-    public ResumeButton(Game game, float x, float y, float width, float height) {
+    public ExitButton(Game game, float x, float y, float width, float height) {
         super(game, x, y, width, height);
     }
 
     @Override
     protected void onClick() {
         if (GameManager.getInstance().isPaused()){
-            GameManager.getInstance().setRunning();
+            _game.setScreen(new MainMenuScreen(_game));
         }
     }
 
     @Override
     protected String getUpDrawableKey() {
-        return "resume-unpressed";
+        // TODO: change ALL hardcoded strings to constants later, cba now
+        return "exit-unpressed";
     }
 
     @Override
     protected String getDownDrawableKey() {
-        return "resume-pressed";
+        return "exit-pressed";
     }
 }

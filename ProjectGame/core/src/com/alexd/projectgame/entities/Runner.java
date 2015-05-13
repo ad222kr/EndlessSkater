@@ -75,7 +75,7 @@ public class Runner extends Entity {
     }
 
     public void addHealth(){
-        if (_health < 3){
+        if (_health < MAX_HEALTH){
             _health++;
         }
     }

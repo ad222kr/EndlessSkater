@@ -1,34 +1,29 @@
 package com.alexd.projectgame.gameinterface.mainmenu.actors;
 
 import com.alexd.projectgame.gameinterface.shared.GameButton;
-import com.alexd.projectgame.screens.GameScreen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 
 /**
- * Created by Alex on 2015-05-10.
+ * Created by Alex on 2015-05-13.
  */
-public class PlayButton extends GameButton {
-
-
-    public PlayButton(Game game, float x, float y, float width, float height) {
+public class OutfitsButton extends GameButton{
+    public OutfitsButton(Game game, float x, float y, float width, float height) {
         super(game, x, y, width, height);
     }
 
     @Override
     protected void onClick() {
-
-        Gdx.app.log("clicke play!", "");
-        _game.setScreen(new GameScreen(_game));
+        Gdx.app.log("Outfits pressed", "");
     }
 
     @Override
     protected String getUpDrawableKey() {
-        return "play-unpressed";
+        return "outfits-unpressed";
     }
 
     @Override
     protected String getDownDrawableKey() {
-        return "play-pressed";
+        return "outfits-pressed";
     }
 }
