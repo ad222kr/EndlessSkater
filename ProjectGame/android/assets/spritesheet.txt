@@ -4,50 +4,78 @@ filter: Linear,Linear
 repeat: none
 enemy0
   rotate: false
-  xy: 2, 2
-  size: 75, 100
-  orig: 75, 100
+  xy: 114, 2
+  size: 54, 77
+  orig: 54, 77
   offset: 0, 0
   index: -1
 enemy1
   rotate: false
-  xy: 79, 2
-  size: 75, 100
-  orig: 75, 100
+  xy: 170, 2
+  size: 54, 77
+  orig: 54, 77
   offset: 0, 0
   index: -1
 enemy2
   rotate: false
-  xy: 156, 2
-  size: 75, 100
-  orig: 75, 100
+  xy: 58, 2
+  size: 54, 77
+  orig: 54, 77
+  offset: 0, 0
+  index: -1
+enemy3
+  rotate: false
+  xy: 2, 2
+  size: 54, 76
+  orig: 54, 76
+  offset: 0, 0
+  index: -1
+obstacle
+  rotate: false
+  xy: 548, 2
+  size: 125, 34
+  orig: 125, 34
+  offset: 0, 0
+  index: -1
+platform
+  rotate: false
+  xy: 2, 81
+  size: 1500, 320
+  orig: 1500, 320
   offset: 0, 0
   index: -1
 player0
   rotate: false
-  xy: 233, 2
-  size: 75, 100
-  orig: 75, 100
+  xy: 482, 2
+  size: 64, 76
+  orig: 64, 76
   offset: 0, 0
   index: -1
 player1
   rotate: false
-  xy: 310, 2
-  size: 75, 100
-  orig: 75, 100
+  xy: 350, 2
+  size: 64, 76
+  orig: 64, 76
   offset: 0, 0
   index: -1
 player2
   rotate: false
-  xy: 387, 2
-  size: 75, 100
-  orig: 75, 100
+  xy: 416, 2
+  size: 64, 76
+  orig: 64, 76
+  offset: 0, 0
+  index: -1
+player3
+  rotate: false
+  xy: 284, 2
+  size: 64, 76
+  orig: 64, 76
   offset: 0, 0
   index: -1
 playerjump
   rotate: false
-  xy: 464, 2
-  size: 75, 100
-  orig: 75, 100
+  xy: 226, 2
+  size: 56, 76
+  orig: 56, 76
   offset: 0, 0
   index: -1

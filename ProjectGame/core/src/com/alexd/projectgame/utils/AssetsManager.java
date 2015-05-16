@@ -22,6 +22,10 @@ public class AssetsManager {
     private static final String OBSTACLE_NAME = "obstacle";
     private static final String RUNNER_JUMP_NAME = "playerjump";
     private static final String BACKGROUND = "background.png";
+    private static final String GROUND_LEFT_NAME = "ground-left";
+    private static final String GROUND_MIDDLE_NAME = "ground-middle";
+    private static final String GROUND_RIGHT_NAME = "ground-right";
+    private static final String PLATFORM_NAME = "platform";
 
     private static HashMap<String, SpriteAnimation> _animationMap;
     private static HashMap<String, AtlasRegion> _atlasRegionMap;
@@ -43,15 +47,18 @@ public class AssetsManager {
 
     public static void loadAssets(){
         // Runner animation
-
-        loadAnimation(0.2f, RUNNER_ANIMATION_NAME, 3);
+        loadTexture(PLATFORM_NAME);
+        loadAnimation(0.2f, RUNNER_ANIMATION_NAME, 4);
         loadTexture(RUNNER_JUMP_NAME);
 
         // Enemy sprite
-        loadAnimation(0.2f, ENEMY_ANIMATION_NAME, 3);
+        loadAnimation(0.2f, ENEMY_ANIMATION_NAME, 4);
 
         // Obstacle
         loadTexture(OBSTACLE_NAME);
+
+        // ground/platform
+
 
 
 
@@ -64,7 +71,8 @@ public class AssetsManager {
         for (int i = 0; i < numberOfFrames; i++){
             frames.add(_atlas.findRegion(key + "" + i));
         }
-        _animationMap.put(key, new SpriteAnimation(animationStep, frames, Animation.PlayMode.LOOP_PINGPONG));
+        _animationMap.put(key, new SpriteAnimation(animationStep, frames, Animation.PlayMode.LOOP));
+
     }
 
     private static void loadTexture(String key){

@@ -1,14 +1,8 @@
 package com.alexd.projectgame.utils;
 
-import com.alexd.projectgame.enums.GameState;
-import com.alexd.projectgame.entities.Enemy;
-import com.alexd.projectgame.entities.Obstacle;
-import com.alexd.projectgame.screens.GameScreen;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
 /**
@@ -19,9 +13,12 @@ public class GameRenderer {
 
     private SpriteAnimation _runnerAnimation;
     private SpriteAnimation _enemyAnimation;
-    private AtlasRegion _runnerJumpRegion;
+    private Sprite _runnerJumpRegion;
     private AtlasRegion _obstacleRegion;
-    private float _animationElapsed = 0f;
+    private AtlasRegion _platformRegion;
+    private TextureRegion _heartRegion;
+    private float _runnerAnimationElapsed;
+    private float _enemyAnimationElapsed;
     private Texture _background;
 
 
@@ -29,30 +26,54 @@ public class GameRenderer {
         // Animation with textureatlas test
         _runnerAnimation = AssetsManager.getAnimation("player");
         _obstacleRegion = AssetsManager.getAtlasRegion("obstacle");
-        _runnerJumpRegion = AssetsManager.getAtlasRegion("playerjump");
+        _runnerJumpRegion = new Sprite(AssetsManager.getAtlasRegion("playerjump"));
         _enemyAnimation = AssetsManager.getAnimation("enemy");
         _background = AssetsManager.getBackground();
+        _platformRegion = AssetsManager.getAtlasRegion("platform");
+        _heartRegion = AssetsManager.getSkin().getRegion("heart-filled");
+
     }
 
     public void updateAnimation(float delta){
-        _animationElapsed += delta;
+        _runnerAnimationElapsed += delta * GameManager.getInstance().getMultiplyer();
+        _enemyAnimationElapsed += delta * GameManager.getInstance().getMultiplyer();
     }
 
     public void drawRunner(Batch batch, float x, float y, boolean isJumping){
         if (!isJumping){
-            _runnerAnimation.draw(_animationElapsed, batch, x, y);
+            _runnerAnimation.draw(_runnerAnimationElapsed, batch, x, y);
         }
         else {
-            batch.draw(_runnerJumpRegion, x, y, Constants.RUNNER_WIDTH, Constants.RUNNER_HEIGHT);
+            batch.draw(_runnerJumpRegion, x, y, Helpers.convertToMeters(_runnerJumpRegion.getWidth()),
+                    Helpers.convertToMeters(_runnerJumpRegion.getHeight()));
+            _runnerAnimationElapsed = 0;
+
         }
     }
 
     public void drawEnemy(Batch batch, float x, float y){
-            _enemyAnimation.draw(_animationElapsed, batch, x, y);
+            _enemyAnimation.draw(_enemyAnimationElapsed, batch, x, y);
     }
 
     public void drawObstacle(Batch batch, float x, float y){
         batch.draw(_obstacleRegion, x, y, Constants.OBSTACLE_WIDTH, Constants.OBSTACLE_HEIGHT);
+    }
+
+    public void drawPlatform(Batch batch, float x, float y, float platformWidth){
+        if (platformWidth == Constants.PLATFORM_WIDTH){
+            batch.draw(_platformRegion, x, y, Helpers.convertToMeters(_platformRegion.getRegionWidth()),
+                    Helpers.convertToMeters(_platformRegion.getRegionHeight()));
+        }
+        else {
+            batch.draw(_platformRegion, x + Constants.PLATFORM_WIDTH / 2, y,
+                    Helpers.convertToMeters(_platformRegion.getRegionWidth()), Helpers.convertToMeters(_platformRegion.getRegionHeight()));
+
+        }
+
+    }
+
+    public void drawHeart(Batch batch, float x, float y){
+        batch.draw(_heartRegion, x, y, 0.5f, 0.5f);
     }
 
     public void drawBackground(Batch batch){

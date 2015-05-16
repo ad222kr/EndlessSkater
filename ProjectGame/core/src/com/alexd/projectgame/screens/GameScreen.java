@@ -41,11 +41,11 @@ public class GameScreen implements Screen {
     private Runner _runner;
     private Array<Obstacle> _obstacles;
     private Array<Platform> _platforms;
+    private Array<Life> _life;
     private Array<Enemy> _enemies;
 
     private Array<Body> _bodies;
 
-    private Life _life;
 
     private OrthographicCamera _camera;
     private Viewport _viewport;
@@ -88,6 +88,7 @@ public class GameScreen implements Screen {
         _platforms = new Array<Platform>(4);
         _enemies = new Array<Enemy>(4);
         _obstacles = new Array<Obstacle>(4);
+        _life = new Array<Life>(4);
 
 
 
@@ -191,7 +192,7 @@ public class GameScreen implements Screen {
                 updateDifficulty();
 
                 if (isTimeForPlatformSpawn() && Helpers.getRandomInt(0, 5) == 5){
-                    _life = new Life(_world, 35, getCorrectYPos(false) + 3, 0.5f, 0.5f);
+                    _life.add(new Life(_world, 35, getCorrectYPos(false) + 3, 0.5f, 0.5f));
                 }
 
 
@@ -244,11 +245,15 @@ public class GameScreen implements Screen {
         // already on screen
         for (Platform platform : _platforms){
             platform.getBody().setLinearVelocity(
-                    Constants.PLATFORM_SPEED * GameManager.getInstance().getMultiplyer(), 0);
+                    GameManager.getInstance().getStaticObjectSpeed(), 0);
         }
         for (Obstacle obstacle : _obstacles){
             obstacle.getBody().setLinearVelocity(
-                    Constants.OBSTACLE_SPEED* GameManager.getInstance().getMultiplyer(), 0);
+                    GameManager.getInstance().getStaticObjectSpeed(), 0);
+        }
+
+        for (Life life : _life){
+            life.getBody().setLinearVelocity(GameManager.getInstance().getStaticObjectSpeed(), 0);
         }
     }
 
@@ -267,6 +272,16 @@ public class GameScreen implements Screen {
 
         //_world.step(1/60f, 8, 3);
 
+
+
+        // Fixed timestep
+        /*accumulator += delta;
+
+        while (accumulator >= delta) {
+            _world.step(TIME_STEP, 6, 2);
+            accumulator -= TIME_STEP;
+        }*/
+
     }
 
     private void draw(float delta){
@@ -275,20 +290,43 @@ public class GameScreen implements Screen {
         }
         _batch.begin();
 
-        _renderer.drawBackground(_batch);
+        //_renderer.drawBackground(_batch);
+
+
+        for (Platform platform : _platforms){
+            _renderer.drawPlatform(_batch, platform.getBody().getWorldCenter().x - Constants.PLATFORM_WIDTH / 2,
+                    platform.getBody().getWorldCenter().y - Constants.PLATFORM_HEIGHT / 2, platform.getWidth());
+        }
 
         _renderer.drawRunner(_batch, _runner.getBody().getWorldCenter().x - Constants.RUNNER_WIDTH / 2,
                 _runner.getBody().getWorldCenter().y - Constants.RUNNER_HEIGHT / 2, _runner.getIsJumping());
 
-        for (Enemy enemy : _enemies){
-            _renderer.drawEnemy(_batch, enemy.getBody().getWorldCenter().x - Constants.ENEMY_WIDTH / 2,
-                    enemy.getBody().getWorldCenter().y - Constants.ENEMY_HEIGHT / 2);
+        if (_enemies.size > 0){
+            for (Enemy enemy : _enemies){
+                _renderer.drawEnemy(_batch, enemy.getBody().getWorldCenter().x - Constants.ENEMY_WIDTH / 2,
+                        enemy.getBody().getWorldCenter().y - Constants.ENEMY_HEIGHT / 2);
+            }
+
         }
 
-       /* for (Obstacle obstacle : _obstacles){
-            _renderer.drawObstacle(_batch, obstacle.getBody().getWorldCenter().x - Constants.OBSTACLE_WIDTH / 2,
-                    obstacle.getBody().getWorldCenter().y - Constants.OBSTACLE_HEIGHT / 2);
-        }*/
+
+
+        if (_life.size > 0){
+            for (Life life : _life){
+                _renderer.drawHeart(_batch, life.getBody().getWorldCenter().x - 0.5f / 2,
+                        life.getBody().getWorldCenter().y - 0.5f / 2);
+            }
+        }
+
+
+
+        if (_obstacles.size > 0){
+            for (Obstacle obstacle : _obstacles) {
+                _renderer.drawObstacle(_batch, obstacle.getBody().getWorldCenter().x - Constants.OBSTACLE_WIDTH / 2,
+                        obstacle.getBody().getWorldCenter().y - Constants.OBSTACLE_HEIGHT / 2);
+            }
+        }
+
         _batch.end();
 
         _gameHudStage.draw();
@@ -372,6 +410,9 @@ public class GameScreen implements Screen {
                 break;
             case GROUND:
                 _platforms.removeValue((Platform)object, false);
+                break;
+            case LIFE:
+                _life.removeValue((Life)object, false);
                 break;
 
         }

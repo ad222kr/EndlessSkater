@@ -36,13 +36,6 @@ public class GameHudStage extends Stage {
         _score = new Score();
         _health = new Health(_screen.getRunner().getHealth());
         _pauseButton = new PauseButton(_screen.getGame(), 40,650, 40, 40);
-        /*_pauseGroup = new HorizontalGroup();
-        _pauseGroup.setVisible(false);
-        _pauseGroup.addActor(new ExitButton(_screen.getGame(), TheGame.APP_WIDTH / 2, TheGame.APP_HEIGHT / 3, 350, 100));
-        _pauseGroup.addActor(new ResumeButton(_screen.getGame(), TheGame.APP_WIDTH / 2, TheGame.APP_HEIGHT / 2, 350, 100));
-
-        _pauseGroup.pad(100f);
-        _pauseGroup.setPosition(TheGame.APP_WIDTH / 2 - 800 / 2 , TheGame.APP_HEIGHT / 2 - 200);*/
 
         _pauseTable = new Table();
         _pauseTable.pad(200,0, 0,0);
@@ -56,13 +49,9 @@ public class GameHudStage extends Stage {
         _pauseTable.add(new ResumeButton(_screen.getGame(), TheGame.APP_WIDTH / 2, TheGame.APP_HEIGHT / 2, 350, 100)).pad(0, 0, 20, 0);
 
 
-
-
         addActor(_score);
         addActor(_health);
         addActor(_pauseButton);
-
-
         addActor(_pauseTable);
     }
 
