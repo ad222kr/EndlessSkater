@@ -1,15 +1,17 @@
 package com.alexd.projectgame.gameinterface.mainmenu.actors;
 
-import com.alexd.projectgame.gameinterface.shared.GameButton;
+import com.alexd.projectgame.gameinterface.shared.TextGameButton;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 
 /**
  * Created by Alex on 2015-05-13.
  */
-public class OutfitsButton extends GameButton{
-    public OutfitsButton(Game game, float x, float y, float width, float height) {
-        super(game, x, y, width, height);
+public class OutfitsButton extends TextGameButton {
+
+
+    public OutfitsButton(String text, TextButtonStyle style, Game game) {
+        super(text, style, game);
     }
 
     @Override
@@ -17,13 +19,5 @@ public class OutfitsButton extends GameButton{
         Gdx.app.log("Outfits pressed", "");
     }
 
-    @Override
-    protected String getUpDrawableKey() {
-        return "standardbutton-unpressed";
-    }
 
-    @Override
-    protected String getDownDrawableKey() {
-        return "standardbutton-pressed";
-    }
 }

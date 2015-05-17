@@ -1,19 +1,20 @@
 package com.alexd.projectgame.gameinterface.gamehud.actors;
 
-import com.alexd.projectgame.gameinterface.shared.GameButton;
+import com.alexd.projectgame.gameinterface.shared.TextGameButton;
 import com.alexd.projectgame.utils.GameManager;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 
 /**
  * Created by Alex on 2015-05-10.
  */
-public class ResumeButton extends GameButton {
+public class ResumeButton extends TextGameButton {
 
 
-    public ResumeButton(Game game, float x, float y, float width, float height) {
-        super(game, x, y, width, height);
+    public ResumeButton(String text, TextButtonStyle style, Game game) {
+        super(text, style, game);
+
     }
-
     @Override
     protected void onClick() {
         if (GameManager.getInstance().isPaused()){
@@ -21,13 +22,5 @@ public class ResumeButton extends GameButton {
         }
     }
 
-    @Override
-    protected String getUpDrawableKey() {
-        return "greenbutton-unpressed";
-    }
 
-    @Override
-    protected String getDownDrawableKey() {
-        return "greenbutton-pressed";
-    }
 }

@@ -27,7 +27,7 @@ public class Score extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha){
         super.draw(batch, parentAlpha);
-        _font.setScale(0.90f, 0.90f);
+        _font.setScale(0.5f, 0.5f);
         if (GameManager.getInstance().isPaused()){
             batch.setColor(0.5f, 0.5f, 0.5f, 1f);
         }

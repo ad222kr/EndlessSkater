@@ -23,9 +23,8 @@ public abstract class GameButton extends Button {
     protected float _y;
     protected Game _game;
     protected Skin _skin;
-    protected boolean _hasText;
 
-    public GameButton(Game game,  float x, float y, float width, float height){
+    public GameButton(Game game, float x, float y, float width, float height){
         _game = game;
         _x = x;
         _y = y;
@@ -64,7 +63,6 @@ public abstract class GameButton extends Button {
     protected abstract void onClick();
     protected abstract String getUpDrawableKey();
     protected abstract String getDownDrawableKey();
-    protected abstract String getLabelText();
 
     protected void setButtonStyle(){
         ButtonStyle style = new ButtonStyle();

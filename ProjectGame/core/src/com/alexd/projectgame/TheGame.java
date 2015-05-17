@@ -32,7 +32,7 @@ public class TheGame extends Game {
 	@Override
 	public void create(){
 		AssetsManager.initiate();
-		Gdx.graphics.setVSync(true);
+		//Gdx.graphics.setVSync(true);
 
 		setScreen(new MainMenuScreen(this));
 

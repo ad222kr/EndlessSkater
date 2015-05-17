@@ -20,7 +20,7 @@ public class AndroidLauncher extends AndroidApplication {
 
 		cfg.useAccelerometer = false;
 		cfg.useCompass = false;
-		cfg.numSamples = 8;
+		cfg.numSamples = 2;
 
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){

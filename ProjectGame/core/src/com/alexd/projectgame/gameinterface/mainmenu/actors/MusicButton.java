@@ -7,7 +7,7 @@ import com.badlogic.gdx.Game;
 /**
  * Created by Alex on 2015-05-13.
  */
-public class MusicButton extends GameButton{
+public class MusicButton extends GameButton {
 
 
     public MusicButton(Game game, float x, float y, float width, float height) {

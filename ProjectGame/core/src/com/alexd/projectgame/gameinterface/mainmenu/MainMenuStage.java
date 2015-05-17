@@ -5,22 +5,18 @@ import com.alexd.projectgame.gameinterface.mainmenu.actors.MusicButton;
 import com.alexd.projectgame.gameinterface.mainmenu.actors.OutfitsButton;
 import com.alexd.projectgame.gameinterface.mainmenu.actors.PlayButton;
 import com.alexd.projectgame.gameinterface.mainmenu.actors.SoundButton;
-import com.alexd.projectgame.gameinterface.shared.GameButton;
 import com.alexd.projectgame.utils.AssetsManager;
 import com.alexd.projectgame.screens.GameScreen;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-
+import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton.*;
 
 
 /**
@@ -34,15 +30,30 @@ public class MainMenuStage extends Stage{
     private SoundButton _soundButton;
     private MusicButton _musicButton;
 
+    private ImageTextButton _btnTest;
+
+
+
 
     public MainMenuStage(Game game){
-        super(new StretchViewport(TheGame.APP_WIDTH, TheGame.APP_HEIGHT));
+        super(new StretchViewport(TheGame.APP_WIDTH, TheGame.APP_HEIGHT, new OrthographicCamera(TheGame.APP_WIDTH, TheGame.APP_HEIGHT)));
 
         _game = game;
-        _playButton = new PlayButton(_game, TheGame.APP_WIDTH / 2, TheGame.APP_HEIGHT / 2, 350, 100);
-        _outfitsButton = new OutfitsButton(_game, TheGame.APP_WIDTH / 2, TheGame.APP_HEIGHT / 2, 350, 100);
+        //_playButton = new PlayButton(_game, TheGame.APP_WIDTH / 2, TheGame.APP_HEIGHT / 2, 350, 100);
+
         _soundButton = new SoundButton(_game, 0,0,0,0);
         _musicButton = new MusicButton(_game, 0,0,0,0);
+
+
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
+        style.up = new TextureRegionDrawable(AssetsManager.getSkin().getRegion("greenbutton-unpressed"));
+        style.down = new TextureRegionDrawable(AssetsManager.getSkin().getRegion("greenbutton-pressed"));
+        style.font = AssetsManager.getFont();
+
+
+
+
+        _playButton = new PlayButton("PLAY", style, _game);
 
 
 

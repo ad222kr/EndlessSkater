@@ -3,7 +3,6 @@ package com.alexd.projectgame.gameinterface.mainmenu.actors;
 import com.alexd.projectgame.gameinterface.shared.GameButton;
 import com.alexd.projectgame.utils.GameManager;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 
 /**
  * Created by Alex on 2015-05-13.

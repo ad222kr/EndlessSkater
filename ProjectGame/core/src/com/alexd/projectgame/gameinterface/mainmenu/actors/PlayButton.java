@@ -1,6 +1,6 @@
 package com.alexd.projectgame.gameinterface.mainmenu.actors;
 
-import com.alexd.projectgame.gameinterface.shared.GameButton;
+import com.alexd.projectgame.gameinterface.shared.TextGameButton;
 import com.alexd.projectgame.screens.GameScreen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -8,11 +8,11 @@ import com.badlogic.gdx.Gdx;
 /**
  * Created by Alex on 2015-05-10.
  */
-public class PlayButton extends GameButton {
+public class PlayButton extends TextGameButton {
 
 
-    public PlayButton(Game game, float x, float y, float width, float height) {
-        super(game, x, y, width, height);
+    public PlayButton(String text, TextButtonStyle style, Game game) {
+        super(text, style, game);
     }
 
     @Override
@@ -22,13 +22,5 @@ public class PlayButton extends GameButton {
         _game.setScreen(new GameScreen(_game));
     }
 
-    @Override
-    protected String getUpDrawableKey() {
-        return "greenbutton-unpressed";
-    }
 
-    @Override
-    protected String getDownDrawableKey() {
-        return "greenbutton-pressed";
-    }
 }
