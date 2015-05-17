@@ -26,11 +26,11 @@ public class ExitButton extends GameButton {
     @Override
     protected String getUpDrawableKey() {
         // TODO: change ALL hardcoded strings to constants later, cba now
-        return "exit-unpressed";
+        return "standardbutton-unpressed";
     }
 
     @Override
     protected String getDownDrawableKey() {
-        return "exit-pressed";
+        return "standardbutton-pressed";
     }
 }

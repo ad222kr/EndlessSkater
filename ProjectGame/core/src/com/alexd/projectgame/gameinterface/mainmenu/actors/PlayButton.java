@@ -24,11 +24,11 @@ public class PlayButton extends GameButton {
 
     @Override
     protected String getUpDrawableKey() {
-        return "play-unpressed";
+        return "greenbutton-unpressed";
     }
 
     @Override
     protected String getDownDrawableKey() {
-        return "play-pressed";
+        return "greenbutton-pressed";
     }
 }

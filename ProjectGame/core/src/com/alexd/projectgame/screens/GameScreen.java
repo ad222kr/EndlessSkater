@@ -27,13 +27,13 @@ import com.badlogic.gdx.utils.viewport.*;
 public class GameScreen implements Screen {
 
 
-    private boolean isDebug = true; // Set to false to hide debugrender
+    private boolean isDebug = false;// Set to false to hide debugrender
 
     private final int VIEWPORT_WIDTH = Helpers.convertToMeters(TheGame.APP_WIDTH);
     private final int VIEWPORT_HEIGHT = Helpers.convertToMeters(TheGame.APP_HEIGHT);
 
 
-    private final float TIME_STEP = 1 / 300f;
+    private final float TIME_STEP = 1/300f;
     private float accumulator = 0;
 
     private Game _game;
@@ -45,6 +45,7 @@ public class GameScreen implements Screen {
     private Array<Enemy> _enemies;
 
     private Array<Body> _bodies;
+    private EntityManager _entityManager;
 
 
     private OrthographicCamera _camera;
@@ -62,6 +63,7 @@ public class GameScreen implements Screen {
     public GameScreen(Game game) {
         _game = game;
         GameManager.getInstance().setRunning();
+        _entityManager = new EntityManager();
         setUp();
         initiate();
     }
@@ -72,6 +74,8 @@ public class GameScreen implements Screen {
         _platforms.add(new Platform(_world, Constants.PLATFORM_INIT_X, Constants.PLATFORM_INIT_Y,
                 Constants.PLATFORM_INIT_WIDTH,
                 Constants.PLATFORM_HEIGHT));
+
+        _entityManager.addEntity(_platforms.get(_platforms.size - 1)); // must refactor this later
 
         _lastEnemySpawnTime = 0;
         _timeBetweenEnemies = 5;
@@ -84,6 +88,7 @@ public class GameScreen implements Screen {
         _world = new World(Constants.WORLD_GRAVITY, true);
         _runner = new Runner(_world, Constants.RUNNER_X, Constants.RUNNER_Y,
                 Constants.RUNNER_WIDTH, Constants.RUNNER_HEIGHT);
+        _entityManager.addEntity(_runner);
         _bodies = new Array<Body>();
         _platforms = new Array<Platform>(4);
         _enemies = new Array<Enemy>(4);
@@ -126,6 +131,7 @@ public class GameScreen implements Screen {
         Gdx.app.log("Enemy speed: ", ""+enemy.getBody().getLinearVelocity().x);
 
         _enemies.add(enemy);
+        _entityManager.addEntity(enemy);
     }
 
     private void spawnObstacle(){
@@ -134,6 +140,7 @@ public class GameScreen implements Screen {
 
         _obstacles.add(new Obstacle(_world, x, y, Constants.OBSTACLE_WIDTH,
                 Constants.OBSTACLE_HEIGHT));
+        _entityManager.addEntity(_obstacles.get(_obstacles.size - 1));
     }
 
     private void spawnPlatform(){
@@ -142,6 +149,7 @@ public class GameScreen implements Screen {
                 Constants.PLATFORM_HEIGHT);
         Gdx.app.log("Platform speed: ", ""+platform.getBody().getLinearVelocity().x);
         _platforms.add(platform);
+        _entityManager.addEntity(platform);
 
 
 
@@ -181,7 +189,7 @@ public class GameScreen implements Screen {
         // Main game loop
         Gdx.gl.glClearColor(1, 1, 0.5f, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        draw(delta);
+
 
         switch (GameManager.getInstance().getState()){
             case RUNNING:
@@ -193,6 +201,7 @@ public class GameScreen implements Screen {
 
                 if (isTimeForPlatformSpawn() && Helpers.getRandomInt(0, 5) == 5){
                     _life.add(new Life(_world, 35, getCorrectYPos(false) + 3, 0.5f, 0.5f));
+                    _entityManager.addEntity(_life.get(_life.size - 1));
                 }
 
 
@@ -218,12 +227,10 @@ public class GameScreen implements Screen {
             case GAMEOVER:
                 Gdx.app.log("Game over ", "yo");
                 _game.setScreen(new MainMenuScreen(_game));
-
-
-                break;
+                return;
         }
 
-
+        draw(delta);
 
 
     }
@@ -258,30 +265,17 @@ public class GameScreen implements Screen {
     }
 
     private void doStep(float delta) {
-        // Advances the physics world by a fixed timestep
-
-        accumulator += delta;
-        while (accumulator >= TIME_STEP * 2){
-            _world.step(TIME_STEP, 6, 2);
+        // fixed time step
+        // max frame time to avoid spiral of death (on slow devices)
+        float framteTime = Math.min(delta, 0.25f);
+        accumulator += framteTime;
+        while (accumulator >= TIME_STEP){
+            _entityManager.saveCurrentPosition();
+            _entityManager.updateEntities();
+            _world.step(TIME_STEP,6, 2);
             accumulator -= TIME_STEP;
+            _entityManager.interpolate(accumulator / TIME_STEP);
         }
-        // Step it again with whats left of the accumulator, this prevents
-        // the stuttering
-        _world.step(accumulator, 6, 2);
-        accumulator = 0;
-
-        //_world.step(1/60f, 8, 3);
-
-
-
-        // Fixed timestep
-        /*accumulator += delta;
-
-        while (accumulator >= delta) {
-            _world.step(TIME_STEP, 6, 2);
-            accumulator -= TIME_STEP;
-        }*/
-
     }
 
     private void draw(float delta){
@@ -290,21 +284,18 @@ public class GameScreen implements Screen {
         }
         _batch.begin();
 
-        //_renderer.drawBackground(_batch);
 
 
         for (Platform platform : _platforms){
-            _renderer.drawPlatform(_batch, platform.getBody().getWorldCenter().x - Constants.PLATFORM_WIDTH / 2,
-                    platform.getBody().getWorldCenter().y - Constants.PLATFORM_HEIGHT / 2, platform.getWidth());
+            _renderer.drawPlatform(_batch, platform.getPosition().x - platform.getWidth() / 2, platform.getPosition().y - platform.getHeight() / 2, platform.getWidth());
         }
 
-        _renderer.drawRunner(_batch, _runner.getBody().getWorldCenter().x - Constants.RUNNER_WIDTH / 2,
-                _runner.getBody().getWorldCenter().y - Constants.RUNNER_HEIGHT / 2, _runner.getIsJumping());
+
+        _renderer.drawRunner(_batch, _runner.getPosition().x - _runner.getWidth() / 2, _runner.getPosition().y - _runner.getHeight() / 2, _runner.getIsJumping());
 
         if (_enemies.size > 0){
             for (Enemy enemy : _enemies){
-                _renderer.drawEnemy(_batch, enemy.getBody().getWorldCenter().x - Constants.ENEMY_WIDTH / 2,
-                        enemy.getBody().getWorldCenter().y - Constants.ENEMY_HEIGHT / 2);
+                _renderer.drawEnemy(_batch, enemy.getPosition().x - enemy.getWidth() / 2, enemy.getPosition().y - enemy.getHeight() / 2);
             }
 
         }
@@ -313,8 +304,9 @@ public class GameScreen implements Screen {
 
         if (_life.size > 0){
             for (Life life : _life){
-                _renderer.drawHeart(_batch, life.getBody().getWorldCenter().x - 0.5f / 2,
-                        life.getBody().getWorldCenter().y - 0.5f / 2);
+
+
+                _renderer.drawHeart(_batch, life.getPosition().x - life.getWidth() / 2, life.getPosition().y - life.getHeight() / 2);
             }
         }
 
@@ -322,8 +314,9 @@ public class GameScreen implements Screen {
 
         if (_obstacles.size > 0){
             for (Obstacle obstacle : _obstacles) {
-                _renderer.drawObstacle(_batch, obstacle.getBody().getWorldCenter().x - Constants.OBSTACLE_WIDTH / 2,
-                        obstacle.getBody().getWorldCenter().y - Constants.OBSTACLE_HEIGHT / 2);
+
+
+                _renderer.drawObstacle(_batch, obstacle.getPosition().x - obstacle.getWidth() / 2, obstacle.getPosition().y - obstacle.getHeight() / 2);
             }
         }
 
@@ -416,6 +409,8 @@ public class GameScreen implements Screen {
                 break;
 
         }
+
+        _entityManager.removeEntity(object);
     }
 
     public Runner getRunner(){ return _runner; }

@@ -24,12 +24,12 @@ public class PauseButton extends GameButton {
 
     @Override
     protected String getUpDrawableKey() {
-        return "pause";
+        return "pause-button";
     }
 
     @Override
     protected String getDownDrawableKey() {
-        return "pause";
+        return "pause-button";
     }
 
 

@@ -29,7 +29,7 @@ public class MusicButton extends GameButton{
 
     @Override
     protected String getUpDrawableKey() {
-        return GameManager.getInstance().isMusicEnabled() ? "musicon-unpressed" : "musicoff-pressed";
+        return GameManager.getInstance().isMusicEnabled() ? "musicon-unpressed" : "musicoff-unpressed";
     }
 
     @Override

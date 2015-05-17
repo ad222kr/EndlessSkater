@@ -19,11 +19,11 @@ public class OutfitsButton extends GameButton{
 
     @Override
     protected String getUpDrawableKey() {
-        return "outfits-unpressed";
+        return "standardbutton-unpressed";
     }
 
     @Override
     protected String getDownDrawableKey() {
-        return "outfits-pressed";
+        return "standardbutton-pressed";
     }
 }

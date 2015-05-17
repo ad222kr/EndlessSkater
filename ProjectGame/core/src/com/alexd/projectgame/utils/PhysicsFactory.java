@@ -28,14 +28,14 @@ public class PhysicsFactory {
         fixtureDef.filter.categoryBits = TheGame.ENEMY_BIT; // I am
         fixtureDef.filter.maskBits = TheGame.PLATFORM_BIT | TheGame.RUNNER_BIT | TheGame.PLATFORM_SENSOR_BIT; // I collide with
 
-       /* PolygonShape sensorShape = new PolygonShape();
+        PolygonShape sensorShape = new PolygonShape();
         sensorShape.setAsBox(enemy.getWidth() / 2, 0.05f, new Vector2(0, enemy.getHeight() / 2), 0f);
         FixtureDef sensorDef = getFixtureDef(true, sensorShape, 0);
         sensorDef.filter.categoryBits = TheGame.ENEMY_SENSOR_BIT; // I am
         sensorDef.filter.maskBits = TheGame.RUNNER_BIT;
 
         body.createFixture(sensorDef);
-        sensorShape.dispose();*/
+        sensorShape.dispose();
 
         body.createFixture(fixtureDef);
         body.resetMassData();

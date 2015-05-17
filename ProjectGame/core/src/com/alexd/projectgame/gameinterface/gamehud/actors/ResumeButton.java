@@ -23,11 +23,11 @@ public class ResumeButton extends GameButton {
 
     @Override
     protected String getUpDrawableKey() {
-        return "resume-unpressed";
+        return "greenbutton-unpressed";
     }
 
     @Override
     protected String getDownDrawableKey() {
-        return "resume-pressed";
+        return "greenbutton-pressed";
     }
 }

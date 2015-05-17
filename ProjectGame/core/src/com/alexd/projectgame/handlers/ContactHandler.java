@@ -60,7 +60,7 @@ public class ContactHandler implements ContactListener {
 
 
         if (shouldTrigger(fixtureA, fixtureB, TheGame.RUNNER_BIT, TheGame.ENEMY_SENSOR_BIT) &&
-            _runner.isFalling() && isRunnerAboveEnemy(fixtureA, fixtureB)){
+                _runner.isFalling() && isRunnerAboveEnemy(fixtureA, fixtureB)){
             _runner.bumpOffEnemy();
         }
 
@@ -72,7 +72,7 @@ public class ContactHandler implements ContactListener {
         }
         else if (shouldTrigger(fixtureA, fixtureB, TheGame.RUNNER_BIT, TheGame.ENEMY_BIT)){
             if (checkTypes((Entity)fixtureA.getBody().getUserData(), (Entity)fixtureB.getBody().getUserData(),
-                GameObjectType.RUNNER, GameObjectType.ENEMY) && isRunnerAboveEnemy(fixtureA, fixtureB)){
+                    GameObjectType.RUNNER, GameObjectType.ENEMY) && isRunnerAboveEnemy(fixtureA, fixtureB)){
                 _runner.bumpOffEnemy();
             }
             else {
