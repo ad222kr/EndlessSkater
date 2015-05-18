@@ -49,6 +49,8 @@ public class GameScreen implements Screen {
     private EntityManager _entityManager;
 
 
+    private int REFACTOR_BRANCH_TEST;
+
     private OrthographicCamera _camera;
     private Viewport _viewport;
     private Box2DDebugRenderer _debugRenderer;
