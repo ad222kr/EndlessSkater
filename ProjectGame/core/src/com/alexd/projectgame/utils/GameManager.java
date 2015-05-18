@@ -17,8 +17,6 @@ public class GameManager {
 
     private GameState _gameState;
     private Difficulty _difficulty;
-    private boolean _isSoundEnabled = true; // for testing sound btn
-    private boolean _isMusicEnabled = true; // for testing sound btn
 
 
     private GameManager() {
@@ -26,60 +24,65 @@ public class GameManager {
         _difficulty = Difficulty.FIRST;
     }
 
-    public GameState getState(){
+    public GameState getState() {
         return _gameState;
     }
 
-    public void setState(GameState value){
+    public void setState(GameState value) {
         _gameState = value;
     }
 
-    public void nextDifficulty(){
+    public void nextDifficulty() {
         _difficulty = _difficulty.next();
     }
 
-    public void resetDifficulty(){ _difficulty = Difficulty.FIRST; }
+    public void resetDifficulty() {
+        _difficulty = Difficulty.FIRST;
+    }
 
-    public float getEnemyMaxSeconds(){ return _difficulty.getEnemyMaxSeconds(); }
+    public float getEnemyMaxSeconds() {
+        return _difficulty.getEnemyMaxSeconds();
+    }
 
-    public float getEnemyMinSeconds(){ return _difficulty.getEnemyMinSeconds(); }
+    public float getEnemyMinSeconds() {
+        return _difficulty.getEnemyMinSeconds();
+    }
 
-    public float getMultiplyer(){
+    public float getMultiplyer() {
         return _difficulty.getMultiplier();
     }
 
-    public String getDifficulty() { return _difficulty.toString(); }
+    public String getDifficulty() {
+        return _difficulty.toString();
+    }
 
-    public boolean isMaxDifficulty(){
+    public boolean isMaxDifficulty() {
         return _difficulty.isMax();
     }
 
-    public boolean isRunning(){
+    public boolean isRunning() {
         return _gameState == GameState.RUNNING;
     }
 
-    public boolean isPaused (){
+    public boolean isPaused() {
         return _gameState == GameState.PAUSED;
     }
 
-    public void setRunning(){
+    public void setRunning() {
         _gameState = GameState.RUNNING;
     }
 
-    public void setPaused(){
+    public void setPaused() {
         _gameState = GameState.PAUSED;
     }
 
-    public float getEnemySpeed(){
+    public float getEnemySpeed() {
         return Helpers.getRandomFloat(_difficulty.getEnemyMinSpeed(), _difficulty.getEnemyMaxSpeed());
     }
 
-    public float getStaticObjectSpeed(){
+    public float getStaticObjectSpeed() {
         return _difficulty.getPlatformAndObstacleSpeed();
     }
-
-    public boolean isSoundEnabled(){ return _isSoundEnabled; } // for testing sound btn
-    public boolean isMusicEnabled(){ return _isMusicEnabled; }// for testing sound btn
-    public void setSound(boolean value){ _isSoundEnabled = value; }
-    public void setMusic(boolean value){ _isMusicEnabled = value; }
 }
+
+

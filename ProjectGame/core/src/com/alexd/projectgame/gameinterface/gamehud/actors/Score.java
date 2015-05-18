@@ -20,7 +20,7 @@ public class Score extends Actor {
 
 
     public Score(){
-        _font = AssetsManager.getFont();
+        _font = AssetsManager.getScoreFont();
         _score = 0;
     }
 

@@ -1,6 +1,6 @@
 spritesheet.png
 format: RGBA8888
-filter: Linear,Linear
+filter: Linear, Linear
 repeat: none
 enemy0
   rotate: false

@@ -1,7 +1,8 @@
 package com.alexd.projectgame.gameinterface.mainmenu.actors;
 
 import com.alexd.projectgame.gameinterface.shared.GameButton;
-import com.alexd.projectgame.utils.GameManager;
+
+import com.alexd.projectgame.utils.GamePreferences;
 import com.badlogic.gdx.Game;
 
 /**
@@ -17,11 +18,11 @@ public class SoundButton extends GameButton {
 
     @Override
     protected void onClick() {
-        if (GameManager.getInstance().isSoundEnabled()){
-            GameManager.getInstance().setSound(false);
+        if (GamePreferences.getInstance().isSoundEnabled()){
+            GamePreferences.getInstance().disableSound();
         }
         else{
-            GameManager.getInstance().setSound(true);
+            GamePreferences.getInstance().enableSound();
         }
 
 
@@ -31,11 +32,11 @@ public class SoundButton extends GameButton {
     @Override
     protected String getUpDrawableKey() {
 
-        return GameManager.getInstance().isSoundEnabled() ? "soundon-unpressed" : "soundoff-unpressed";
+        return GamePreferences.getInstance().isSoundEnabled() ? "soundon-unpressed" : "soundoff-unpressed";
     }
 
     @Override
     protected String getDownDrawableKey() {
-        return GameManager.getInstance().isSoundEnabled() ? "soundon-pressed" : "soundoff-pressed";
+        return GamePreferences.getInstance().isSoundEnabled() ? "soundon-pressed" : "soundoff-pressed";
     }
 }

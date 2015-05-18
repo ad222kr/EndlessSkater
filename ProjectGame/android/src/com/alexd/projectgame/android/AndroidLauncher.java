@@ -20,7 +20,8 @@ public class AndroidLauncher extends AndroidApplication {
 
 		cfg.useAccelerometer = false;
 		cfg.useCompass = false;
-		cfg.numSamples = 2;
+		cfg.useGLSurfaceView20API18 = true;
+		cfg.useImmersiveMode = true;
 
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){

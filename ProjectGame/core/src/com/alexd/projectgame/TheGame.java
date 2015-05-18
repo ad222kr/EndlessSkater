@@ -5,6 +5,7 @@ import com.alexd.projectgame.utils.AssetsManager;
 import com.alexd.projectgame.screens.MainMenuScreen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 
 
 public class TheGame extends Game {
@@ -23,16 +24,10 @@ public class TheGame extends Game {
 	public static final int LIFE_BIT = 0x0020;
 
 
-
-
-
-
-
-
 	@Override
 	public void create(){
 		AssetsManager.initiate();
-		//Gdx.graphics.setVSync(true);
+		Gdx.graphics.setVSync(true);
 
 		setScreen(new MainMenuScreen(this));
 

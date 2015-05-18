@@ -29,7 +29,8 @@ public class AssetsManager {
 
     private static HashMap<String, SpriteAnimation> _animationMap;
     private static HashMap<String, AtlasRegion> _atlasRegionMap;
-    private static BitmapFont _font;
+    private static BitmapFont _buttonFont;
+    private static BitmapFont _scoreFont;
     private static TextureAtlas _atlas;
     private static Skin _skin;
     private static Texture _background;
@@ -40,7 +41,8 @@ public class AssetsManager {
         _background = new Texture(BACKGROUND);
         _animationMap = new HashMap<String, SpriteAnimation>();
         _atlasRegionMap = new HashMap<String, AtlasRegion>();
-        _font = new BitmapFont(Gdx.files.internal("fonts/thefont.fnt"), Gdx.files.internal("fonts/thefont_0.png"), false);
+        _buttonFont = new BitmapFont(Gdx.files.internal("fonts/thefont.fnt"), Gdx.files.internal("fonts/thefont_0.png"), false);
+        _scoreFont = new BitmapFont(Gdx.files.internal("fonts/thefont.fnt"), Gdx.files.internal("fonts/thefont_0.png"), false);
         _skin = new Skin(new TextureAtlas(UI_PATH));
         loadAssets();
     }
@@ -59,6 +61,7 @@ public class AssetsManager {
 
         // ground/platform
 
+        _scoreFont.setScale(0.5f);
 
 
 
@@ -81,7 +84,8 @@ public class AssetsManager {
 
     public static void dispose() {
         _atlas.dispose();
-        _font.dispose();
+        _buttonFont.dispose();
+        _scoreFont.dispose();
         _skin.dispose();
     }
 
@@ -97,8 +101,12 @@ public class AssetsManager {
         return _atlasRegionMap.get(key);
     }
 
-    public static BitmapFont getFont(){
-        return _font;
+    public static BitmapFont getButtonFont(){
+        return _buttonFont;
+    }
+
+    public static BitmapFont getScoreFont(){
+        return _scoreFont;
     }
 
     public static Texture getBackground(){ return _background; }

@@ -33,6 +33,7 @@ public class GameScreen implements Screen {
     private final int VIEWPORT_HEIGHT = Helpers.convertToMeters(TheGame.APP_HEIGHT);
 
 
+
     private final float TIME_STEP = 1/300f;
     private float accumulator = 0;
 
@@ -182,13 +183,16 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
 
+
     }
 
     @Override
     public void render(float delta) {
         // Main game loop
-        Gdx.gl.glClearColor(1, 1, 0.5f, 0);
+        Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+
 
 
         switch (GameManager.getInstance().getState()){
@@ -224,8 +228,10 @@ public class GameScreen implements Screen {
             case PAUSED:
                 _batch.setColor(0.5f, 0.5f, 0.5f, 1f);
                 break;
+
             case GAMEOVER:
-                Gdx.app.log("Game over ", "yo");
+
+               GamePreferences.getInstance().saveHighScore(_gameHudStage.getScore());
                 _game.setScreen(new MainMenuScreen(_game));
                 return;
         }
@@ -272,10 +278,11 @@ public class GameScreen implements Screen {
         while (accumulator >= TIME_STEP){
             _entityManager.saveCurrentPosition();
             _entityManager.updateEntities();
-            _world.step(TIME_STEP,6, 2);
+            _world.step(TIME_STEP, 6, 2);
             accumulator -= TIME_STEP;
             _entityManager.interpolate(accumulator / TIME_STEP);
         }
+
     }
 
     private void draw(float delta){

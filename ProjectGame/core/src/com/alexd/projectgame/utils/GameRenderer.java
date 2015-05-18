@@ -33,6 +33,7 @@ public class GameRenderer {
         _heartRegion = AssetsManager.getSkin().getRegion("heart-filled");
 
 
+
     }
 
     public void updateAnimation(float delta){
@@ -61,9 +62,11 @@ public class GameRenderer {
     }
 
     public void drawPlatform(Batch batch, float x, float y, float platformWidth){
+
         if (platformWidth == Constants.PLATFORM_WIDTH){
             batch.draw(_platformRegion, x, y, Helpers.convertToMeters(_platformRegion.getRegionWidth()),
                     Helpers.convertToMeters(_platformRegion.getRegionHeight()));
+
         }
         else {
             batch.draw(_platformRegion, x + Constants.PLATFORM_WIDTH , y,
@@ -79,6 +82,7 @@ public class GameRenderer {
 
     public void drawBackground(Batch batch){
         batch.draw(_background, 0, 0, Helpers.convertToMeters(1280), Helpers.convertToMeters(720));
+
     }
 
     public void dispose(){

@@ -28,7 +28,7 @@ public abstract class TextGameButton extends TextButton {
             }
         });
 
-        getStyle().font.setScale(1);
+
     }
 
 

@@ -53,7 +53,7 @@ public class PhysicsFactory {
         BodyDef bodyDef = getBodyDef(life.getX(), life.getY(), BodyType.KinematicBody);
         PolygonShape shape = getBox(life.getWidth(), life.getHeight());
         Body body = world.createBody(bodyDef);
-        FixtureDef fixtureDef = getFixtureDef(true, shape, 0.5f);
+        FixtureDef fixtureDef = getFixtureDef(true, shape, 1f);
         fixtureDef.filter.categoryBits = TheGame.LIFE_BIT;
         fixtureDef.filter.maskBits = TheGame.RUNNER_BIT;
 

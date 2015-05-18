@@ -6,17 +6,16 @@ import com.alexd.projectgame.gameinterface.mainmenu.actors.OutfitsButton;
 import com.alexd.projectgame.gameinterface.mainmenu.actors.PlayButton;
 import com.alexd.projectgame.gameinterface.mainmenu.actors.SoundButton;
 import com.alexd.projectgame.utils.AssetsManager;
-import com.alexd.projectgame.screens.GameScreen;
+
+import com.alexd.projectgame.utils.GamePreferences;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton.*;
 
 
 /**
@@ -29,8 +28,7 @@ public class MainMenuStage extends Stage{
     private OutfitsButton _outfitsButton;
     private SoundButton _soundButton;
     private MusicButton _musicButton;
-
-    private ImageTextButton _btnTest;
+    private BitmapFont _buttonFont;
 
 
 
@@ -44,11 +42,17 @@ public class MainMenuStage extends Stage{
         _soundButton = new SoundButton(_game, 0,0,0,0);
         _musicButton = new MusicButton(_game, 0,0,0,0);
 
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.font = AssetsManager.getScoreFont();
+
+        Label hsLabel = new Label("High Score: " + Integer.toString(GamePreferences.getInstance().getHighScore()), labelStyle);
+
+
 
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
         style.up = new TextureRegionDrawable(AssetsManager.getSkin().getRegion("greenbutton-unpressed"));
         style.down = new TextureRegionDrawable(AssetsManager.getSkin().getRegion("greenbutton-pressed"));
-        style.font = AssetsManager.getFont();
+        style.font = AssetsManager.getButtonFont();
 
 
 
@@ -60,7 +64,9 @@ public class MainMenuStage extends Stage{
         Table table = new Table();
         table.setFillParent(true);
 
-        table.add(_playButton).colspan(2).pad(0,0,20,0);
+        table.add(hsLabel).colspan(2).pad(0,0,20,0).center();
+        table.row();
+        table.add(_playButton).colspan(2).pad(0, 0, 20, 0);
         table.row();
         table.add(_outfitsButton).colspan(2).pad(0,0,20,0);
         table.row();
@@ -87,6 +93,8 @@ public class MainMenuStage extends Stage{
     public void draw(){
         super.draw();
     }
+
+
 
 
 }
