@@ -2,6 +2,7 @@ package com.alexd.projectgame.enums;
 
 
 import com.alexd.projectgame.utils.Constants;
+import com.badlogic.gdx.Gdx;
 
 /**
  * Created by Alex on 2015-05-09.
@@ -16,8 +17,7 @@ public enum Difficulty {
     SEVENTH(1.6f , 2.5f, 6.5f),
     EIGHTH(1.7f, 2.5f, 6.5f),
     NINTH(1.8f, 2f, 6f),
-    TENTH(1.9f, 2f, 6f),
-    HELL(4f, 1f, 2f);
+    TENTH(1.9f, 2f, 6f);
 
     Difficulty(float multiplier, float enemyMinSeconds, float enemyMaxSeconds){
 
@@ -45,11 +45,8 @@ public enum Difficulty {
 
 
     public Difficulty next(){
+        Gdx.app.log("Difficulty: ", ""+vals[ordinal()].toString());
         return vals[ordinal() + 1];
-    }
-
-    public void reset(){
-        _multiplier = 1f;
     }
 
     public boolean isMax(){

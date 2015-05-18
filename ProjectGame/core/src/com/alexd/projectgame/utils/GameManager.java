@@ -2,6 +2,7 @@ package com.alexd.projectgame.utils;
 
 import com.alexd.projectgame.enums.Difficulty;
 import com.alexd.projectgame.enums.GameState;
+import com.badlogic.gdx.Gdx;
 
 import java.util.Random;
 
@@ -37,6 +38,7 @@ public class GameManager {
     }
 
     public void resetDifficulty() {
+        Gdx.app.log("RESET", "DIFF");
         _difficulty = Difficulty.FIRST;
     }
 
