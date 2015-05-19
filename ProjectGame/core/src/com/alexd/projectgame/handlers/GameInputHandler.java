@@ -5,6 +5,10 @@ import com.alexd.projectgame.utils.GameManager;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 
+import java.sql.Time;
+import java.util.Timer;
+import java.util.concurrent.TimeUnit;
+
 /**
  * Class handling the input
  */
@@ -40,7 +44,11 @@ public class GameInputHandler implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (GameManager.getInstance().isRunning()){
-            _runner.jump();
+
+
+                _runner.jump();
+
+
 
         }
         return true;

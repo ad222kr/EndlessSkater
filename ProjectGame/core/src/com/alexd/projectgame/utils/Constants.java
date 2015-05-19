@@ -48,7 +48,7 @@ public final class Constants {
     public static final float PLATFORM_INIT_WIDTH = PLATFORM_WIDTH * 2;
     public static final float PLATFORM_HEIGHT = 5.75f;
     public static final float PLATFORM_DENSITY = 0f;
-    public static final float PLATFORM_SPEED = -5f;
+    public static final float PLATFORM_SPEED = -6f;
 
     /**
      * Obstacle constants

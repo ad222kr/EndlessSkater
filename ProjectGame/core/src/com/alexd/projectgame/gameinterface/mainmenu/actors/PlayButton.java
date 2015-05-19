@@ -1,5 +1,6 @@
 package com.alexd.projectgame.gameinterface.mainmenu.actors;
 
+import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.gameinterface.shared.TextGameButton;
 import com.alexd.projectgame.screens.GameScreen;
 import com.badlogic.gdx.Game;
@@ -11,7 +12,7 @@ import com.badlogic.gdx.Gdx;
 public class PlayButton extends TextGameButton {
 
 
-    public PlayButton(String text, TextButtonStyle style, Game game) {
+    public PlayButton(String text, TextButtonStyle style, TheGame game) {
         super(text, style, game);
     }
 

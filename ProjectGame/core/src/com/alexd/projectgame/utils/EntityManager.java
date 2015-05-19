@@ -45,6 +45,8 @@ public class EntityManager {
 
         addEntity(_runner);
         addEntity(_currentPlatform);
+        _timeBetweenEnemies = Helpers.getRandomFloat(GameManager.getInstance().getEnemyMinSeconds(),
+                GameManager.getInstance().getEnemyMaxSeconds());
     }
 
 
@@ -172,6 +174,7 @@ public class EntityManager {
         float framteTime = Math.min(delta, 0.25f);
         accumulator += framteTime;
         while (accumulator >= TIME_STEP){
+
             saveCurrentPosition();
             updateEntities();
             _world.step(TIME_STEP, 6, 2);

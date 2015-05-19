@@ -27,7 +27,8 @@ public class GameScreen implements Screen {
     private final int VIEWPORT_WIDTH = Helpers.convertToMeters(TheGame.APP_WIDTH);
     private final int VIEWPORT_HEIGHT = Helpers.convertToMeters(TheGame.APP_HEIGHT);
 
-    private Game _game;
+    private TheGame _game;
+
     private EntityManager _entityManager;
     private OrthographicCamera _camera;
     private Viewport _viewport;
@@ -38,7 +39,7 @@ public class GameScreen implements Screen {
     private float _totalTime;
     private float _timeForDifficultyChange = 30;
 
-    public GameScreen(Game game) {
+    public GameScreen(TheGame game) {
         _game = game;
         GameManager.getInstance().setRunning();
         GameManager.getInstance().resetDifficulty();
@@ -46,8 +47,8 @@ public class GameScreen implements Screen {
     }
 
     private void setUp(){
-        _entityManager = new EntityManager();
 
+        _entityManager = new EntityManager();
         // Cam and HUD
         _camera = new OrthographicCamera();
         _viewport = new StretchViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, _camera);
@@ -55,6 +56,8 @@ public class GameScreen implements Screen {
         _camera.position.set(_camera.viewportWidth / 2, _camera.viewportHeight / 2, 0f);
         _camera.update();
         _gameHudStage = new GameHudStage(this);
+
+
 
         // Rendering
         _renderer = new GameRenderer();
@@ -108,9 +111,9 @@ public class GameScreen implements Screen {
                 break;
 
             case GAMEOVER:
-               GamePreferences.getInstance().saveHighScore(_gameHudStage.getScore());
-                _game.setScreen(new MainMenuScreen(_game));
-                return;
+                _batch.setColor(0.5f, 0.5f, 0.5f, 1f);
+                _game.getPrefs().saveHighScore(_gameHudStage.getScore());
+
         }
         draw(delta);
     }
@@ -180,7 +183,12 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
-        GameManager.getInstance().setState(GameState.PAUSED);
+        // If i's game over and player exits game (press homebutton),
+        // don't want to show the pausemenu but the gameover menu instead
+        if (GameManager.getInstance().getState() != GameState.GAMEOVER){
+            GameManager.getInstance().setState(GameState.PAUSED);
+        }
+
     }
 
     @Override
@@ -206,9 +214,11 @@ public class GameScreen implements Screen {
         _gameHudStage.dispose();
     }
 
-    public Game getGame(){ return _game; }
+    public TheGame getGame(){ return _game; }
 
     public Runner getRunner(){
         return _entityManager.getRunner();
     }
+
+
 }

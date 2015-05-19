@@ -20,7 +20,7 @@ public class Score extends Actor {
 
 
     public Score(){
-        _font = AssetsManager.getScoreFont();
+        _font = AssetsManager.getSmallFont();
         _score = 0;
     }
 
@@ -48,6 +48,10 @@ public class Score extends Actor {
 
     public int getScore(){
         return (int)Math.floor(_score);
+    }
+
+    public void addScore(float number){
+        _score += number;
     }
 
 

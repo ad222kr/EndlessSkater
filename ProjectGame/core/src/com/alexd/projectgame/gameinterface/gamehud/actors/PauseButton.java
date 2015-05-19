@@ -1,5 +1,6 @@
 package com.alexd.projectgame.gameinterface.gamehud.actors;
 
+import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.gameinterface.shared.GameButton;
 import com.alexd.projectgame.utils.GameManager;
 
@@ -12,7 +13,7 @@ import com.badlogic.gdx.Game;
 public class PauseButton extends GameButton {
 
 
-    public PauseButton(Game game, float x, float y, float width, float height) {
+    public PauseButton(TheGame game, float x, float y, float width, float height) {
         super(game, x, y, width, height);
         setBounds(x, y, width, height);
     }

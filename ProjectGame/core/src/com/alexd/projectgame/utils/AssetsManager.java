@@ -101,11 +101,11 @@ public class AssetsManager {
         return _atlasRegionMap.get(key);
     }
 
-    public static BitmapFont getButtonFont(){
+    public static BitmapFont getLargeFont(){
         return _buttonFont;
     }
 
-    public static BitmapFont getScoreFont(){
+    public static BitmapFont getSmallFont(){
         return _scoreFont;
     }
 

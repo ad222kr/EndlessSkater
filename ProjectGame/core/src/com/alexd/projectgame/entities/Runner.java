@@ -50,6 +50,7 @@ public class Runner extends Entity {
 
     public void jump(){
         // Jumping code translated from http://www.iforce2d.net/b2dtut/constant-speed
+
         if(!_isJumping && _isOnGround){
 
             _isJumping = true;

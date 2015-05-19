@@ -1,5 +1,6 @@
 package com.alexd.projectgame.gameinterface.shared;
 
+import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.utils.AssetsManager;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -21,10 +22,10 @@ public abstract class GameButton extends Button {
     protected float _width;
     protected float _x;
     protected float _y;
-    protected Game _game;
+    protected TheGame _game;
     protected Skin _skin;
 
-    public GameButton(Game game, float x, float y, float width, float height){
+    public GameButton(TheGame game, float x, float y, float width, float height){
         _game = game;
         _x = x;
         _y = y;

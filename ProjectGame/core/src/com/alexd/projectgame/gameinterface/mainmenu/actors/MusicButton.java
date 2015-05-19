@@ -1,5 +1,6 @@
 package com.alexd.projectgame.gameinterface.mainmenu.actors;
 
+import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.gameinterface.shared.GameButton;
 import com.alexd.projectgame.utils.GamePreferences;
 import com.badlogic.gdx.Game;
@@ -10,18 +11,18 @@ import com.badlogic.gdx.Game;
 public class MusicButton extends GameButton {
 
 
-    public MusicButton(Game game, float x, float y, float width, float height) {
+    public MusicButton(TheGame game, float x, float y, float width, float height) {
         super(game, x, y, width, height);
 
     }
 
     @Override
     protected void onClick() {
-        if (GamePreferences.getInstance().isMusicEnabled()){
-            GamePreferences.getInstance().disableMusic();
+        if (_game.getPrefs().isMusicEnabled()){
+            _game.getPrefs().disableMusic();
         }
         else{
-            GamePreferences.getInstance().enableMusic();
+            _game.getPrefs().enableMusic();
         }
 
         setButtonStyle();
@@ -29,11 +30,11 @@ public class MusicButton extends GameButton {
 
     @Override
     protected String getUpDrawableKey() {
-        return GamePreferences.getInstance().isMusicEnabled() ? "musicon-unpressed" : "musicoff-unpressed";
+        return _game.getPrefs().isMusicEnabled() ? "musicon-unpressed" : "musicoff-unpressed";
     }
 
     @Override
     protected String getDownDrawableKey() {
-        return GamePreferences.getInstance().isMusicEnabled() ? "musicon-pressed" : "musicoff-pressed";
+        return _game.getPrefs().isMusicEnabled() ? "musicon-pressed" : "musicoff-pressed";
     }
 }

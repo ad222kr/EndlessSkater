@@ -7,19 +7,13 @@ import com.badlogic.gdx.Preferences;
  * Created by Alex on 2015-05-18.
  */
 public class GamePreferences {
-    private static GamePreferences ourInstance = new GamePreferences();
+    private final String PREF_NAME = "TheGamePreferences";
+    private final String MUSIC = "music";
+    private final String SOUND = "sound";
+    private final String HIGH_SCORE = "high-score";
 
-    public static GamePreferences getInstance() {
-        return ourInstance;
+    public GamePreferences() {
     }
-
-    private GamePreferences() {
-    }
-
-    public static final String PREF_NAME = "TheGamePreferences";
-    private static final String MUSIC = "music";
-    private static final String SOUND = "sound";
-    private static final String HIGH_SCORE = "high-score";
 
 
 

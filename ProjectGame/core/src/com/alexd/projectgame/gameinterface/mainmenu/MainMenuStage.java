@@ -7,8 +7,6 @@ import com.alexd.projectgame.gameinterface.mainmenu.actors.PlayButton;
 import com.alexd.projectgame.gameinterface.mainmenu.actors.SoundButton;
 import com.alexd.projectgame.utils.AssetsManager;
 
-import com.alexd.projectgame.utils.GamePreferences;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -23,7 +21,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
  */
 public class MainMenuStage extends Stage{
 
-    private Game _game;
+    private TheGame _game;
     private PlayButton _playButton;
     private OutfitsButton _outfitsButton;
     private SoundButton _soundButton;
@@ -33,7 +31,7 @@ public class MainMenuStage extends Stage{
 
 
 
-    public MainMenuStage(Game game){
+    public MainMenuStage(TheGame game){
         super(new StretchViewport(TheGame.APP_WIDTH, TheGame.APP_HEIGHT, new OrthographicCamera(TheGame.APP_WIDTH, TheGame.APP_HEIGHT)));
 
         _game = game;
@@ -43,16 +41,16 @@ public class MainMenuStage extends Stage{
         _musicButton = new MusicButton(_game, 0,0,0,0);
 
         Label.LabelStyle labelStyle = new Label.LabelStyle();
-        labelStyle.font = AssetsManager.getScoreFont();
+        labelStyle.font = AssetsManager.getSmallFont();
 
-        Label hsLabel = new Label("High Score: " + Integer.toString(GamePreferences.getInstance().getHighScore()), labelStyle);
+        Label hsLabel = new Label("High Score: " + Integer.toString(_game.getPrefs().getHighScore()), labelStyle);
 
 
 
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
         style.up = new TextureRegionDrawable(AssetsManager.getSkin().getRegion("greenbutton-unpressed"));
         style.down = new TextureRegionDrawable(AssetsManager.getSkin().getRegion("greenbutton-pressed"));
-        style.font = AssetsManager.getButtonFont();
+        style.font = AssetsManager.getLargeFont();
 
 
 
@@ -76,16 +74,7 @@ public class MainMenuStage extends Stage{
 
         table.setTouchable(Touchable.enabled);
 
-
-
         addActor(table);
-
-
-
-
-
-
-
     }
 
 
@@ -95,6 +84,7 @@ public class MainMenuStage extends Stage{
     }
 
 
-
-
+    public TheGame getGame(){
+        return _game;
+    }
 }

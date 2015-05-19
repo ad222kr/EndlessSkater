@@ -1,5 +1,6 @@
 package com.alexd.projectgame.screens;
 
+import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.gameinterface.mainmenu.MainMenuStage;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -12,9 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
  */
 public class MainMenuScreen implements Screen {
     private Stage _stage;
-    private Game _game;
+    private TheGame _game;
 
-    public MainMenuScreen(Game game){
+    public MainMenuScreen(TheGame game){
         _game = game;
         _stage = new MainMenuStage(_game);
         Gdx.input.setInputProcessor(_stage);
