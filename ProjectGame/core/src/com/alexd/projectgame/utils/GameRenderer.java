@@ -43,7 +43,7 @@ public class GameRenderer {
 
     public void drawRunner(Batch batch, float x, float y, boolean isJumping){
         if (!isJumping){
-            _runnerAnimation.draw(_runnerAnimationElapsed, batch, x, y);
+            _runnerAnimation.draw(_runnerAnimationElapsed, batch, x, y, false);
         }
         else {
             batch.draw(_runnerJumpRegion, x, y, Helpers.convertToMeters(_runnerJumpRegion.getWidth()),
@@ -53,8 +53,8 @@ public class GameRenderer {
         }
     }
 
-    public void drawEnemy(Batch batch, float x, float y){
-            _enemyAnimation.draw(_enemyAnimationElapsed, batch, x, y);
+    public void drawEnemy(Batch batch, float x, float y, boolean isFlipped){
+            _enemyAnimation.draw(_enemyAnimationElapsed, batch, x, y, isFlipped);
     }
 
     public void drawObstacle(Batch batch, float x, float y){

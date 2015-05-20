@@ -8,12 +8,14 @@ import com.alexd.projectgame.gameinterface.mainmenu.actors.SoundButton;
 import com.alexd.projectgame.utils.AssetsManager;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import javafx.scene.control.Tab;
 
 
 /**
@@ -23,10 +25,11 @@ public class MainMenuStage extends Stage{
 
     private TheGame _game;
     private PlayButton _playButton;
-    private OutfitsButton _outfitsButton;
     private SoundButton _soundButton;
     private MusicButton _musicButton;
-    private BitmapFont _buttonFont;
+    private OutfitsButton _outfitsButton;
+    private Table _table;
+
 
 
 
@@ -59,28 +62,33 @@ public class MainMenuStage extends Stage{
 
 
 
-        Table table = new Table();
-        table.setFillParent(true);
+        _table = new Table();
+        _table.setFillParent(true);
 
-        table.add(hsLabel).colspan(2).pad(0,0,20,0).center();
-        table.row();
-        table.add(_playButton).colspan(2).pad(0, 0, 20, 0);
-        table.row();
-        table.add(_outfitsButton).colspan(2).pad(0,0,20,0);
-        table.row();
-        table.add(_soundButton).left();
-        table.add(_musicButton).right();
+        _table.add(hsLabel).colspan(2).pad(0,0,20,0).center();
+        _table.row();
+        _table.add(_playButton).colspan(2).pad(0, 0, 20, 0);
+        _table.row();
+        _table.add(_outfitsButton).colspan(2).pad(0,0,20,0);
+        _table.row();
+        _table.add(_soundButton).left();
+        _table.add(_musicButton).right();
 
 
-        table.setTouchable(Touchable.enabled);
+        _table.setTouchable(Touchable.enabled);
 
-        addActor(table);
+        addActor(_table);
     }
 
 
-    @Override
-    public void draw(){
+
+    public void draw(Batch batch){
         super.draw();
+        batch.begin();
+        _table.draw(batch, 0);
+        batch.end();
+
+
     }
 
 

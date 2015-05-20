@@ -22,10 +22,14 @@ public class SpriteAnimation extends Animation {
     }
 
 
-    public void draw(float stateTime, Batch batch, float x, float y){
+    public void draw(float stateTime, Batch batch, float x, float y, boolean flip){
         TextureRegion region = getKeyFrame(stateTime);
 
-        batch.draw(region, x, y, Helpers.convertToMeters(region.getRegionWidth() * _scaling),
+        float width = region.getRegionWidth();
+        float height = region.getRegionHeight();
+
+        batch.draw(region, flip ? x + Helpers.convertToMeters(region.getRegionWidth()) : x, y,
+                Helpers.convertToMeters(flip ? -region.getRegionWidth() * _scaling : region.getRegionWidth() * _scaling),
                 Helpers.convertToMeters(region.getRegionHeight() * _scaling));
     }
 

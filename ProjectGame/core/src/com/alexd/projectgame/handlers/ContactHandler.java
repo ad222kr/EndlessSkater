@@ -57,6 +57,11 @@ public class ContactHandler implements ContactListener {
             life.setFlaggedForDeath(true);
 
         }
+        if (shouldTrigger(fixtureA, fixtureB, TheGame.PLATFORM_SENSOR_BIT, TheGame.ENEMY_BIT)){
+            Enemy enemy = fixtureA.getBody().getUserData() instanceof Enemy ? (Enemy)fixtureA.getBody().getUserData() :
+                    (Enemy)fixtureB.getBody().getUserData();
+            enemy.flip();
+        }
 
 
         if (shouldTrigger(fixtureA, fixtureB, TheGame.RUNNER_BIT, TheGame.ENEMY_SENSOR_BIT) &&
@@ -64,20 +69,11 @@ public class ContactHandler implements ContactListener {
             _runner.bumpOffEnemy();
         }
 
-        if (shouldTrigger(fixtureA, fixtureB, TheGame.ENEMY_BIT, TheGame.PLATFORM_SENSOR_BIT)){
-            Enemy enemy = fixtureA.getBody().getUserData() instanceof Enemy ? (Enemy)fixtureA.getBody().getUserData()
-                    : (Enemy)fixtureB.getBody().getUserData();
-            //enemy.jump();
-
-        }
         else if (shouldTrigger(fixtureA, fixtureB, TheGame.RUNNER_BIT, TheGame.ENEMY_BIT)){
-            if (checkTypes((Entity)fixtureA.getBody().getUserData(), (Entity)fixtureB.getBody().getUserData(),
-                    GameObjectType.RUNNER, GameObjectType.ENEMY) && isRunnerAboveEnemy(fixtureA, fixtureB)){
-                _runner.bumpOffEnemy();
-            }
-            else {
+
+
                 _runner.removeHealth();
-            }
+
         }
     }
 

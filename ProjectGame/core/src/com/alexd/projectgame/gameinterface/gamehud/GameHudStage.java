@@ -8,6 +8,7 @@ import com.alexd.projectgame.utils.AssetsManager;
 import com.alexd.projectgame.utils.GameManager;
 import com.alexd.projectgame.screens.GameScreen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -113,11 +114,10 @@ public class GameHudStage extends Stage {
         addActor(_pauseButton);
     }
 
-    @Override
-    public void draw(){
+    public void draw(Batch batch){
         super.draw();
 
-
+        batch.begin();
         switch (GameManager.getInstance().getState()){
             case RUNNING:
 
@@ -126,6 +126,11 @@ public class GameHudStage extends Stage {
                 _pauseButton.enable();
                 _pauseTable.setVisible(false);
                 _pauseTable.setTouchable(Touchable.disabled);
+
+                _gameOverTable.draw(batch, 0);
+                _pauseButton.draw(batch, 0);
+                _score.draw(batch, 0);
+                _health.draw(batch, 0);
                 break;
             case PAUSED:
                 _pauseButton.disable();
@@ -133,6 +138,9 @@ public class GameHudStage extends Stage {
                 _gameOverTable.setTouchable(Touchable.enabled);
                 _pauseTable.setVisible(true);
                 _pauseTable.setTouchable(Touchable.enabled);
+
+                _pauseTable.draw(batch, 0);
+
                 break;
             case GAMEOVER:
                 _pauseButton.disable();
@@ -141,11 +149,12 @@ public class GameHudStage extends Stage {
                 _gameOverScoreLabel.setText("SCORE: " + getScore());
                 _gameOverTable.setVisible(true);
                 _gameOverTable.setTouchable(Touchable.enabled);
+                _gameOverTable.draw(batch, 0);
 
 
                 break;
         }
-
+        batch.end();
 
     }
 

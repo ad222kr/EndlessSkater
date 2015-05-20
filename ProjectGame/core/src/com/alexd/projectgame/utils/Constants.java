@@ -24,8 +24,9 @@ public final class Constants {
     public static final float RUNNER_WIDTH = 1f;
     public static final float RUNNER_HEIGHT = 1.5f;
     public static final float RUNNER_DENSITY = 0.5f;
-    public static final Vector2 RUNNER_JUMPING_IMPULSE = new Vector2(0, 8f);
-    public static final Vector2 RUNNER_BUMP_IMPULSE = new Vector2(0, 8f);
+    public static final Vector2 RUNNER_JUMPING_IMPULSE = new Vector2(0, 9f);
+    public static final Vector2 RUNNER_BUMP_IMPULSE = new Vector2(0, 9f);
+    public static final float RUNNER_GRAVITY_SCALE =2.5f;
 
     /**
      * Enemy constants
@@ -36,9 +37,6 @@ public final class Constants {
     public static final float ENEMY_DENSITY = 0.5f;
     public static final Vector2 ENEMY_JUMPING_IMPULSE = new Vector2(-1f, 18f);
 
-
-
-
     /**
      * Platform constants
      */
@@ -48,7 +46,7 @@ public final class Constants {
     public static final float PLATFORM_INIT_WIDTH = PLATFORM_WIDTH * 2;
     public static final float PLATFORM_HEIGHT = 5.75f;
     public static final float PLATFORM_DENSITY = 0f;
-    public static final float PLATFORM_SPEED = -6f;
+    public static final float PLATFORM_SPEED = -10f;
 
     /**
      * Obstacle constants

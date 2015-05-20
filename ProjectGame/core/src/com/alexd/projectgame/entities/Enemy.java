@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.*;
 public class Enemy extends Entity {
 
     private EnemyType _enemyType;
+    private boolean _isFliped;
 
     /* Get & set */
     public EnemyType getEnemyType(){
@@ -34,10 +35,26 @@ public class Enemy extends Entity {
         _gameObjectType = GameObjectType.ENEMY;
         _enemyType = EnemyType.getRandomValue();
         _body = PhysicsFactory.createEnemy(_world, this);
+        _isFliped = false;
 
     }
 
     public void jump(){
         _body.applyLinearImpulse(Constants.ENEMY_JUMPING_IMPULSE, _body.getWorldCenter(), true);
+    }
+
+    public void flip(){
+        if (!_isFliped){
+            _isFliped = true;
+            float velX = +_body.getLinearVelocity().x;
+            float platVelX = +GameManager.getInstance().getStaticObjectSpeed();
+            float diffVelX = velX - platVelX;
+            float newVelX = platVelX - diffVelX;
+            _body.setLinearVelocity(new Vector2(newVelX, 0));
+        }
+    }
+
+    public boolean getIsFlipped(){
+        return _isFliped;
     }
 }

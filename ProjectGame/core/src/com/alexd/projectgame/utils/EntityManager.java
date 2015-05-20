@@ -69,9 +69,8 @@ public class EntityManager {
         // for interpolating between steps
         for (Entity entity : _entities) {
             if (entity.getBody() != null) {
-
-                entity.getPosition().x = entity.getBody().getPosition().x;
-                entity.getPosition().y = entity.getBody().getPosition().y;
+                entity.getPreviousPosition().x = entity.getBody().getPosition().x;
+                entity.getPreviousPosition().y = entity.getBody().getPosition().y;
             }
         }
     }
@@ -171,16 +170,25 @@ public class EntityManager {
     public void doStep(float delta) {
         // fixed time step
         // max frame time to avoid spiral of death (on slow devices)
+
+        // ------- FIXED TIME STEP ---------------
+
         float framteTime = Math.min(delta, 0.25f);
         accumulator += framteTime;
         while (accumulator >= TIME_STEP){
 
             saveCurrentPosition();
             updateEntities();
-            _world.step(TIME_STEP, 6, 2);
+            _world.step(TIME_STEP, 10, 8);
+
             accumulator -= TIME_STEP;
             interpolate(accumulator / TIME_STEP);
         }
+
+
+
+        // VARIABLE TIME STEP
+
     }
 
     private boolean isTimeForPlatformSpawn() {

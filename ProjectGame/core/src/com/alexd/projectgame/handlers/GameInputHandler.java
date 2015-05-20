@@ -1,6 +1,7 @@
 package com.alexd.projectgame.handlers;
 
 import com.alexd.projectgame.entities.Runner;
+import com.alexd.projectgame.enums.GameState;
 import com.alexd.projectgame.utils.GameManager;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -26,6 +27,9 @@ public class GameInputHandler implements InputProcessor {
 
         if (keycode == Input.Keys.SPACE && GameManager.getInstance().isRunning()){
             _runner.jump();
+        }
+        if (keycode == Input.Keys.BACK){
+            GameManager.getInstance().setPaused();
         }
 
         return true;

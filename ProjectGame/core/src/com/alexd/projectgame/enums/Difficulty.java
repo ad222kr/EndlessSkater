@@ -9,15 +9,16 @@ import com.badlogic.gdx.Gdx;
  */
 public enum Difficulty {
     FIRST (1f, 4, 8),
-    SECOND(1.1f, 4, 8),
-    THIRD(1.2f, 3.5f, 7.5f),
-    FOURTH(1.3f, 3.5f, 7.5f),
-    FIFTH(1.4f, 3, 7f),
-    SIXTH(1.5f, 3, 7f),
-    SEVENTH(1.6f , 2.5f, 6.5f),
-    EIGHTH(1.7f, 2.5f, 6.5f),
-    NINTH(1.8f, 2f, 6f),
-    TENTH(1.9f, 2f, 6f);
+    SECOND(1.05f, 4, 8),
+    THIRD(1.1f, 3.5f, 7.5f),
+    FOURTH(1.15f, 3.5f, 7.5f),
+    FIFTH(1.2f, 3, 7f),
+    SIXTH(1.25f, 3, 7f),
+    SEVENTH(1.3f , 2.5f, 6.5f),
+    EIGHTH(1.35f, 2.5f, 6.5f),
+    NINTH(1.4f, 2f, 6f),
+    TENTH(1.45f, 2f, 5.5f),
+    ELEVENTH(1.5f, 2f, 5f );
 
     Difficulty(float multiplier, float enemyMinSeconds, float enemyMaxSeconds){
 

@@ -34,7 +34,6 @@ public class GameScreen implements Screen {
     private Viewport _viewport;
     private Box2DDebugRenderer _debugRenderer;
     private GameRenderer _renderer;
-    private Batch _batch;
     private GameHudStage _gameHudStage;
     private float _totalTime;
     private float _timeForDifficultyChange = 30;
@@ -61,8 +60,8 @@ public class GameScreen implements Screen {
 
         // Rendering
         _renderer = new GameRenderer();
-        _batch = new SpriteBatch();
-        _batch.setProjectionMatrix(_camera.combined);
+
+        _game.getBatch().setProjectionMatrix(_camera.combined);
         if (isDebug){
             _debugRenderer = new Box2DDebugRenderer();
         }
@@ -74,6 +73,7 @@ public class GameScreen implements Screen {
         inputMultiplexer.addProcessor(_gameHudStage);
         inputMultiplexer.addProcessor(gameInputProcessor);
         Gdx.input.setInputProcessor(inputMultiplexer);
+        Gdx.input.setCatchBackKey(true);
     }
 
     @Override
@@ -84,12 +84,12 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         // Main game loop
-        Gdx.gl.glClearColor(0, 0, 0, 0);
+        Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         switch (GameManager.getInstance().getState()){
             case RUNNING:
-                _batch.setColor(Color.WHITE);
+                _game.getBatch().setColor(Color.WHITE);
                 _totalTime += delta;
                 _entityManager.updateTimers(delta);
 
@@ -107,11 +107,11 @@ public class GameScreen implements Screen {
                 _entityManager.doStep(delta);
                 break;
             case PAUSED:
-                _batch.setColor(0.5f, 0.5f, 0.5f, 1f);
+                _game.getBatch().setColor(0.5f, 0.5f, 0.5f, 1f);
                 break;
 
             case GAMEOVER:
-                _batch.setColor(0.5f, 0.5f, 0.5f, 1f);
+                _game.getBatch().setColor(0.5f, 0.5f, 0.5f, 1f);
                 _game.getPrefs().saveHighScore(_gameHudStage.getScore());
 
         }
@@ -129,29 +129,30 @@ public class GameScreen implements Screen {
     }
 
     private void draw(float delta){
-        if (GameManager.getInstance().getState() == GameState.RUNNING){
+       if (GameManager.getInstance().getState() == GameState.RUNNING){
             _renderer.updateAnimation(delta);
         }
-        _batch.begin();
+        _game.getBatch().begin();
+        _game.getBatch().enableBlending();
 
         for (Entity entity : _entityManager.getEntities()){
             switch (entity.getGameObjectType()){
                 case GROUND:
-                    _renderer.drawPlatform(_batch, entity.getPosition().x - entity.getWidth() / 2,
+                    _renderer.drawPlatform(_game.getBatch(), entity.getPosition().x - entity.getWidth() / 2,
                             entity.getPosition().y - entity.getHeight() / 2, entity.getWidth());
                     break;
 
 
                 case ENEMY:
-                    _renderer.drawEnemy(_batch, entity.getPosition().x - entity.getWidth() / 2,
-                            entity.getPosition().y - entity.getHeight() / 2);
+                    _renderer.drawEnemy(_game.getBatch(), entity.getPosition().x - entity.getWidth() / 2,
+                            entity.getPosition().y - entity.getHeight() / 2, ((Enemy)entity).getIsFlipped());
                     break;
                 case LIFE:
-                    _renderer.drawHeart(_batch, entity.getPosition().x - entity.getWidth() / 2,
+                    _renderer.drawHeart(_game.getBatch(), entity.getPosition().x - entity.getWidth() / 2,
                             entity.getPosition().y - entity.getHeight() / 2);
                     break;
                 case OBSTACLE:
-                    _renderer.drawObstacle(_batch, entity.getPosition().x - entity.getWidth() / 2,
+                    _renderer.drawObstacle(_game.getBatch(), entity.getPosition().x - entity.getWidth() / 2,
                             entity.getPosition().y - entity.getHeight() / 2);
                     break;
 
@@ -160,11 +161,11 @@ public class GameScreen implements Screen {
             }
         }
 
-        _renderer.drawRunner(_batch, getRunner().getPosition().x - getRunner().getWidth() / 2,
+        _renderer.drawRunner(_game.getBatch(), getRunner().getPosition().x - getRunner().getWidth() / 2,
                 getRunner().getPosition().y - getRunner().getHeight() / 2, _entityManager.getRunner().getIsJumping());
-        _batch.end();
+        _game.getBatch().end();
 
-        _gameHudStage.draw();
+        _gameHudStage.draw(_game.getBatch());
         if (isDebug ){
             _debugRenderer.render(_entityManager.getWorld(), _camera.combined);
         }
@@ -210,7 +211,6 @@ public class GameScreen implements Screen {
         if (isDebug){
             _debugRenderer.dispose();
         }
-        _batch.dispose();
         _gameHudStage.dispose();
     }
 

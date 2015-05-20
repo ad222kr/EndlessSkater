@@ -7,6 +7,7 @@ import com.alexd.projectgame.utils.GamePreferences;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 
 public class TheGame extends Game {
@@ -23,11 +24,13 @@ public class TheGame extends Game {
 	public static final int LIFE_BIT = 0x0020;
 
 	private GamePreferences _prefs;
+	private SpriteBatch _batch;
 
 	@Override
 	public void create(){
 		AssetsManager.initiate();
 		Gdx.graphics.setVSync(true);
+		_batch = new SpriteBatch();
 
 		setScreen(new MainMenuScreen(this));
 
@@ -36,6 +39,9 @@ public class TheGame extends Game {
 	@Override
 	public void dispose(){
 		AssetsManager.dispose();
+		if (_batch != null){
+			_batch.dispose();
+		}
 	}
 
 
@@ -44,6 +50,10 @@ public class TheGame extends Game {
 			_prefs = new GamePreferences();
 		}
 		return _prefs;
+	}
+
+	public SpriteBatch getBatch(){
+		return _batch;
 	}
 
 

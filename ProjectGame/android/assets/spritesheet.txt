@@ -1,6 +1,6 @@
 spritesheet.png
 format: RGBA8888
-filter: Linear, Linear
+filter: Linear,Linear
 repeat: none
 enemy0
   rotate: false
@@ -33,15 +33,15 @@ enemy3
 obstacle
   rotate: false
   xy: 548, 2
-  size: 125, 34
-  orig: 125, 34
+  size: 127, 28
+  orig: 127, 28
   offset: 0, 0
   index: -1
 platform
   rotate: false
   xy: 2, 81
-  size: 1500, 320
-  orig: 1500, 320
+  size: 1502, 323
+  orig: 1502, 323
   offset: 0, 0
   index: -1
 player0
