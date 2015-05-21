@@ -2,6 +2,8 @@ package com.alexd.projectgame.screens;
 
 import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.enums.GameState;
+import com.alexd.projectgame.graphics.ScrollingBackground;
+import com.alexd.projectgame.graphics.ScrollingBackgroundLayer;
 import com.alexd.projectgame.utils.*;
 import com.alexd.projectgame.entities.*;
 import com.alexd.projectgame.handlers.GameInputHandler;
@@ -10,8 +12,6 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.*;
 
@@ -21,6 +21,8 @@ import com.badlogic.gdx.utils.viewport.*;
  * Created by Alex on 2015-04-07.
  */
 public class GameScreen implements Screen {
+
+
 
     private boolean isDebug = false;// Set to false to hide debugrender
 
@@ -35,6 +37,7 @@ public class GameScreen implements Screen {
     private Box2DDebugRenderer _debugRenderer;
     private GameRenderer _renderer;
     private GameHudStage _gameHudStage;
+    private ScrollingBackground _background;
     private float _totalTime;
     private float _timeForDifficultyChange = 30;
 
@@ -46,7 +49,7 @@ public class GameScreen implements Screen {
     }
 
     private void setUp(){
-
+        //GameManager.getInstance().setRunning();
         _entityManager = new EntityManager();
         // Cam and HUD
         _camera = new OrthographicCamera();
@@ -56,7 +59,10 @@ public class GameScreen implements Screen {
         _camera.update();
         _gameHudStage = new GameHudStage(this);
 
-
+        _background = new ScrollingBackground(new ScrollingBackgroundLayer[]{
+                new ScrollingBackgroundLayer(0.2f, "bg2.png"),
+                new ScrollingBackgroundLayer(0.5f, "bg1.png")
+        }, 2f, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
 
         // Rendering
         _renderer = new GameRenderer();
@@ -92,11 +98,11 @@ public class GameScreen implements Screen {
                 _game.getBatch().setColor(Color.WHITE);
                 _totalTime += delta;
                 _entityManager.updateTimers(delta);
-
                 updateDifficulty();
 
                 _entityManager.spawnPlatform();
                 _entityManager.spawnEnemy();
+
 
                 if(isGameOver()){
                     GameManager.getInstance().setState(GameState.GAMEOVER);
@@ -134,6 +140,9 @@ public class GameScreen implements Screen {
         }
         _game.getBatch().begin();
         _game.getBatch().enableBlending();
+        _background.draw(_game.getBatch(), delta);
+        //_backGround.draw(_game.getBatch(), delta);
+        _game.getBatch().setProjectionMatrix(_camera.combined);
 
         for (Entity entity : _entityManager.getEntities()){
             switch (entity.getGameObjectType()){
@@ -219,6 +228,4 @@ public class GameScreen implements Screen {
     public Runner getRunner(){
         return _entityManager.getRunner();
     }
-
-
 }

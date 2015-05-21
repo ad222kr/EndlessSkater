@@ -1,6 +1,6 @@
 package com.alexd.projectgame.utils;
 
-import com.badlogic.gdx.Gdx;
+import com.alexd.projectgame.graphics.SpriteAnimation;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;

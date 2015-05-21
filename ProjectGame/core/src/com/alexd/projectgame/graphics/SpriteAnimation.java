@@ -1,5 +1,6 @@
-package com.alexd.projectgame.utils;
+package com.alexd.projectgame.graphics;
 
+import com.alexd.projectgame.utils.Helpers;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;

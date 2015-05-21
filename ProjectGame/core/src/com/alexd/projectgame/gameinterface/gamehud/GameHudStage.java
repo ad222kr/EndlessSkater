@@ -29,6 +29,7 @@ public class GameHudStage extends Stage {
     private Table _pauseTable;
     private Table _gameOverTable;
     private Label _gameOverScoreLabel; // need to have ref to this
+    FPS fps;
 
 
 
@@ -108,10 +109,11 @@ public class GameHudStage extends Stage {
         _score = new Score();
         _health = new Health(_screen.getRunner().getHealth());
         _pauseButton = new PauseButton(_screen.getGame(), 40,650, 40, 40);
-
+        fps = new FPS();
         addActor(_score);
         addActor(_health);
         addActor(_pauseButton);
+        addActor(fps);
     }
 
     public void draw(Batch batch){
@@ -131,6 +133,7 @@ public class GameHudStage extends Stage {
                 _pauseButton.draw(batch, 0);
                 _score.draw(batch, 0);
                 _health.draw(batch, 0);
+                fps.draw(batch, 0);
                 break;
             case PAUSED:
                 _pauseButton.disable();

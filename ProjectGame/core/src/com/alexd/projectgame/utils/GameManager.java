@@ -71,10 +71,12 @@ public class GameManager {
     }
 
     public void setRunning() {
+
         _gameState = GameState.RUNNING;
     }
 
     public void setPaused() {
+        if (_gameState == GameState.RUNNING)
         _gameState = GameState.PAUSED;
     }
 

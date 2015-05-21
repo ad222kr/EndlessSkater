@@ -13,7 +13,7 @@ public final class Constants {
     /**
      * World
      */
-    public static final Vector2 WORLD_GRAVITY = new Vector2(0, -10);
+    public static final Vector2 WORLD_GRAVITY = new Vector2(0, -9);
 
     /**
      * Runner constants
@@ -33,7 +33,7 @@ public final class Constants {
      */
     public static final float ENEMY_X = 34f;
     public static final float ENEMY_WIDTH = 1f;
-    public static final float ENEMY_HEIGHT = 1.5f;
+    public static final float ENEMY_HEIGHT = 1.3f;
     public static final float ENEMY_DENSITY = 0.5f;
     public static final Vector2 ENEMY_JUMPING_IMPULSE = new Vector2(-1f, 18f);
 

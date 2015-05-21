@@ -1,5 +1,6 @@
 package com.alexd.projectgame.utils;
 
+import com.alexd.projectgame.graphics.SpriteAnimation;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
@@ -7,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 
-import javax.xml.soap.Text;
 import java.util.HashMap;
 
 /**
@@ -62,6 +62,10 @@ public class AssetsManager {
         // ground/platform
 
         _scoreFont.setScale(0.5f);
+
+        // background
+        loadTexture("bg1");
+        loadTexture("bg2");
 
 
 
