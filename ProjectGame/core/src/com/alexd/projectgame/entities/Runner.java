@@ -1,7 +1,7 @@
 package com.alexd.projectgame.entities;
 
 import com.alexd.projectgame.enums.GameObjectType;
-import com.alexd.projectgame.utils.Constants;
+import com.alexd.projectgame.utils.Box2DConstants;
 import com.alexd.projectgame.utils.PhysicsFactory;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -55,12 +55,12 @@ public class Runner extends Entity {
 
             _isJumping = true;
             _isOnGround = false;
-            _body.applyLinearImpulse(Constants.RUNNER_JUMPING_IMPULSE, _body.getWorldCenter(), true);
+            _body.applyLinearImpulse(Box2DConstants.RUNNER_JUMPING_IMPULSE, _body.getWorldCenter(), true);
         }
     }
 
     public void bumpOffEnemy(){
-        _body.applyLinearImpulse(Constants.RUNNER_BUMP_IMPULSE, _body.getWorldCenter(), true);
+        _body.applyLinearImpulse(Box2DConstants.RUNNER_BUMP_IMPULSE, _body.getWorldCenter(), true);
     }
 
     public void landed(){

@@ -24,9 +24,7 @@ public class MainMenuScreen implements Screen {
     }
 
     @Override
-    public void show() {
-
-    }
+    public void show() {}
 
     @Override
     public void render(float delta) {
@@ -39,20 +37,14 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
         _stage.getViewport().update(width, height, true); // True sets (0, 0) in bottom left corner.
-
-
     }
 
     @Override
-    public void pause() {
-
-    }
+    public void pause() {}
 
     @Override
-    public void resume() {
-    }
+    public void resume() {}
 
     @Override
     public void hide() {

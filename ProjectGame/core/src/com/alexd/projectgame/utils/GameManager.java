@@ -12,81 +12,43 @@ import java.util.Random;
 public class GameManager {
     private static GameManager ourInstance = new GameManager();
 
-    public static GameManager getInstance() {
-        return ourInstance;
-    }
+    public static GameManager getInstance() { return ourInstance; }
 
     private GameState _gameState;
     private Difficulty _difficulty;
-
 
     private GameManager() {
         _gameState = GameState.INDEFINITE;
         _difficulty = Difficulty.FIRST;
     }
 
-    public GameState getState() {
-        return _gameState;
-    }
+    public GameState getState() { return _gameState; }
 
-    public void setState(GameState value) {
-        _gameState = value;
-    }
+    public void setState(GameState value) { _gameState = value; }
 
-    public void nextDifficulty() {
-        _difficulty = _difficulty.next();
-    }
+    public void nextDifficulty() { _difficulty = _difficulty.next(); }
 
-    public void resetDifficulty() {
-        Gdx.app.log("RESET", "DIFF");
-        _difficulty = Difficulty.FIRST;
-    }
+    public void resetDifficulty() { _difficulty = Difficulty.FIRST; }
 
-    public float getEnemyMaxSeconds() {
-        return _difficulty.getEnemyMaxSeconds();
-    }
+    public float getEnemyMaxSeconds() { return _difficulty.getEnemyMaxSeconds(); }
 
-    public float getEnemyMinSeconds() {
-        return _difficulty.getEnemyMinSeconds();
-    }
+    public float getEnemyMinSeconds() { return _difficulty.getEnemyMinSeconds(); }
 
-    public float getMultiplyer() {
-        return _difficulty.getMultiplier();
-    }
+    public float getMultiplyer() { return _difficulty.getMultiplier(); }
 
-    public String getDifficulty() {
-        return _difficulty.toString();
-    }
+    public boolean isMaxDifficulty() { return _difficulty.isMax(); }
 
-    public boolean isMaxDifficulty() {
-        return _difficulty.isMax();
-    }
+    public boolean isRunning() { return _gameState == GameState.RUNNING; }
 
-    public boolean isRunning() {
-        return _gameState == GameState.RUNNING;
-    }
+    public boolean isPaused() { return _gameState == GameState.PAUSED; }
 
-    public boolean isPaused() {
-        return _gameState == GameState.PAUSED;
-    }
+    public void setRunning() { _gameState = GameState.RUNNING; }
 
-    public void setRunning() {
-
-        _gameState = GameState.RUNNING;
-    }
-
-    public void setPaused() {
-        if (_gameState == GameState.RUNNING)
-        _gameState = GameState.PAUSED;
-    }
+    public void setPaused() { if (_gameState == GameState.RUNNING) _gameState = GameState.PAUSED; }
 
     public float getEnemySpeed() {
         return Helpers.getRandomFloat(_difficulty.getEnemyMinSpeed(), _difficulty.getEnemyMaxSpeed());
     }
 
-    public float getStaticObjectSpeed() {
-        return _difficulty.getPlatformAndObstacleSpeed();
-    }
+    public float getStaticObjectSpeed() { return _difficulty.getPlatformAndObstacleSpeed(); }
 }
-
-

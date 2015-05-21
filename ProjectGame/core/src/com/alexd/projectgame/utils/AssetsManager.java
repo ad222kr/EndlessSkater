@@ -7,11 +7,14 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Disposable;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
- * Created by Alex on 2015-05-01.
+ * Handles the assets of the game excluding sounds (handled by AudioManager).
  */
 public class AssetsManager {
 
@@ -21,26 +24,24 @@ public class AssetsManager {
     private static final String ENEMY_ANIMATION_NAME = "enemy";
     private static final String OBSTACLE_NAME = "obstacle";
     private static final String RUNNER_JUMP_NAME = "playerjump";
-    private static final String BACKGROUND = "background.png";
-    private static final String GROUND_LEFT_NAME = "ground-left";
-    private static final String GROUND_MIDDLE_NAME = "ground-middle";
-    private static final String GROUND_RIGHT_NAME = "ground-right";
     private static final String PLATFORM_NAME = "platform";
+    private static final String[] GAME_BACKGROUND_NAMES = new String[]{ "bg1", "bg2", "bg3", "menubg"};
 
     private static HashMap<String, SpriteAnimation> _animationMap;
     private static HashMap<String, AtlasRegion> _atlasRegionMap;
+    private static HashMap<String, Texture> _backgroundMap;
     private static BitmapFont _buttonFont;
     private static BitmapFont _scoreFont;
     private static TextureAtlas _atlas;
     private static Skin _skin;
-    private static Texture _background;
+
 
 
     public static void initiate(){
         _atlas = new TextureAtlas(ATLAS_PATH);
-        _background = new Texture(BACKGROUND);
         _animationMap = new HashMap<String, SpriteAnimation>();
         _atlasRegionMap = new HashMap<String, AtlasRegion>();
+        _backgroundMap = new HashMap<String, Texture>();
         _buttonFont = new BitmapFont(Gdx.files.internal("fonts/thefont.fnt"), Gdx.files.internal("fonts/thefont_0.png"), false);
         _scoreFont = new BitmapFont(Gdx.files.internal("fonts/thefont.fnt"), Gdx.files.internal("fonts/thefont_0.png"), false);
         _skin = new Skin(new TextureAtlas(UI_PATH));
@@ -50,7 +51,7 @@ public class AssetsManager {
     public static void loadAssets(){
         // Runner animation
         loadTexture(PLATFORM_NAME);
-        loadAnimation(0.2f, RUNNER_ANIMATION_NAME, 4);
+        loadAnimation(0.2f, RUNNER_ANIMATION_NAME, 11);
         loadTexture(RUNNER_JUMP_NAME);
 
         // Enemy sprite
@@ -64,11 +65,17 @@ public class AssetsManager {
         _scoreFont.setScale(0.5f);
 
         // background
-        loadTexture("bg1");
-        loadTexture("bg2");
+        for (String bgName : GAME_BACKGROUND_NAMES){
+            loadBackground(bgName, bgName + ".png");
+        }
 
 
 
+
+    }
+
+    private static void loadBackground(String key, String fileHandle){
+        _backgroundMap.put(key, new Texture(Gdx.files.internal(fileHandle)));
     }
 
     private static void loadAnimation(float animationStep, String key, int numberOfFrames){
@@ -91,10 +98,17 @@ public class AssetsManager {
         _buttonFont.dispose();
         _scoreFont.dispose();
         _skin.dispose();
+        disposeMap(_backgroundMap);
+
     }
 
-    public static TextureAtlas getTextureAtlas(){
-        return _atlas;
+    public static void disposeMap(HashMap map){
+        Iterator iterator = map.entrySet().iterator();
+        while(iterator.hasNext()){
+            Map.Entry mapValue = (Map.Entry)iterator.next();
+            ((Disposable)mapValue.getValue()).dispose();
+        }
+        map.clear();
     }
 
     public static SpriteAnimation getAnimation(String key){
@@ -105,6 +119,10 @@ public class AssetsManager {
         return _atlasRegionMap.get(key);
     }
 
+    public static Sprite getSprite(String key){
+        return new Sprite(_atlasRegionMap.get(key));
+    }
+
     public static BitmapFont getLargeFont(){
         return _buttonFont;
     }
@@ -113,12 +131,9 @@ public class AssetsManager {
         return _scoreFont;
     }
 
-    public static Texture getBackground(){ return _background; }
+    public static Texture getBackground(String key){ return _backgroundMap.get(key); }
 
-    public static Skin getSkin(){
-        // TODO: Own atlas for ui later?
-        return _skin;
-    }
+    public static Skin getSkin(){ return _skin; }
 
 
 

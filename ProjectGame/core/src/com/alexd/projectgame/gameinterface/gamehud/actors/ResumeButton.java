@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
  */
 public class ResumeButton extends TextGameButton {
 
-
     public ResumeButton(String text, TextButtonStyle style, TheGame game) {
         super(text, style, game);
 
@@ -22,6 +21,4 @@ public class ResumeButton extends TextGameButton {
             GameManager.getInstance().setRunning();
         }
     }
-
-
 }

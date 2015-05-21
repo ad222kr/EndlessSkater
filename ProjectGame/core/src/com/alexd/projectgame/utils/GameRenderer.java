@@ -1,9 +1,9 @@
 package com.alexd.projectgame.utils;
 
+import com.alexd.projectgame.graphics.ScrollingBackground;
+import com.alexd.projectgame.graphics.ScrollingBackgroundLayer;
 import com.alexd.projectgame.graphics.SpriteAnimation;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 
 /**
  * Class that will render the game objects. The UI-rendering will be taken
@@ -11,28 +11,33 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
  */
 public class GameRenderer {
 
+    private ScrollingBackground _background;
     private SpriteAnimation _runnerAnimation;
     private SpriteAnimation _enemyAnimation;
-    private Sprite _runnerJumpRegion;
-    private AtlasRegion _obstacleRegion;
-    private AtlasRegion _platformRegion;
-    private TextureRegion _heartRegion;
+    private Sprite _playerJumpSprite;
+    private Sprite _obstacleSprite;
+    private Sprite _platformSprite;
+    private Sprite _heartSprite;
     private float _runnerAnimationElapsed;
     private float _enemyAnimationElapsed;
-    private Texture _background;
+    private float _viewportWidth;
+    private float _viewportHeight;
+
 
 
     public GameRenderer(){
         // Animation with textureatlas test
         _runnerAnimation = AssetsManager.getAnimation("player");
-        _obstacleRegion = AssetsManager.getAtlasRegion("obstacle");
-        _runnerJumpRegion = new Sprite(AssetsManager.getAtlasRegion("playerjump"));
+        _obstacleSprite = AssetsManager.getSprite("obstacle");
+        _playerJumpSprite = new Sprite(AssetsManager.getAtlasRegion("playerjump"));
         _enemyAnimation = AssetsManager.getAnimation("enemy");
-        _background = AssetsManager.getBackground();
-        _platformRegion = AssetsManager.getAtlasRegion("platform");
-        _heartRegion = AssetsManager.getSkin().getRegion("heart-filled");
-
-
+        _platformSprite = AssetsManager.getSprite("platform");
+        _heartSprite = AssetsManager.getSkin().getSprite("heart-filled");
+        _background = new ScrollingBackground(new ScrollingBackgroundLayer[]{
+                new ScrollingBackgroundLayer(0.1f, AssetsManager.getBackground("bg1")),
+                new ScrollingBackgroundLayer(0.25f, AssetsManager.getBackground("bg2")),
+                new ScrollingBackgroundLayer(0.5f, AssetsManager.getBackground("bg3"))
+        }, 2f, 25, 14); // fix this hardcode
 
     }
 
@@ -46,9 +51,10 @@ public class GameRenderer {
             _runnerAnimation.draw(_runnerAnimationElapsed, batch, x, y, false);
         }
         else {
-            batch.draw(_runnerJumpRegion, x, y, Helpers.convertToMeters(_runnerJumpRegion.getWidth()),
-                    Helpers.convertToMeters(_runnerJumpRegion.getHeight()));
+            batch.draw(_playerJumpSprite, x, y, Helpers.convertToMeters(_playerJumpSprite.getWidth()),
+                    Helpers.convertToMeters(_playerJumpSprite.getHeight()));
             _runnerAnimationElapsed = 0;
+
 
         }
     }
@@ -58,35 +64,38 @@ public class GameRenderer {
     }
 
     public void drawObstacle(Batch batch, float x, float y){
-        batch.draw(_obstacleRegion, x, y, Constants.OBSTACLE_WIDTH, Constants.OBSTACLE_HEIGHT);
+        batch.draw(_obstacleSprite, x, y, Box2DConstants.OBSTACLE_WIDTH, Box2DConstants.OBSTACLE_HEIGHT);
     }
 
     public void drawPlatform(Batch batch, float x, float y, float platformWidth){
 
-        if (platformWidth == Constants.PLATFORM_WIDTH){
-            batch.draw(_platformRegion, x, y, Helpers.convertToMeters(_platformRegion.getRegionWidth()),
-                    Helpers.convertToMeters(_platformRegion.getRegionHeight()));
+        if (platformWidth == Box2DConstants.PLATFORM_WIDTH){
+            batch.draw(_platformSprite, x, y, Helpers.convertToMeters(_platformSprite.getRegionWidth()),
+                    Helpers.convertToMeters(_platformSprite.getRegionHeight()));
 
         }
         else {
-            batch.draw(_platformRegion, x + Constants.PLATFORM_WIDTH , y,
-                    Helpers.convertToMeters(_platformRegion.getRegionWidth()), Helpers.convertToMeters(_platformRegion.getRegionHeight()));
+            batch.draw(_platformSprite, x + Box2DConstants.PLATFORM_WIDTH , y,
+                    Helpers.convertToMeters(_platformSprite.getRegionWidth()), Helpers.convertToMeters(_platformSprite.getRegionHeight()));
 
         }
 
     }
 
     public void drawHeart(Batch batch, float x, float y){
-        batch.draw(_heartRegion, x, y, 1f, 1);
+        batch.draw(_heartSprite, x, y, 1f, 1); // TODO: Fix hardcode
+
+
     }
 
-    public void drawBackground(Batch batch){
-        batch.draw(_background, 0, 0, Helpers.convertToMeters(1280), Helpers.convertToMeters(720));
+    public void drawBackground(SpriteBatch batch, float delta) {
+        _background.draw(batch, delta);
 
     }
 
     public void dispose(){
 
     }
+
 
 }

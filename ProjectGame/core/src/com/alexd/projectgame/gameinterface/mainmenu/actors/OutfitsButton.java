@@ -17,7 +17,7 @@ public class OutfitsButton extends TextGameButton {
 
     @Override
     protected void onClick() {
-        Gdx.app.log("Outfits pressed", "");
+
     }
 
 

@@ -1,14 +1,11 @@
 package com.alexd.projectgame.utils;
 
 import com.alexd.projectgame.entities.*;
-import com.alexd.projectgame.gameinterface.gamehud.actors.Health;
 import com.alexd.projectgame.handlers.ContactHandler;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 /**
  * Handles updating the positions of entities, interpolating and physics
@@ -33,13 +30,13 @@ public class EntityManager {
 
 
     public void initiate() {
-        _world = new World(Constants.WORLD_GRAVITY, true);
+        _world = new World(Box2DConstants.WORLD_GRAVITY, true);
         _bodies = new Array<Body>();
-        _currentPlatform = new Platform(_world, Constants.PLATFORM_INIT_X, Constants.PLATFORM_INIT_Y, Constants.PLATFORM_INIT_WIDTH,
-                Constants.PLATFORM_HEIGHT);
+        _currentPlatform = new Platform(_world, Box2DConstants.PLATFORM_INIT_X, Box2DConstants.PLATFORM_INIT_Y, Box2DConstants.PLATFORM_INIT_WIDTH,
+                Box2DConstants.PLATFORM_HEIGHT);
 
-        _runner = new Runner(_world, Constants.RUNNER_X, Constants.RUNNER_Y, Constants.RUNNER_WIDTH,
-                Constants.RUNNER_HEIGHT);
+        _runner = new Runner(_world, Box2DConstants.RUNNER_X, Box2DConstants.RUNNER_Y, Box2DConstants.RUNNER_WIDTH,
+                Box2DConstants.RUNNER_HEIGHT);
 
         _world.setContactListener(new ContactHandler(_runner));
 
@@ -92,8 +89,8 @@ public class EntityManager {
             _timeBetweenEnemies = Helpers.getRandomFloat(GameManager.getInstance().getEnemyMinSeconds(),
                     GameManager.getInstance().getEnemyMaxSeconds());
             float y = getCorrectYPos(true);
-            Enemy enemy = new Enemy(_world, Constants.ENEMY_X, y,
-                    Constants.ENEMY_WIDTH, Constants.ENEMY_HEIGHT);
+            Enemy enemy = new Enemy(_world, Box2DConstants.ENEMY_X, y,
+                    Box2DConstants.ENEMY_WIDTH, Box2DConstants.ENEMY_HEIGHT);
             _lastEnemySpawnTime = 0;
 
             addEntity(enemy);
@@ -111,14 +108,14 @@ public class EntityManager {
         float x = getCorrectXPos();
         float y = getCorrectYPos(false);
 
-        addEntity(new Obstacle(_world, x, y, Constants.OBSTACLE_WIDTH, Constants.OBSTACLE_HEIGHT));
+        addEntity(new Obstacle(_world, x, y, Box2DConstants.OBSTACLE_WIDTH, Box2DConstants.OBSTACLE_HEIGHT));
     }
 
     public void spawnPlatform() {
 
         if (isTimeForPlatformSpawn()){
-            _currentPlatform = new Platform(_world, 42, Helpers.getRandomFloat(0, 2), Constants.PLATFORM_WIDTH,
-                    Constants.PLATFORM_HEIGHT);
+            _currentPlatform = new Platform(_world, 42, Helpers.getRandomFloat(0, 2), Box2DConstants.PLATFORM_WIDTH,
+                    Box2DConstants.PLATFORM_HEIGHT);
             Gdx.app.log("Platform speed: ", "" + _currentPlatform.getBody().getLinearVelocity().x);
             addEntity(_currentPlatform);
 
@@ -144,7 +141,7 @@ public class EntityManager {
         // Helper for calculating the right Y-position for the enemies/obstacles
         // otherwise they are floating (at least obstacles since they are kinematic)
         return _currentPlatform.getPosition().y + _currentPlatform.getHeight() / 2 +
-                (isEnemy ? Constants.ENEMY_HEIGHT : Constants.OBSTACLE_HEIGHT) / 2;
+                (isEnemy ? Box2DConstants.ENEMY_HEIGHT : Box2DConstants.OBSTACLE_HEIGHT) / 2;
     }
 
 
@@ -198,7 +195,7 @@ public class EntityManager {
     private boolean isTimeForEnemySpawn() {
         // Second condition checks so that the enemy has a platform to stand on
         return (_lastEnemySpawnTime > _timeBetweenEnemies) && (
-                _currentPlatform.getPosition().x + _currentPlatform.getWidth() / 2) > Constants.ENEMY_X;
+                _currentPlatform.getPosition().x + _currentPlatform.getWidth() / 2) > Box2DConstants.ENEMY_X;
     }
 
     public void destroyBodies(){

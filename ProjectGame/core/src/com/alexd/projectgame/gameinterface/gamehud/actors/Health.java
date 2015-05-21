@@ -24,10 +24,7 @@ public class Health extends Actor {
         _filledHeart = AssetsManager.getSkin().getRegion("heart-filled");
         _depletedHeart = AssetsManager.getSkin().getRegion("heart-depleted");
         initHealthArray(_maxHealth);
-
-
     }
-
 
     private void initHealthArray(int health){
         _hearts = new boolean[health];
@@ -50,27 +47,13 @@ public class Health extends Actor {
         }
     }
 
-
     @Override
     public void draw(Batch batch, float parentAlpha){
         super.draw(batch, parentAlpha);
         float x = 100;
 
-        if (GameManager.getInstance().isPaused()){
-            batch.setColor(0.5f, 0.5f, 0.5f, 1f);
-        }
-        else {
-            batch.setColor(Color.WHITE);
-        }
-
         for (boolean isFilled : _hearts){
-            if (isFilled){
-                batch.draw(_filledHeart, x, Y, 40, 40);
-
-            }
-            else {
-                batch.draw(_depletedHeart, x, Y, 40, 40);
-            }
+            batch.draw(isFilled ? _filledHeart : _depletedHeart, x, Y, 40, 40);
             x += 40;
         }
 

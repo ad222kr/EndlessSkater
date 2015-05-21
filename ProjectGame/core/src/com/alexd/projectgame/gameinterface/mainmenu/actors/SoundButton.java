@@ -12,6 +12,11 @@ import com.badlogic.gdx.Game;
  */
 public class SoundButton extends GameButton {
 
+    private final String SOUND_ON_UP_DRAWABLE_KEY = "soundon-unpressed";
+    private final String SOUND_ON_DOWN_DRAWABLE_KEY = "soundon-pressed";
+    private final String SOUND_OFF_UP_DRAWABLE_KEY = "soundoff-unpressed";
+    private final String SOUND_OFF_DOWN_DRAWABLE_KEY = "soundoff-pressed";
+
     public SoundButton(TheGame game, float x, float y, float width, float height) {
         super(game, x, y, width, height);
     }
@@ -30,13 +35,11 @@ public class SoundButton extends GameButton {
     @Override
     protected String getUpDrawableKey() {
 
-        return _game.getPrefs().isSoundEnabled() ? "soundon-unpressed" :
-                "soundoff-unpressed";
+        return _game.getPrefs().isSoundEnabled() ? SOUND_ON_UP_DRAWABLE_KEY : SOUND_OFF_UP_DRAWABLE_KEY;
     }
 
     @Override
     protected String getDownDrawableKey() {
-        return _game.getPrefs().isSoundEnabled() ? "soundon-pressed"
-                : "soundoff-pressed";
+        return _game.getPrefs().isSoundEnabled() ? SOUND_ON_DOWN_DRAWABLE_KEY : SOUND_OFF_DOWN_DRAWABLE_KEY;
     }
 }

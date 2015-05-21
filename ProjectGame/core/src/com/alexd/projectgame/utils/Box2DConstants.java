@@ -5,11 +5,22 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Created by Alex on 2015-04-24.
  */
-public final class Constants {
+public final class Box2DConstants {
 
-    private Constants(){
-        // preventing creating objects of this class
+    private Box2DConstants(){
+
     }
+
+    /**
+     * Box2d maskbits
+     */
+     public static final int RUNNER_BIT = 0x0001;
+     public static final int ENEMY_BIT = 0x0002;
+     public static final int PLATFORM_BIT = 0x0004;
+     public static final int ENEMY_SENSOR_BIT = 0x0008;
+     public static final int PLATFORM_SENSOR_BIT = 0x0010;
+     public static final int LIFE_BIT = 0x0020;
+
     /**
      * World
      */
@@ -18,7 +29,6 @@ public final class Constants {
     /**
      * Runner constants
      */
-
     public static final float RUNNER_X = 4f;
     public static final float RUNNER_Y = 4f;
     public static final float RUNNER_WIDTH = 1f;
@@ -54,5 +64,4 @@ public final class Constants {
     public static final float OBSTACLE_WIDTH = 2.5f;
     public static final float OBSTACLE_HEIGHT = ENEMY_HEIGHT / 3;
     public static final float OBSTACLE_DENSITY = 0.5f;
-    public static final float OBSTACLE_SPEED = PLATFORM_SPEED;
 }

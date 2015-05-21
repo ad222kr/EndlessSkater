@@ -11,6 +11,7 @@ public class GamePreferences {
     private final String MUSIC = "music";
     private final String SOUND = "sound";
     private final String HIGH_SCORE = "high-score";
+    private AudioManager _audioManager;
 
     public GamePreferences() {
     }

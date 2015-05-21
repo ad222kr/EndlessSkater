@@ -100,8 +100,6 @@ public class MainMenuStage extends Stage{
         _background.draw(batch, 0);
         _table.draw(batch, 0);
         batch.end();
-
-
     }
 
 

@@ -1,12 +1,11 @@
 package com.alexd.projectgame.handlers;
 
-import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.entities.Entity;
 import com.alexd.projectgame.entities.Life;
 import com.alexd.projectgame.enums.GameObjectType;
 import com.alexd.projectgame.entities.Enemy;
 import com.alexd.projectgame.entities.Runner;
-import com.alexd.projectgame.gameinterface.gamehud.actors.Health;
+import com.alexd.projectgame.utils.Box2DConstants;
 import com.badlogic.gdx.physics.box2d.*;
 
 /**
@@ -46,30 +45,30 @@ public class ContactHandler implements ContactListener {
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
 
-        if (shouldTrigger(fixtureA, fixtureB, TheGame.RUNNER_BIT, TheGame.PLATFORM_BIT)){
+        if (shouldTrigger(fixtureA, fixtureB, Box2DConstants.RUNNER_BIT, Box2DConstants.PLATFORM_BIT)){
             _runner.landed();
         }
 
-        if (shouldTrigger(fixtureA, fixtureB, TheGame.RUNNER_BIT, TheGame.LIFE_BIT)){
+        if (shouldTrigger(fixtureA, fixtureB, Box2DConstants.RUNNER_BIT, Box2DConstants.LIFE_BIT)){
             _runner.addHealth();
             Life life = fixtureA.getBody().getUserData() instanceof Life ? (Life)fixtureA.getBody().getUserData() :
                     (Life)fixtureB.getBody().getUserData();
             life.setFlaggedForDeath(true);
 
         }
-        if (shouldTrigger(fixtureA, fixtureB, TheGame.PLATFORM_SENSOR_BIT, TheGame.ENEMY_BIT)){
+        if (shouldTrigger(fixtureA, fixtureB, Box2DConstants.PLATFORM_SENSOR_BIT, Box2DConstants.ENEMY_BIT)){
             Enemy enemy = fixtureA.getBody().getUserData() instanceof Enemy ? (Enemy)fixtureA.getBody().getUserData() :
                     (Enemy)fixtureB.getBody().getUserData();
             enemy.flip();
         }
 
 
-        if (shouldTrigger(fixtureA, fixtureB, TheGame.RUNNER_BIT, TheGame.ENEMY_SENSOR_BIT) &&
+        if (shouldTrigger(fixtureA, fixtureB, Box2DConstants.RUNNER_BIT, Box2DConstants.ENEMY_SENSOR_BIT) &&
                 _runner.isFalling() && isRunnerAboveEnemy(fixtureA, fixtureB)){
             _runner.bumpOffEnemy();
         }
 
-        else if (shouldTrigger(fixtureA, fixtureB, TheGame.RUNNER_BIT, TheGame.ENEMY_BIT)){
+        else if (shouldTrigger(fixtureA, fixtureB, Box2DConstants.RUNNER_BIT, Box2DConstants.ENEMY_BIT)){
 
 
                 _runner.removeHealth();

@@ -27,22 +27,12 @@ public class Score extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha){
         super.draw(batch, parentAlpha);
-        _font.setScale(0.5f, 0.5f);
-        if (GameManager.getInstance().isPaused()){
-            batch.setColor(0.5f, 0.5f, 0.5f, 1f);
-        }
-        else {
-            batch.setColor(Color.WHITE);
-        }
-
         _font.draw(batch, "" + getScore(), X, Y);
-
     }
 
     @Override
     public void act(float delta){
         super.act(delta);
-        // Const multiplyer is standard, GameManagers multiplier is increased for every difficulty
         _score += (delta * (SCORE_MULTIPLIER)) * GameManager.getInstance().getMultiplyer();
     }
 

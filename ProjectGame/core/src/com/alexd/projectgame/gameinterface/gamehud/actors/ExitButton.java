@@ -19,7 +19,6 @@ public class ExitButton extends TextGameButton {
 
     @Override
     protected void onClick() {
-        Gdx.app.log("Exitbtn", "touched");
         _game.setScreen(new MainMenuScreen(_game));
     }
 

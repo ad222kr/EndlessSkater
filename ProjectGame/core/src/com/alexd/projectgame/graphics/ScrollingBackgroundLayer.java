@@ -28,9 +28,9 @@ public class ScrollingBackgroundLayer {
         _height = height;
     }
 
-    public ScrollingBackgroundLayer(float speedScalar, String texturePath){
+    public ScrollingBackgroundLayer(float speedScalar, Texture texture){
         _speedScalar = speedScalar;
-        _texture = new Texture(Gdx.files.internal(texturePath));
+        _texture = texture;
         _texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         setBounds();
     }

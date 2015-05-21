@@ -11,7 +11,6 @@ import com.badlogic.gdx.Gdx;
  */
 public class PlayButton extends TextGameButton {
 
-
     public PlayButton(String text, TextButtonStyle style, TheGame game) {
         super(text, style, game);
     }
@@ -19,7 +18,6 @@ public class PlayButton extends TextGameButton {
     @Override
     protected void onClick() {
 
-        Gdx.app.log("clicke play!", "");
         _game.setScreen(new GameScreen(_game));
     }
 

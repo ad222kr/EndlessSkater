@@ -31,9 +31,6 @@ public class GameHudStage extends Stage {
     private Label _gameOverScoreLabel; // need to have ref to this
     FPS fps;
 
-
-
-
     public GameHudStage(GameScreen screen){
         super(new StretchViewport(TheGame.APP_WIDTH, TheGame.APP_HEIGHT, new OrthographicCamera(TheGame.APP_WIDTH, TheGame.APP_HEIGHT)));
 

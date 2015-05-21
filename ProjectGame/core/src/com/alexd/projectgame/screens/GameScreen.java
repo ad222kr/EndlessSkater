@@ -21,23 +21,18 @@ import com.badlogic.gdx.utils.viewport.*;
  * Created by Alex on 2015-04-07.
  */
 public class GameScreen implements Screen {
-
-
-
-    private boolean isDebug = false;// Set to false to hide debugrender
-
     private final int VIEWPORT_WIDTH = Helpers.convertToMeters(TheGame.APP_WIDTH);
     private final int VIEWPORT_HEIGHT = Helpers.convertToMeters(TheGame.APP_HEIGHT);
 
-    private TheGame _game;
+    private boolean isDebug = false;// Set to false to hide debugrender
 
+    private TheGame _game;
     private EntityManager _entityManager;
     private OrthographicCamera _camera;
     private Viewport _viewport;
     private Box2DDebugRenderer _debugRenderer;
     private GameRenderer _renderer;
     private GameHudStage _gameHudStage;
-    private ScrollingBackground _background;
     private float _totalTime;
     private float _timeForDifficultyChange = 30;
 
@@ -48,38 +43,39 @@ public class GameScreen implements Screen {
         setUp();
     }
 
-    private void setUp(){
-        //GameManager.getInstance().setRunning();
-        _entityManager = new EntityManager();
-        // Cam and HUD
+    private void setupCamera() {
         _camera = new OrthographicCamera();
         _viewport = new StretchViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, _camera);
         _viewport.apply();
         _camera.position.set(_camera.viewportWidth / 2, _camera.viewportHeight / 2, 0f);
         _camera.update();
+    }
+
+    private void setUp(){
+        _entityManager = new EntityManager();
         _gameHudStage = new GameHudStage(this);
+        setupCamera();
+        setupRendering();
+        setupInput();
+    }
 
-        _background = new ScrollingBackground(new ScrollingBackgroundLayer[]{
-                new ScrollingBackgroundLayer(0.2f, "bg2.png"),
-                new ScrollingBackgroundLayer(0.5f, "bg1.png")
-        }, 2f, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+    private void setupInput() {
+        InputProcessor gameInputProcessor = new GameInputHandler(_entityManager.getRunner());
+        InputMultiplexer inputMultiplexer = new InputMultiplexer();
 
-        // Rendering
+        inputMultiplexer.addProcessor(_gameHudStage);
+        inputMultiplexer.addProcessor(gameInputProcessor);
+
+        Gdx.input.setInputProcessor(inputMultiplexer);
+        Gdx.input.setCatchBackKey(true);
+    }
+
+    private void setupRendering() {
         _renderer = new GameRenderer();
-
         _game.getBatch().setProjectionMatrix(_camera.combined);
         if (isDebug){
             _debugRenderer = new Box2DDebugRenderer();
         }
-
-        // Input. The screen uses one inputprocessor for the controls,
-        // The stage uses another for pause etc.
-        InputProcessor gameInputProcessor = new GameInputHandler(_entityManager.getRunner());
-        InputMultiplexer inputMultiplexer = new InputMultiplexer();
-        inputMultiplexer.addProcessor(_gameHudStage);
-        inputMultiplexer.addProcessor(gameInputProcessor);
-        Gdx.input.setInputProcessor(inputMultiplexer);
-        Gdx.input.setCatchBackKey(true);
     }
 
     @Override
@@ -90,44 +86,42 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         // Main game loop
-        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClearColor(41/255f, 171/255f, 226/255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         switch (GameManager.getInstance().getState()){
             case RUNNING:
                 _game.getBatch().setColor(Color.WHITE);
                 _totalTime += delta;
-                _entityManager.updateTimers(delta);
+
+                updateEntities(delta);
                 updateDifficulty();
-
-                _entityManager.spawnPlatform();
-                _entityManager.spawnEnemy();
-
 
                 if(isGameOver()){
                     GameManager.getInstance().setState(GameState.GAMEOVER);
                 }
-
-                _entityManager.destroyBodies();
-                _gameHudStage.act(delta);
-                _entityManager.doStep(delta);
                 break;
             case PAUSED:
                 _game.getBatch().setColor(0.5f, 0.5f, 0.5f, 1f);
                 break;
-
             case GAMEOVER:
                 _game.getBatch().setColor(0.5f, 0.5f, 0.5f, 1f);
                 _game.getPrefs().saveHighScore(_gameHudStage.getScore());
-
         }
         draw(delta);
     }
 
-    private void updateDifficulty(){
+    private void updateEntities(float delta) {
+        _entityManager.updateTimers(delta);
+        _entityManager.spawnPlatform();
+        _entityManager.spawnEnemy();
+        _entityManager.destroyBodies();
+        _gameHudStage.act(delta);
+        _entityManager.doStep(delta);
+    }
 
+    private void updateDifficulty(){
         if (_totalTime > _timeForDifficultyChange && !GameManager.getInstance().isMaxDifficulty()){
-            Gdx.app.log("Next diff", "wololo");
             GameManager.getInstance().nextDifficulty();
             _timeForDifficultyChange += 30;
             _entityManager.updateMovingSpeed();
@@ -138,20 +132,15 @@ public class GameScreen implements Screen {
        if (GameManager.getInstance().getState() == GameState.RUNNING){
             _renderer.updateAnimation(delta);
         }
-        _game.getBatch().begin();
-        _game.getBatch().enableBlending();
-        _background.draw(_game.getBatch(), delta);
-        //_backGround.draw(_game.getBatch(), delta);
-        _game.getBatch().setProjectionMatrix(_camera.combined);
 
+        _game.getBatch().begin();
+        _renderer.drawBackground(_game.getBatch(), delta);
         for (Entity entity : _entityManager.getEntities()){
             switch (entity.getGameObjectType()){
                 case GROUND:
                     _renderer.drawPlatform(_game.getBatch(), entity.getPosition().x - entity.getWidth() / 2,
                             entity.getPosition().y - entity.getHeight() / 2, entity.getWidth());
                     break;
-
-
                 case ENEMY:
                     _renderer.drawEnemy(_game.getBatch(), entity.getPosition().x - entity.getWidth() / 2,
                             entity.getPosition().y - entity.getHeight() / 2, ((Enemy)entity).getIsFlipped());
@@ -164,17 +153,14 @@ public class GameScreen implements Screen {
                     _renderer.drawObstacle(_game.getBatch(), entity.getPosition().x - entity.getWidth() / 2,
                             entity.getPosition().y - entity.getHeight() / 2);
                     break;
-
-
-
             }
         }
 
         _renderer.drawRunner(_game.getBatch(), getRunner().getPosition().x - getRunner().getWidth() / 2,
                 getRunner().getPosition().y - getRunner().getHeight() / 2, _entityManager.getRunner().getIsJumping());
         _game.getBatch().end();
-
         _gameHudStage.draw(_game.getBatch());
+
         if (isDebug ){
             _debugRenderer.render(_entityManager.getWorld(), _camera.combined);
         }
@@ -198,19 +184,15 @@ public class GameScreen implements Screen {
         if (GameManager.getInstance().getState() != GameState.GAMEOVER){
             GameManager.getInstance().setState(GameState.PAUSED);
         }
-
     }
 
     @Override
-    public void resume() {
-
-    }
+    public void resume() {}
 
     @Override
     public void hide() {
         dispose();
     }
-
 
     @Override
     public void dispose() {

@@ -1,5 +1,6 @@
 package com.alexd.projectgame.gameinterface.mainmenu.actors;
 
+import com.alexd.projectgame.utils.AssetsManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -13,7 +14,7 @@ public class Background extends Actor {
     private Texture _texture;
 
     public Background(){
-        _texture = new Texture(Gdx.files.internal("menubg.png"));
+        _texture = AssetsManager.getBackground("menubg");
     }
 
     @Override

@@ -10,6 +10,10 @@ import com.badlogic.gdx.Game;
  */
 public class MusicButton extends GameButton {
 
+    private final String MUSIC_ON_UP_DRAWABLE_KEY = "musicon-unpressed";
+    private final String MUSIC_ON_DOWN_DRAWABLE_KEY = "musicon-pressed";
+    private final String MUSIO_OFF_UP_DRAWABLE_KEY = "musicoff-unpressed";
+    private final String MUSIC_OFF_DOWN_DRAWABLE_KEY = "musicoff-pressed";
 
     public MusicButton(TheGame game, float x, float y, float width, float height) {
         super(game, x, y, width, height);
@@ -30,11 +34,11 @@ public class MusicButton extends GameButton {
 
     @Override
     protected String getUpDrawableKey() {
-        return _game.getPrefs().isMusicEnabled() ? "musicon-unpressed" : "musicoff-unpressed";
+        return _game.getPrefs().isMusicEnabled() ? MUSIC_ON_UP_DRAWABLE_KEY : MUSIO_OFF_UP_DRAWABLE_KEY;
     }
 
     @Override
     protected String getDownDrawableKey() {
-        return _game.getPrefs().isMusicEnabled() ? "musicon-pressed" : "musicoff-pressed";
+        return _game.getPrefs().isMusicEnabled() ? MUSIC_ON_DOWN_DRAWABLE_KEY : MUSIC_OFF_DOWN_DRAWABLE_KEY;
     }
 }

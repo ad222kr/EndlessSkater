@@ -1,7 +1,7 @@
 package com.alexd.projectgame.enums;
 
 
-import com.alexd.projectgame.utils.Constants;
+import com.alexd.projectgame.utils.Box2DConstants;
 import com.badlogic.gdx.Gdx;
 
 /**
@@ -40,9 +40,9 @@ public enum Difficulty {
     }
     public float getEnemyMinSeconds(){ return _enemyMinSeconds; }
     public float getEnemyMaxSeconds(){ return _enemyMaxSeconds; }
-    public float getEnemyMaxSpeed(){ return Constants.PLATFORM_SPEED * _multiplier - 3; }
-    public float getEnemyMinSpeed(){ return Constants.PLATFORM_SPEED * _multiplier - 1; }
-    public float getPlatformAndObstacleSpeed(){ return Constants.PLATFORM_SPEED * _multiplier; } // Same speed
+    public float getEnemyMaxSpeed(){ return Box2DConstants.PLATFORM_SPEED * _multiplier - 3; }
+    public float getEnemyMinSpeed(){ return Box2DConstants.PLATFORM_SPEED * _multiplier - 1; }
+    public float getPlatformAndObstacleSpeed(){ return Box2DConstants.PLATFORM_SPEED * _multiplier; } // Same speed
 
 
     public Difficulty next(){

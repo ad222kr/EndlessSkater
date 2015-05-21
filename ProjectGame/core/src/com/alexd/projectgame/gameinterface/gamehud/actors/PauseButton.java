@@ -12,6 +12,7 @@ import com.badlogic.gdx.Game;
  */
 public class PauseButton extends GameButton {
 
+    private final String DRAWABLE_KEY = "pause-button";
 
     public PauseButton(TheGame game, float x, float y, float width, float height) {
         super(game, x, y, width, height);
@@ -25,12 +26,12 @@ public class PauseButton extends GameButton {
 
     @Override
     protected String getUpDrawableKey() {
-        return "pause-button";
+        return DRAWABLE_KEY;
     }
 
     @Override
     protected String getDownDrawableKey() {
-        return "pause-button";
+        return DRAWABLE_KEY;
     }
 
 
