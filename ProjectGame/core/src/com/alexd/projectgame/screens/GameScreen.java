@@ -208,4 +208,6 @@ public class GameScreen implements Screen {
     public Runner getRunner(){
         return _entityManager.getRunner();
     }
+
+
 }

@@ -62,8 +62,7 @@ public class EntityManager {
     }
 
     public void saveCurrentPosition() {
-        // Saves the current position of the entities
-        // for interpolating between steps
+        // For calculating where the sprite should be between steps
         for (Entity entity : _entities) {
             if (entity.getBody() != null) {
                 entity.getPreviousPosition().x = entity.getBody().getPosition().x;
@@ -112,13 +111,13 @@ public class EntityManager {
     }
 
     public void spawnPlatform() {
-
         if (isTimeForPlatformSpawn()){
             _currentPlatform = new Platform(_world, 42, Helpers.getRandomFloat(0, 2), Box2DConstants.PLATFORM_WIDTH,
                     Box2DConstants.PLATFORM_HEIGHT);
-            Gdx.app.log("Platform speed: ", "" + _currentPlatform.getBody().getLinearVelocity().x);
             addEntity(_currentPlatform);
 
+
+            // TODO: fix own random methods for obstacle and health so they don't share same random-instance
             if (Helpers.getRandomInt(0, 5) <= 1) {
                 spawnObstacle();
             }
@@ -159,7 +158,6 @@ public class EntityManager {
                 case GROUND:
                     entity.getBody().setLinearVelocity(GameManager.getInstance().getStaticObjectSpeed(), 0);
                     break;
-
             }
         }
     }
@@ -184,7 +182,9 @@ public class EntityManager {
 
 
 
-        // VARIABLE TIME STEP
+        // ----------- VARIABLE TIME STEP ---------------
+        // not good if slow device, fps drops etc...
+        // _world.step(delta, 10, 8);
 
     }
 

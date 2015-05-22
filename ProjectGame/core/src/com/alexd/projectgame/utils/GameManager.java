@@ -26,7 +26,11 @@ public class GameManager {
 
     public void setState(GameState value) { _gameState = value; }
 
-    public void nextDifficulty() { _difficulty = _difficulty.next(); }
+    public void nextDifficulty() {
+
+        _difficulty = _difficulty.next();
+        Gdx.app.log("Difficulty: ", getDiffName());
+    }
 
     public void resetDifficulty() { _difficulty = Difficulty.FIRST; }
 
@@ -51,4 +55,6 @@ public class GameManager {
     }
 
     public float getStaticObjectSpeed() { return _difficulty.getPlatformAndObstacleSpeed(); }
+
+    public String getDiffName(){ return _difficulty.name(); }
 }

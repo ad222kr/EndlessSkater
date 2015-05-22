@@ -16,6 +16,7 @@ public class Runner extends Entity {
     private int _health;
     private boolean _isJumping;
     private boolean _isOnGround;
+    private float _score;
 
     public int getHealth(){ return _health; }
 

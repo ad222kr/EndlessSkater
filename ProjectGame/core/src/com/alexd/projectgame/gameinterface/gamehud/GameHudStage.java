@@ -3,6 +3,7 @@ package com.alexd.projectgame.gameinterface.gamehud;
 import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.gameinterface.gamehud.actors.*;
 import com.alexd.projectgame.gameinterface.mainmenu.actors.MusicButton;
+import com.alexd.projectgame.gameinterface.mainmenu.actors.PlayButton;
 import com.alexd.projectgame.gameinterface.mainmenu.actors.SoundButton;
 import com.alexd.projectgame.utils.AssetsManager;
 import com.alexd.projectgame.utils.GameManager;
@@ -29,7 +30,7 @@ public class GameHudStage extends Stage {
     private Table _pauseTable;
     private Table _gameOverTable;
     private Label _gameOverScoreLabel; // need to have ref to this
-    FPS fps;
+
 
     public GameHudStage(GameScreen screen){
         super(new StretchViewport(TheGame.APP_WIDTH, TheGame.APP_HEIGHT, new OrthographicCamera(TheGame.APP_WIDTH, TheGame.APP_HEIGHT)));
@@ -83,18 +84,26 @@ public class GameHudStage extends Stage {
         Label.LabelStyle scoreStyle = new Label.LabelStyle();
         scoreStyle.font = AssetsManager.getSmallFont();
 
+
+
         TextButton.TextButtonStyle exitStyle = new TextButton.TextButtonStyle();
         exitStyle.up = new TextureRegionDrawable(AssetsManager.getSkin().getRegion("standardbutton-unpressed"));
         exitStyle.down = new TextureRegionDrawable(AssetsManager.getSkin().getRegion("standardbutton-pressed"));
         exitStyle.font = AssetsManager.getLargeFont();
 
+        TextButton.TextButtonStyle playAgainStyle = new TextButton.TextButtonStyle();
+        playAgainStyle.up = new TextureRegionDrawable(AssetsManager.getSkin().getRegion("greenbutton-unpressed"));
+        playAgainStyle.down = new TextureRegionDrawable(AssetsManager.getSkin().getRegion("greenbutton-pressed"));
+        playAgainStyle.font = AssetsManager.getLargeFont();
+
         _gameOverScoreLabel = new Label("SCORE: "+ getScore(), scoreStyle);
         _gameOverTable = new Table();
         _gameOverTable.pad(100,0,0,0);
         _gameOverTable.setFillParent(true);
-        _gameOverTable.add(new Label("GAME OVER", gameoverStyle)).row();
-        _gameOverTable.add(_gameOverScoreLabel).pad(50, 0, 0, 0).row();
-        _gameOverTable.add(new ExitButton("MENU", exitStyle, _screen.getGame())).pad(50, 0, 0, 0);
+        _gameOverTable.add(new Label("GAME OVER", gameoverStyle)).colspan(2).row();
+        _gameOverTable.add(_gameOverScoreLabel).pad(50, 0, 160, 0).colspan(2).row();
+        _gameOverTable.add(new ExitButton("MENU", exitStyle, _screen.getGame())).left().pad(0, 0, 0, 50);
+        _gameOverTable.add(new PlayButton("RETRY", playAgainStyle, _screen.getGame())).right().pad(0, 50, 0, 0);
 
         _gameOverTable.setVisible(false);
         _gameOverTable.setTouchable(Touchable.enabled);
@@ -106,11 +115,12 @@ public class GameHudStage extends Stage {
         _score = new Score();
         _health = new Health(_screen.getRunner().getHealth());
         _pauseButton = new PauseButton(_screen.getGame(), 40,650, 40, 40);
-        fps = new FPS();
+        Label.LabelStyle diffStyle = new Label.LabelStyle();
+        diffStyle.font = AssetsManager.getSmallFont();
         addActor(_score);
         addActor(_health);
         addActor(_pauseButton);
-        addActor(fps);
+
     }
 
     public void draw(Batch batch){
@@ -130,7 +140,6 @@ public class GameHudStage extends Stage {
                 _pauseButton.draw(batch, 0);
                 _score.draw(batch, 0);
                 _health.draw(batch, 0);
-                fps.draw(batch, 0);
                 break;
             case PAUSED:
                 _pauseButton.disable();
@@ -151,7 +160,6 @@ public class GameHudStage extends Stage {
                 _gameOverTable.setTouchable(Touchable.enabled);
                 _gameOverTable.draw(batch, 0);
 
-
                 break;
         }
         batch.end();
@@ -168,6 +176,8 @@ public class GameHudStage extends Stage {
     public int getScore(){
         return _score.getScore();
     }
+
+
 
 
 
