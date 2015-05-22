@@ -2,8 +2,6 @@ package com.alexd.projectgame.screens;
 
 import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.enums.GameState;
-import com.alexd.projectgame.graphics.ScrollingBackground;
-import com.alexd.projectgame.graphics.ScrollingBackgroundLayer;
 import com.alexd.projectgame.utils.*;
 import com.alexd.projectgame.entities.*;
 import com.alexd.projectgame.handlers.GameInputHandler;
@@ -136,7 +134,7 @@ public class GameScreen implements Screen {
         _game.getBatch().begin();
         _renderer.drawBackground(_game.getBatch(), delta);
         for (Entity entity : _entityManager.getEntities()){
-            switch (entity.getGameObjectType()){
+            switch (entity.getEntityType()){
                 case GROUND:
                     _renderer.drawPlatform(_game.getBatch(), entity.getPosition().x - entity.getWidth() / 2,
                             entity.getPosition().y - entity.getHeight() / 2, entity.getWidth());

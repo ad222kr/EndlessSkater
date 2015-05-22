@@ -1,6 +1,6 @@
 package com.alexd.projectgame.entities;
 
-import com.alexd.projectgame.enums.GameObjectType;
+import com.alexd.projectgame.enums.EntityType;
 import com.alexd.projectgame.utils.PhysicsFactory;
 import com.badlogic.gdx.physics.box2d.*;
 
@@ -19,7 +19,7 @@ public class Obstacle extends Entity {
 
     @Override
     protected void initiate() {
-        _gameObjectType = GameObjectType.OBSTACLE;
+        _entityType = EntityType.OBSTACLE;
         _body = PhysicsFactory.createObstacle(_world, this);
 
     }

@@ -21,11 +21,9 @@ public enum Difficulty {
     ELEVENTH(1.5f, 2f, 5f );
 
     Difficulty(float multiplier, float enemyMinSeconds, float enemyMaxSeconds){
-
         _multiplier = multiplier;
         _enemyMinSeconds = enemyMinSeconds;
         _enemyMaxSeconds = enemyMaxSeconds;
-
     }
 
     private static Difficulty[] vals = values();
@@ -44,7 +42,6 @@ public enum Difficulty {
     public float getEnemyMinSpeed(){ return Box2DConstants.PLATFORM_SPEED * _multiplier - 1; }
     public float getPlatformAndObstacleSpeed(){ return Box2DConstants.PLATFORM_SPEED * _multiplier; } // Same speed
 
-
     public Difficulty next(){
         Gdx.app.log("Difficulty: ", ""+vals[ordinal()].toString());
         return vals[ordinal() + 1];
@@ -53,5 +50,4 @@ public enum Difficulty {
     public boolean isMax(){
         return values()[ordinal()] == values()[values().length - 1];
     }
-
 }

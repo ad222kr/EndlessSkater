@@ -1,6 +1,6 @@
 package com.alexd.projectgame.entities;
 
-import com.alexd.projectgame.enums.GameObjectType;
+import com.alexd.projectgame.enums.EntityType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
@@ -16,15 +16,12 @@ public abstract class Entity {
      */
     protected World _world;
     protected Body _body;
-    protected GameObjectType _gameObjectType;
+    protected EntityType _entityType;
     protected float _x;
     protected float _y;
     protected float _width;
     protected float _height;
     protected boolean _flaggedForDeath;
-
-
-
     protected Vector2 _previousPosition;
     protected Vector2 _position;
 
@@ -43,10 +40,7 @@ public abstract class Entity {
 
         _position.x = _previousPosition.x;
         _position.y = _previousPosition.y;
-
     }
-
-
 
     /**
      * Constructors
@@ -63,11 +57,10 @@ public abstract class Entity {
 
     public Entity() {}
 
-
     protected abstract void initiate();
 
-    public boolean isExpectedType(GameObjectType type){
-        return _gameObjectType == type;
+    public boolean isExpectedType(EntityType type){
+        return _entityType == type;
     }
 
     /**
@@ -77,10 +70,9 @@ public abstract class Entity {
         return _body;
     }
 
-    public GameObjectType getGameObjectType (){
-        return _gameObjectType;
+    public EntityType getEntityType(){
+        return _entityType;
     }
-
 
     public float getX(){
         return _position.x;

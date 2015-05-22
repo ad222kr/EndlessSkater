@@ -1,6 +1,6 @@
 package com.alexd.projectgame.entities;
 
-import com.alexd.projectgame.enums.GameObjectType;
+import com.alexd.projectgame.enums.EntityType;
 import com.alexd.projectgame.utils.Box2DConstants;
 import com.alexd.projectgame.utils.PhysicsFactory;
 import com.badlogic.gdx.physics.box2d.World;
@@ -41,7 +41,7 @@ public class Runner extends Entity {
 
     @Override
     protected void initiate() {
-        _gameObjectType = GameObjectType.RUNNER;
+        _entityType = EntityType.RUNNER;
         _body = PhysicsFactory.createRunner(_world, this);
         _health = MAX_HEALTH;
         landed();
@@ -49,10 +49,7 @@ public class Runner extends Entity {
 
 
     public void jump(){
-        // Jumping code translated from http://www.iforce2d.net/b2dtut/constant-speed
-
         if(!_isJumping && _isOnGround){
-
             _isJumping = true;
             _isOnGround = false;
             _body.applyLinearImpulse(Box2DConstants.RUNNER_JUMPING_IMPULSE, _body.getWorldCenter(), true);
@@ -81,12 +78,7 @@ public class Runner extends Entity {
         }
     }
 
-
     public boolean isFalling() {
        return _body.getLinearVelocity().y < 0;
     }
-
-
-
-
 }

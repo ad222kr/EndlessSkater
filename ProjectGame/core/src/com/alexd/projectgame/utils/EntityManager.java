@@ -153,7 +153,7 @@ public class EntityManager {
         // On difficultychange, updatres speed of the platforms that are
         // already on screen
         for (Entity entity : _entities){
-            switch (entity.getGameObjectType()){
+            switch (entity.getEntityType()){
                 case OBSTACLE:
                 case LIFE:
                 case GROUND:

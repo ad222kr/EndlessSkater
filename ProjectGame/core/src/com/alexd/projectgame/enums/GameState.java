@@ -8,5 +8,4 @@ public enum GameState {
     PAUSED,
     INDEFINITE,
     GAMEOVER
-
 }

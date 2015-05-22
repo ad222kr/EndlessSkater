@@ -1,6 +1,6 @@
 package com.alexd.projectgame.entities;
 
-import com.alexd.projectgame.enums.GameObjectType;
+import com.alexd.projectgame.enums.EntityType;
 import com.alexd.projectgame.utils.PhysicsFactory;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -17,7 +17,7 @@ public class Platform extends Entity {
     @Override
     protected void initiate() {
 
-        _gameObjectType = GameObjectType.GROUND;
+        _entityType = EntityType.GROUND;
         _body = PhysicsFactory.createPlatform(_world, this);
     }
 

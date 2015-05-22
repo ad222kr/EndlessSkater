@@ -1,8 +1,7 @@
 package com.alexd.projectgame.entities;
 
 import com.alexd.projectgame.enums.EnemyType;
-import com.alexd.projectgame.enums.GameObjectType;
-import com.alexd.projectgame.utils.Box2DConstants;
+import com.alexd.projectgame.enums.EntityType;
 import com.alexd.projectgame.utils.GameManager;
 import com.alexd.projectgame.utils.PhysicsFactory;
 import com.badlogic.gdx.math.Vector2;
@@ -32,26 +31,25 @@ public class Enemy extends Entity {
 
     @Override
     protected void initiate() {
-        _gameObjectType = GameObjectType.ENEMY;
+        _entityType = EntityType.ENEMY;
         _enemyType = EnemyType.getRandomValue();
         _body = PhysicsFactory.createEnemy(_world, this);
         _isFliped = false;
 
     }
 
-    public void jump(){
-        _body.applyLinearImpulse(Box2DConstants.ENEMY_JUMPING_IMPULSE, _body.getWorldCenter(), true);
-    }
-
     public void flip(){
         if (!_isFliped){
             _isFliped = true;
-            float velX = +_body.getLinearVelocity().x;
-            float platVelX = +GameManager.getInstance().getStaticObjectSpeed();
-            float diffVelX = velX - platVelX;
-            float newVelX = platVelX - diffVelX;
-            _body.setLinearVelocity(new Vector2(newVelX, 0));
+            _body.setLinearVelocity(new Vector2(getNewVelocityX(), 0));
         }
+    }
+
+    public float getNewVelocityX(){
+        float platformVelocityX = +GameManager.getInstance().getStaticObjectSpeed();
+        float bodyVelocityX = +_body.getLinearVelocity().x;
+
+        return platformVelocityX - (bodyVelocityX - platformVelocityX);
     }
 
     public boolean getIsFlipped(){

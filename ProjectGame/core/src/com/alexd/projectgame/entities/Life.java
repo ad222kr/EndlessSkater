@@ -1,6 +1,6 @@
 package com.alexd.projectgame.entities;
 
-import com.alexd.projectgame.enums.GameObjectType;
+import com.alexd.projectgame.enums.EntityType;
 import com.alexd.projectgame.utils.PhysicsFactory;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -18,7 +18,7 @@ public class Life extends Entity {
     }
     @Override
     protected void initiate() {
-        _gameObjectType = GameObjectType.LIFE;
+        _entityType = EntityType.LIFE;
         _body = PhysicsFactory.createLife(_world, this);
     }
 }

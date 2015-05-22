@@ -2,7 +2,7 @@ package com.alexd.projectgame.handlers;
 
 import com.alexd.projectgame.entities.Entity;
 import com.alexd.projectgame.entities.Life;
-import com.alexd.projectgame.enums.GameObjectType;
+import com.alexd.projectgame.enums.EntityType;
 import com.alexd.projectgame.entities.Enemy;
 import com.alexd.projectgame.entities.Runner;
 import com.alexd.projectgame.utils.Box2DConstants;
@@ -81,7 +81,7 @@ public class ContactHandler implements ContactListener {
         Entity objA = (Entity) contact.getFixtureA().getBody().getUserData();
         Entity objB = (Entity) contact.getFixtureB().getBody().getUserData();
 
-        if (checkTypes(objA, objB, GameObjectType.RUNNER, GameObjectType.GROUND)){
+        if (checkTypes(objA, objB, EntityType.RUNNER, EntityType.GROUND)){
             _runner.setIsOnGround(false); // no idea why i do this
 
         }
@@ -92,7 +92,7 @@ public class ContactHandler implements ContactListener {
         Entity objA = (Entity) contact.getFixtureA().getBody().getUserData();
         Entity objB = (Entity) contact.getFixtureB().getBody().getUserData();
 
-        if ((checkTypes(objA, objB, GameObjectType.ENEMY, GameObjectType.RUNNER))){
+        if ((checkTypes(objA, objB, EntityType.ENEMY, EntityType.RUNNER))){
             contact.setEnabled(false);
         }
 
@@ -103,7 +103,7 @@ public class ContactHandler implements ContactListener {
 
     }
 
-    public boolean checkTypes(Entity a, Entity b, GameObjectType typeA, GameObjectType typeB){
+    public boolean checkTypes(Entity a, Entity b, EntityType typeA, EntityType typeB){
         return ((a.isExpectedType(typeA) && b.isExpectedType(typeB)) ||
                 (b.isExpectedType(typeA) && a.isExpectedType(typeB)));
     }
