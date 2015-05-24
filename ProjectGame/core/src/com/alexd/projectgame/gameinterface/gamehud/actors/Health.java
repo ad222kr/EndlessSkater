@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  */
 public class Health extends Actor {
 
-    private final float Y = 650f;
+    private final float Y = 630f;
     private int _maxHealth;
     private boolean[] _hearts;
     private TextureRegion _filledHeart;
@@ -53,8 +53,8 @@ public class Health extends Actor {
         float x = 100;
 
         for (boolean isFilled : _hearts){
-            batch.draw(isFilled ? _filledHeart : _depletedHeart, x, Y, 40, 40);
-            x += 40;
+            batch.draw(isFilled ? _filledHeart : _depletedHeart, x, Y, 60, 60);
+            x += 60;
         }
 
     }

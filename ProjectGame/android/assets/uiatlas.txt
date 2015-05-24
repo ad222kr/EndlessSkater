@@ -4,105 +4,119 @@ filter: Linear,Linear
 repeat: none
 greenbutton-pressed
   rotate: false
-  xy: 2, 2
+  xy: 2, 147
   size: 413, 143
   orig: 413, 143
   offset: 0, 0
   index: -1
 greenbutton-unpressed
   rotate: false
-  xy: 2, 147
+  xy: 417, 147
   size: 413, 143
   orig: 413, 143
   offset: 0, 0
   index: -1
 heart-depleted
   rotate: false
-  xy: 417, 147
+  xy: 77, 2
   size: 72, 59
   orig: 72, 59
   offset: 0, 0
   index: -1
 heart-filled
   rotate: false
-  xy: 2, 292
+  xy: 2, 2
   size: 73, 59
   orig: 73, 59
   offset: 0, 0
   index: -1
 musicoff-pressed
   rotate: false
-  xy: 77, 292
+  xy: 953, 2
   size: 141, 141
   orig: 141, 141
   offset: 0, 0
   index: -1
 musicoff-unpressed
   rotate: false
-  xy: 220, 292
+  xy: 1239, 2
   size: 141, 141
   orig: 141, 141
   offset: 0, 0
   index: -1
 musicon-pressed
   rotate: false
-  xy: 363, 292
+  xy: 810, 2
   size: 141, 141
   orig: 141, 141
   offset: 0, 0
   index: -1
 musicon-unpressed
   rotate: false
-  xy: 2, 435
+  xy: 524, 2
   size: 141, 141
   orig: 141, 141
   offset: 0, 0
   index: -1
 pause-button
   rotate: false
-  xy: 145, 435
+  xy: 151, 2
   size: 85, 97
   orig: 85, 97
   offset: 0, 0
   index: -1
+player-rus
+  rotate: false
+  xy: 1247, 147
+  size: 226, 272
+  orig: 226, 272
+  offset: 0, 0
+  index: -1
+player-swe
+  rotate: false
+  xy: 1475, 147
+  size: 225, 272
+  orig: 225, 272
+  offset: 0, 0
+  index: -1
 soundoff-pressed
   rotate: false
-  xy: 232, 435
+  xy: 1096, 2
   size: 141, 141
   orig: 141, 141
   offset: 0, 0
   index: -1
 soundoff-unpressed
   rotate: false
-  xy: 2, 578
+  xy: 238, 2
   size: 141, 141
   orig: 141, 141
   offset: 0, 0
   index: -1
 soundon-pressed
   rotate: false
-  xy: 145, 578
+  xy: 667, 2
   size: 141, 141
   orig: 141, 141
   offset: 0, 0
   index: -1
 soundon-unpressed
   rotate: false
-  xy: 288, 578
+  xy: 381, 2
   size: 141, 141
   orig: 141, 141
   offset: 0, 0
   index: -1
 standardbutton-pressed
   rotate: false
-  xy: 2, 721
+  xy: 1382, 2
   size: 413, 143
   orig: 413, 143
   offset: 0, 0
   index: -1
 standardbutton-unpressed
   rotate: false
-  xy: 2, 866
+  xy: 832, 147
   size: 413, 143
   orig: 413, 143
   offset: 0, 0

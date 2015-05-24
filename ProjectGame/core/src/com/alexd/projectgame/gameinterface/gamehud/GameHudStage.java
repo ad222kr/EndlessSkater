@@ -16,7 +16,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import javafx.scene.control.Tab;
 
 /**
  * Created by Alex on 2015-05-01.
@@ -114,7 +113,7 @@ public class GameHudStage extends Stage {
     public void setupGameHud(){
         _score = new Score();
         _health = new Health(_screen.getRunner().getHealth());
-        _pauseButton = new PauseButton(_screen.getGame(), 40,650, 40, 40);
+        _pauseButton = new PauseButton(_screen.getGame(), 20,630, 60, 60);
         Label.LabelStyle diffStyle = new Label.LabelStyle();
         diffStyle.font = AssetsManager.getSmallFont();
         addActor(_score);
@@ -142,7 +141,7 @@ public class GameHudStage extends Stage {
                 _health.draw(batch, 0);
                 break;
             case PAUSED:
-                _pauseButton.disable();
+                _pauseButton.hide();
                 _gameOverTable.setVisible(false);
                 _gameOverTable.setTouchable(Touchable.enabled);
                 _pauseTable.setVisible(true);
@@ -152,7 +151,7 @@ public class GameHudStage extends Stage {
 
                 break;
             case GAMEOVER:
-                _pauseButton.disable();
+                _pauseButton.hide();
                 _health.setVisible(false);
                 _score.setVisible(false);
                 _gameOverScoreLabel.setText("SCORE: " + getScore());

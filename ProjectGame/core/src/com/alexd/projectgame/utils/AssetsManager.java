@@ -20,11 +20,13 @@ public class AssetsManager {
 
     private static final String ATLAS_PATH = "spritesheet.txt";
     private static final String UI_PATH ="uiatlas.txt";
-    private static final String RUNNER_ANIMATION_NAME = "player";
+
     private static final String ENEMY_ANIMATION_NAME = "enemy";
     private static final String OBSTACLE_NAME = "obstacle";
     private static final String RUNNER_JUMP_NAME = "playerjump";
     private static final String PLATFORM_NAME = "platform";
+
+    private static final String[] RUNNER_ANIMATION_NAMES = new String[]{ "player-swe", "player-rus" };
     private static final String[] GAME_BACKGROUND_NAMES = new String[]{ "bg1", "bg2", "bg3", "menubg"};
 
     private static HashMap<String, SpriteAnimation> _animationMap;
@@ -51,8 +53,6 @@ public class AssetsManager {
     public static void loadAssets(){
         // Runner animation
         loadTexture(PLATFORM_NAME);
-        loadAnimation(0.2f, RUNNER_ANIMATION_NAME, 11);
-        loadTexture(RUNNER_JUMP_NAME);
 
         // Enemy sprite
         loadAnimation(0.2f, ENEMY_ANIMATION_NAME, 4);
@@ -63,6 +63,11 @@ public class AssetsManager {
         // ground/platform
 
         _scoreFont.setScale(0.5f);
+
+        for (String runnerName : RUNNER_ANIMATION_NAMES){
+            loadAnimation(0.2f, runnerName, 11);
+            loadTexture(runnerName + "-jump");
+        }
 
         // background
         for (String bgName : GAME_BACKGROUND_NAMES){
@@ -83,7 +88,7 @@ public class AssetsManager {
 
         Array<TextureRegion> frames = new Array<TextureRegion>(numberOfFrames);
         for (int i = 0; i < numberOfFrames; i++){
-            frames.add(_atlas.findRegion(key + "" + i));
+            frames.add(_atlas.findRegion(key + "-" + i));
         }
         _animationMap.put(key, new SpriteAnimation(animationStep, frames, Animation.PlayMode.LOOP));
 

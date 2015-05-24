@@ -34,14 +34,17 @@ public class Helpers {
     }
 
     public static int getRandomInt(int min, int max) {
-        int random = _random.nextInt((max - min) + 1) + min;
-        return random;
+        return _random.nextInt((max - min) + 1) + min;
     }
 
     public static boolean isBodyOutOfBounds(Body body){
         Entity entity = (Entity) body.getUserData();
         return ((body.getPosition().x + entity.getWidth() / 2) < 0) ||
                 ((body.getPosition().y + entity.getHeight() / 2) < 0);
+    }
+
+    public static boolean stringIsNotNullNotEmptyNotWhiteSpace(final String string){
+        return string != null && !string.isEmpty() && !string.trim().isEmpty();
     }
 
 

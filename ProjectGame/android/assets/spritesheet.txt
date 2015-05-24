@@ -2,136 +2,241 @@ spritesheet.png
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-enemy0
+enemy-0
   rotate: false
-  xy: 114, 2
+  xy: 124, 80
   size: 54, 77
   orig: 54, 77
   offset: 0, 0
   index: -1
-enemy1
+enemy-1
   rotate: false
-  xy: 170, 2
+  xy: 1249, 2
+  size: 54, 76
+  orig: 54, 76
+  offset: 0, 0
+  index: -1
+enemy-2
+  rotate: false
+  xy: 180, 80
   size: 54, 77
   orig: 54, 77
   offset: 0, 0
   index: -1
-enemy2
+enemy-3
   rotate: false
-  xy: 58, 2
-  size: 54, 77
-  orig: 54, 77
-  offset: 0, 0
-  index: -1
-enemy3
-  rotate: false
-  xy: 2, 2
+  xy: 68, 80
   size: 54, 76
   orig: 54, 76
   offset: 0, 0
   index: -1
 obstacle
   rotate: false
-  xy: 880, 2
-  size: 127, 28
-  orig: 127, 28
+  xy: 2, 2
+  size: 129, 36
+  orig: 129, 36
   offset: 0, 0
   index: -1
 platform
   rotate: false
-  xy: 2, 81
+  xy: 2, 354
   size: 1502, 323
   orig: 1502, 323
   offset: 0, 0
   index: -1
-player0
+player-rus-0
   rotate: false
-  xy: 814, 2
+  xy: 2, 80
   size: 64, 76
   orig: 64, 76
   offset: 0, 0
   index: -1
-player1
+player-rus-1
   rotate: false
-  xy: 748, 2
+  xy: 1123, 2
   size: 64, 75
   orig: 64, 75
   offset: 0, 0
   index: -1
-player10
+player-rus-10
   rotate: false
-  xy: 616, 2
+  xy: 793, 2
   size: 64, 74
   orig: 64, 74
   offset: 0, 0
   index: -1
-player11
+player-rus-11
   rotate: false
-  xy: 550, 2
+  xy: 1057, 2
   size: 64, 75
   orig: 64, 75
   offset: 0, 0
   index: -1
-player2
+player-rus-2
   rotate: false
-  xy: 682, 2
+  xy: 859, 2
   size: 64, 74
   orig: 64, 74
   offset: 0, 0
   index: -1
-player3
+player-rus-3
   rotate: false
-  xy: 484, 2
+  xy: 265, 2
   size: 64, 73
   orig: 64, 73
   offset: 0, 0
   index: -1
-player4
+player-rus-4
   rotate: false
-  xy: 682, 2
+  xy: 859, 2
   size: 64, 74
   orig: 64, 74
   offset: 0, 0
   index: -1
-player5
+player-rus-5
   rotate: false
-  xy: 748, 2
+  xy: 1123, 2
   size: 64, 75
   orig: 64, 75
   offset: 0, 0
   index: -1
-player6
+player-rus-6
   rotate: false
-  xy: 814, 2
+  xy: 2, 80
   size: 64, 76
   orig: 64, 76
   offset: 0, 0
   index: -1
-player7
+player-rus-7
   rotate: false
-  xy: 418, 2
+  xy: 727, 2
   size: 64, 74
   orig: 64, 74
   offset: 0, 0
   index: -1
-player8
+player-rus-8
   rotate: false
-  xy: 286, 2
+  xy: 397, 2
   size: 64, 73
   orig: 64, 73
   offset: 0, 0
   index: -1
-player9
+player-rus-9
   rotate: false
-  xy: 352, 2
+  xy: 199, 2
   size: 64, 72
   orig: 64, 72
   offset: 0, 0
   index: -1
-playerjump
+player-rus-jump
   rotate: false
-  xy: 226, 2
+  xy: 1189, 2
   size: 58, 76
   orig: 58, 76
+  offset: 0, 0
+  index: -1
+player-rus
+  rotate: false
+  xy: 236, 80
+  size: 226, 272
+  orig: 226, 272
+  offset: 0, 0
+  index: -1
+player-swe-0
+  rotate: false
+  xy: 1431, 2
+  size: 64, 76
+  orig: 64, 76
+  offset: 0, 0
+  index: -1
+player-swe-1
+  rotate: false
+  xy: 925, 2
+  size: 64, 75
+  orig: 64, 75
+  offset: 0, 0
+  index: -1
+player-swe-10
+  rotate: false
+  xy: 595, 2
+  size: 64, 74
+  orig: 64, 74
+  offset: 0, 0
+  index: -1
+player-swe-11
+  rotate: false
+  xy: 991, 2
+  size: 64, 75
+  orig: 64, 75
+  offset: 0, 0
+  index: -1
+player-swe-2
+  rotate: false
+  xy: 661, 2
+  size: 64, 74
+  orig: 64, 74
+  offset: 0, 0
+  index: -1
+player-swe-3
+  rotate: false
+  xy: 331, 2
+  size: 64, 73
+  orig: 64, 73
+  offset: 0, 0
+  index: -1
+player-swe-4
+  rotate: false
+  xy: 661, 2
+  size: 64, 74
+  orig: 64, 74
+  offset: 0, 0
+  index: -1
+player-swe-5
+  rotate: false
+  xy: 925, 2
+  size: 64, 75
+  orig: 64, 75
+  offset: 0, 0
+  index: -1
+player-swe-6
+  rotate: false
+  xy: 1365, 2
+  size: 64, 76
+  orig: 64, 76
+  offset: 0, 0
+  index: -1
+player-swe-7
+  rotate: false
+  xy: 529, 2
+  size: 64, 74
+  orig: 64, 74
+  offset: 0, 0
+  index: -1
+player-swe-8
+  rotate: false
+  xy: 463, 2
+  size: 64, 73
+  orig: 64, 73
+  offset: 0, 0
+  index: -1
+player-swe-9
+  rotate: false
+  xy: 133, 2
+  size: 64, 72
+  orig: 64, 72
+  offset: 0, 0
+  index: -1
+player-swe-jump
+  rotate: false
+  xy: 1305, 2
+  size: 58, 76
+  orig: 58, 76
+  offset: 0, 0
+  index: -1
+player-swe
+  rotate: false
+  xy: 464, 80
+  size: 225, 272
+  orig: 225, 272
   offset: 0, 0
   index: -1

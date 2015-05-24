@@ -30,7 +30,7 @@ public class GameManager {
 
         _difficulty = _difficulty.next();
         Gdx.app.log("Difficulty: ", getDiffName());
-    }
+     }
 
     public void resetDifficulty() { _difficulty = Difficulty.FIRST; }
 

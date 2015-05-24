@@ -38,23 +38,11 @@ public abstract class GameButton extends Button {
     }
 
     protected void setUp(){
-
-
-
-
         addListener(new ClickListener() {
-            //@Override
-            //public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-              //  return false;
-           // }
-
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 onClick();
-
-
-                Gdx.app.log("X: " + x, "Y: " + y);
             }
         });
 
@@ -78,8 +66,12 @@ public abstract class GameButton extends Button {
         setTouchable(Touchable.enabled);
     }
 
-    public void disable(){
+    public void hide(){
         setVisible(false);
+        setTouchable(Touchable.disabled);
+    }
+
+    public void disableClick(){
         setTouchable(Touchable.disabled);
     }
 

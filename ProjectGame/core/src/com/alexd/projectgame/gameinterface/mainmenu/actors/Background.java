@@ -13,8 +13,8 @@ public class Background extends Actor {
 
     private Texture _texture;
 
-    public Background(){
-        _texture = AssetsManager.getBackground("menubg");
+    public Background(String imageKey){
+        _texture = AssetsManager.getBackground(imageKey);
     }
 
     @Override

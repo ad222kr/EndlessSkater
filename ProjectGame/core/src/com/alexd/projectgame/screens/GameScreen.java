@@ -2,6 +2,7 @@ package com.alexd.projectgame.screens;
 
 import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.enums.GameState;
+import com.alexd.projectgame.graphics.GameRenderer;
 import com.alexd.projectgame.utils.*;
 import com.alexd.projectgame.entities.*;
 import com.alexd.projectgame.handlers.GameInputHandler;
@@ -69,7 +70,7 @@ public class GameScreen implements Screen {
     }
 
     private void setupRendering() {
-        _renderer = new GameRenderer();
+        _renderer = new GameRenderer(_game.getPrefs());
         _game.getBatch().setProjectionMatrix(_camera.combined);
         if (isDebug){
             _debugRenderer = new Box2DDebugRenderer();
@@ -84,7 +85,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         // Main game loop
-        Gdx.gl.glClearColor(41/255f, 171/255f, 226/255f, 1);
+        Gdx.gl.glClearColor(41 / 255f, 171 / 255f, 226 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         switch (GameManager.getInstance().getState()){
@@ -153,6 +154,8 @@ public class GameScreen implements Screen {
                     break;
             }
         }
+
+
 
         _renderer.drawRunner(_game.getBatch(), getRunner().getPosition().x - getRunner().getWidth() / 2,
                 getRunner().getPosition().y - getRunner().getHeight() / 2, _entityManager.getRunner().getIsJumping());

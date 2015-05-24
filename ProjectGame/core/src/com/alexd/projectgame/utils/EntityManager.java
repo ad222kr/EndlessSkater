@@ -7,6 +7,8 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
+import java.util.Random;
+
 /**
  * Handles updating the positions of entities, interpolating and physics
  */
@@ -22,6 +24,9 @@ public class EntityManager {
     private float accumulator = 0;
     private float _lastEnemySpawnTime;
     private float _timeBetweenEnemies;
+    private Random _enemyRandom;
+    private Random _obstacleRandom;
+    private Random _lifeRandom;
 
     public EntityManager() {
         _entities = new Array<Entity>();
@@ -30,10 +35,13 @@ public class EntityManager {
 
 
     public void initiate() {
+        _enemyRandom = new Random();
+        _obstacleRandom = new Random();
+        _lifeRandom = new Random();
         _world = new World(Box2DConstants.WORLD_GRAVITY, true);
         _bodies = new Array<Body>();
-        _currentPlatform = new Platform(_world, Box2DConstants.PLATFORM_INIT_X, Box2DConstants.PLATFORM_INIT_Y, Box2DConstants.PLATFORM_INIT_WIDTH,
-                Box2DConstants.PLATFORM_HEIGHT);
+        _currentPlatform = new Platform(_world, Box2DConstants.PLATFORM_INIT_X, Box2DConstants.PLATFORM_INIT_Y,
+                Box2DConstants.PLATFORM_INIT_WIDTH, Box2DConstants.PLATFORM_HEIGHT);
 
         _runner = new Runner(_world, Box2DConstants.RUNNER_X, Box2DConstants.RUNNER_Y, Box2DConstants.RUNNER_WIDTH,
                 Box2DConstants.RUNNER_HEIGHT);
@@ -85,8 +93,8 @@ public class EntityManager {
 
     public void spawnEnemy() {
         if (isTimeForEnemySpawn()){
-            _timeBetweenEnemies = Helpers.getRandomFloat(GameManager.getInstance().getEnemyMinSeconds(),
-                    GameManager.getInstance().getEnemyMaxSeconds());
+            _timeBetweenEnemies = getRandom((int) GameManager.getInstance().getEnemyMinSeconds(),
+                    (int) GameManager.getInstance().getEnemyMaxSeconds(), _enemyRandom);
             float y = getCorrectYPos(true);
             Enemy enemy = new Enemy(_world, Box2DConstants.ENEMY_X, y,
                     Box2DConstants.ENEMY_WIDTH, Box2DConstants.ENEMY_HEIGHT);
@@ -97,7 +105,7 @@ public class EntityManager {
     }
 
     private void spawnHealth(){
-        float y = (_currentPlatform.getPosition().y + _currentPlatform.getHeight() / 2) + Helpers.getRandomInt(1, 3);
+        float y = (_currentPlatform.getPosition().y + _currentPlatform.getHeight() / 2) + Helpers.getRandomInt(2, 3);
         float x = getCorrectXPos();
         addEntity(new Life(_world, x, y, 1f, 1f));
 
@@ -118,10 +126,10 @@ public class EntityManager {
 
 
             // TODO: fix own random methods for obstacle and health so they don't share same random-instance
-            if (Helpers.getRandomInt(0, 5) <= 1) {
+            if (getRandom(0, 5, _obstacleRandom) <= 1) {
                 spawnObstacle();
             }
-            if (Helpers.getRandomInt(0, 100) >= 95){
+            if (getRandom(0, 100, _lifeRandom) >= 95){
                 spawnHealth();
             }
         }
@@ -214,6 +222,9 @@ public class EntityManager {
         }
     }
 
+    private int getRandom(int min, int max, Random instance){
+        return instance.nextInt((max - min) + 1) + min;
+    }
     public Array<Entity> getEntities() {
         return _entities;
     }

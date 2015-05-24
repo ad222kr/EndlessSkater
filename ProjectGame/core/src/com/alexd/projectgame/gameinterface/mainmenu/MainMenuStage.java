@@ -2,6 +2,7 @@ package com.alexd.projectgame.gameinterface.mainmenu;
 
 import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.gameinterface.mainmenu.actors.*;
+import com.alexd.projectgame.gameinterface.shared.BaseStage;
 import com.alexd.projectgame.utils.AssetsManager;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -18,9 +19,8 @@ import javafx.scene.control.Tab;
 /**
  * Created by Alex on 2015-05-01.
  */
-public class MainMenuStage extends Stage{
+public class MainMenuStage extends BaseStage{
 
-    private TheGame _game;
     private PlayButton _playButton;
     private SoundButton _soundButton;
     private MusicButton _musicButton;
@@ -33,44 +33,23 @@ public class MainMenuStage extends Stage{
 
 
     public MainMenuStage(TheGame game){
-        super(new StretchViewport(TheGame.APP_WIDTH, TheGame.APP_HEIGHT, new OrthographicCamera(TheGame.APP_WIDTH, TheGame.APP_HEIGHT)));
-
-        _game = game;
-        //_playButton = new PlayButton(_game, TheGame.APP_WIDTH / 2, TheGame.APP_HEIGHT / 2, 350, 100);
+        super(game);
 
         _soundButton = new SoundButton(_game, 0,0,0,0);
         _musicButton = new MusicButton(_game, 0,0,0,0);
+        _background = new Background("menubg");
 
-        _background = new Background();
-
-        Label.LabelStyle titleStyle = new Label.LabelStyle();
-        titleStyle.font = AssetsManager.getLargeFont();
-
-        Label.LabelStyle labelStyle = new Label.LabelStyle();
-        labelStyle.font = AssetsManager.getSmallFont();
+        Label.LabelStyle titleStyle = getLabelStyle(true);
+        Label.LabelStyle labelStyle = getLabelStyle(false);
 
         Label titleLabel = new Label("BRUNK RUNNER", titleStyle);
         Label hsLabel = new Label("High Score: " + Integer.toString(_game.getPrefs().getHighScore()), labelStyle);
 
-
-
-        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
-        style.up = new TextureRegionDrawable(AssetsManager.getSkin().getRegion("greenbutton-unpressed"));
-        style.down = new TextureRegionDrawable(AssetsManager.getSkin().getRegion("greenbutton-pressed"));
-        style.font = AssetsManager.getLargeFont();
-
-        TextButton.TextButtonStyle outfitstyle = new TextButton.TextButtonStyle();
-        outfitstyle.up = new TextureRegionDrawable(AssetsManager.getSkin().getRegion("standardbutton-unpressed"));
-        outfitstyle.down = new TextureRegionDrawable(AssetsManager.getSkin().getRegion("standardbutton-pressed"));
-        outfitstyle.font = AssetsManager.getLargeFont();
-
-
-
+        TextButton.TextButtonStyle style = getTextButtonStyle("greenbutton-unpressed", "greenbutton-pressed", true);
+        TextButton.TextButtonStyle outfitstyle = getTextButtonStyle("standardbutton-unpressed", "standardbutton-pressed", true);
 
         _playButton = new PlayButton("PLAY", style, _game);
         _outfitsButton = new OutfitsButton("OUTFITS", outfitstyle, _game);
-
-
 
         _table = new Table();
         _table.setFillParent(true);
@@ -86,13 +65,10 @@ public class MainMenuStage extends Stage{
         _table.add(_soundButton).center().pad(0, 90,0,0);
         _table.add(_musicButton).center().pad(0,0,0,90);
 
-
         _table.setTouchable(Touchable.enabled);
         addActor(_background);
         addActor(_table);
     }
-
-
 
     public void draw(Batch batch){
         super.draw();
@@ -101,7 +77,6 @@ public class MainMenuStage extends Stage{
         _table.draw(batch, 0);
         batch.end();
     }
-
 
     public TheGame getGame(){
         return _game;

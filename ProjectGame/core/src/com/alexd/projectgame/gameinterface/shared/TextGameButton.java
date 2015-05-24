@@ -21,9 +21,9 @@ public abstract class TextGameButton extends TextButton {
 
 
     public void setUp(){
-        addListener(new ClickListener(){
+        addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y){
+            public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 onClick();
             }
@@ -34,6 +34,7 @@ public abstract class TextGameButton extends TextButton {
 
 
     protected abstract void onClick();
+
 
 
 }

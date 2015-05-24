@@ -1,5 +1,6 @@
 package com.alexd.projectgame.utils;
 
+import com.alexd.projectgame.graphics.SpriteAnimation;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
@@ -11,9 +12,12 @@ public class GamePreferences {
     private final String MUSIC = "music";
     private final String SOUND = "sound";
     private final String HIGH_SCORE = "high-score";
-    private AudioManager _audioManager;
+    private final String SKINS = "skins";
+    private final String STANDARD_SKIN = "player-swe";
+
 
     public GamePreferences() {
+
     }
 
 
@@ -46,14 +50,11 @@ public class GamePreferences {
 
         pref.putBoolean(SOUND, false);
         pref.flush();
-
     }
 
     public boolean isSoundEnabled(){
-        Gdx.app.log("Sound is: ", ""+getPrefs().getBoolean(SOUND));
         return getPrefs().getBoolean(SOUND);
     }
-
 
     public void enableMusic(){
         Preferences pref = getPrefs();
@@ -61,25 +62,39 @@ public class GamePreferences {
         pref.putBoolean(MUSIC, true);
         pref.flush();
 
-
         // blabla toggle sound here later
     }
 
     public void disableMusic(){
         Preferences pref = getPrefs();
-
         pref.putBoolean(MUSIC, false);
         pref.flush();
-
     }
 
     public boolean isMusicEnabled(){
-        Gdx.app.log("MUSIC is: ", ""+getPrefs().getBoolean(MUSIC));
         return getPrefs().getBoolean(MUSIC);
     }
 
     private Preferences getPrefs(){
         return Gdx.app.getPreferences(PREF_NAME);
     }
+
+    public String getChosenSkin() {
+        String skin = getPrefs().getString(SKINS);
+
+        if (!Helpers.stringIsNotNullNotEmptyNotWhiteSpace(skin)){
+            return STANDARD_SKIN;
+        }
+        return skin;
+    }
+
+
+    public void setChosenSkin(String skinKey){
+        Preferences pref = getPrefs();
+        pref.putString(SKINS, skinKey);
+        pref.flush();
+    }
+
+
 
 }

@@ -1,8 +1,9 @@
-package com.alexd.projectgame.utils;
+package com.alexd.projectgame.graphics;
 
 import com.alexd.projectgame.graphics.ScrollingBackground;
 import com.alexd.projectgame.graphics.ScrollingBackgroundLayer;
 import com.alexd.projectgame.graphics.SpriteAnimation;
+import com.alexd.projectgame.utils.*;
 import com.badlogic.gdx.graphics.g2d.*;
 
 /**
@@ -20,16 +21,16 @@ public class GameRenderer {
     private Sprite _heartSprite;
     private float _runnerAnimationElapsed;
     private float _enemyAnimationElapsed;
-    private float _viewportWidth;
-    private float _viewportHeight;
+    private GamePreferences _preferences;
 
+    public GameRenderer(GamePreferences preferences){
 
-
-    public GameRenderer(){
+        _preferences = preferences;
+        //_preferences.setChosenSkin("player-rus");
         // Animation with textureatlas test
-        _runnerAnimation = AssetsManager.getAnimation("player");
+        _runnerAnimation = AssetsManager.getAnimation(_preferences.getChosenSkin());
         _obstacleSprite = AssetsManager.getSprite("obstacle");
-        _playerJumpSprite = new Sprite(AssetsManager.getAtlasRegion("playerjump"));
+        _playerJumpSprite = new Sprite(AssetsManager.getAtlasRegion(_preferences.getChosenSkin() + "-jump"));
         _enemyAnimation = AssetsManager.getAnimation("enemy");
         _platformSprite = AssetsManager.getSprite("platform");
         _heartSprite = AssetsManager.getSkin().getSprite("heart-filled");
@@ -54,8 +55,6 @@ public class GameRenderer {
             batch.draw(_playerJumpSprite, x, y, Helpers.convertToMeters(_playerJumpSprite.getWidth()),
                     Helpers.convertToMeters(_playerJumpSprite.getHeight()));
             _runnerAnimationElapsed = 0;
-
-
         }
     }
 
@@ -64,7 +63,7 @@ public class GameRenderer {
     }
 
     public void drawObstacle(Batch batch, float x, float y){
-        batch.draw(_obstacleSprite, x, y, Box2DConstants.OBSTACLE_WIDTH, Box2DConstants.OBSTACLE_HEIGHT);
+        batch.draw(_obstacleSprite, x, y, Box2DConstants.OBSTACLE_WIDTH, Helpers.convertToMeters(_obstacleSprite.getHeight()));
     }
 
     public void drawPlatform(Batch batch, float x, float y, float platformWidth){
