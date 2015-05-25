@@ -91,10 +91,4 @@ public class GameRenderer {
         _background.draw(batch, delta);
 
     }
-
-    public void dispose(){
-
-    }
-
-
 }

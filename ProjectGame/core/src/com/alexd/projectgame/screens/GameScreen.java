@@ -199,7 +199,6 @@ public class GameScreen implements Screen {
     public void dispose() {
         // cleans up resources not handled by the GC
         _entityManager.dispose();
-        _renderer.dispose();
         if (isDebug){
             _debugRenderer.dispose();
         }

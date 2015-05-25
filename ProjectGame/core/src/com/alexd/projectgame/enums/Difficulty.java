@@ -43,7 +43,6 @@ public enum Difficulty {
     public float getPlatformAndObstacleSpeed(){ return Box2DConstants.PLATFORM_SPEED * _multiplier; } // Same speed
 
     public Difficulty next(){
-        Gdx.app.log("Difficulty: ", ""+vals[ordinal()].toString());
         return vals[ordinal() + 1];
     }
 

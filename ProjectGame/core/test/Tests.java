@@ -23,7 +23,7 @@ public class Tests {
 
     @Test
     public void testDifficultyIsMax(){
-        Difficulty difficulty = Difficulty.HELL;
+        Difficulty difficulty = Difficulty.ELEVENTH;
 
         assertTrue("Should be true", difficulty.isMax());
     }
@@ -33,9 +33,9 @@ public class Tests {
         Difficulty difficulty = Difficulty.FIRST;
         Difficulty expected = Difficulty.SECOND;
 
-        Difficulty actual = difficulty.next();
+        difficulty = difficulty.next();
 
-        assertEquals(expected, actual);
+        assertEquals(expected, difficulty);
     }
 
     /**

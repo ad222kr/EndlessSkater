@@ -1,6 +1,5 @@
 package com.alexd.projectgame.entities;
 
-import com.alexd.projectgame.enums.EnemyType;
 import com.alexd.projectgame.enums.EntityType;
 import com.alexd.projectgame.utils.GameManager;
 import com.alexd.projectgame.utils.PhysicsFactory;
@@ -12,14 +11,7 @@ import com.badlogic.gdx.physics.box2d.*;
  */
 public class Enemy extends Entity {
 
-    private EnemyType _enemyType;
     private boolean _isFliped;
-
-    /* Get & set */
-    public EnemyType getEnemyType(){
-        return _enemyType;
-    }
-
 
 
     public Enemy(World world, float x, float y, float width, float height){
@@ -32,7 +24,6 @@ public class Enemy extends Entity {
     @Override
     protected void initiate() {
         _entityType = EntityType.ENEMY;
-        _enemyType = EnemyType.getRandomValue();
         _body = PhysicsFactory.createEnemy(_world, this);
         _isFliped = false;
 
@@ -45,7 +36,7 @@ public class Enemy extends Entity {
         }
     }
 
-    public float getNewVelocityX(){
+    private float getNewVelocityX(){
         float platformVelocityX = +GameManager.getInstance().getStaticObjectSpeed();
         float bodyVelocityX = +_body.getLinearVelocity().x;
 
