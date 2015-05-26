@@ -32,8 +32,8 @@ public class AssetsManager {
     private static HashMap<String, SpriteAnimation> _animationMap;
     private static HashMap<String, AtlasRegion> _atlasRegionMap;
     private static HashMap<String, Texture> _backgroundMap;
-    private static BitmapFont _buttonFont;
-    private static BitmapFont _scoreFont;
+    private static BitmapFont _bigFont;
+    private static BitmapFont _smallFont;
     private static TextureAtlas _atlas;
     private static Skin _skin;
 
@@ -44,39 +44,26 @@ public class AssetsManager {
         _animationMap = new HashMap<String, SpriteAnimation>();
         _atlasRegionMap = new HashMap<String, AtlasRegion>();
         _backgroundMap = new HashMap<String, Texture>();
-        _buttonFont = new BitmapFont(Gdx.files.internal("fonts/thefont.fnt"), Gdx.files.internal("fonts/thefont_0.png"), false);
-        _scoreFont = new BitmapFont(Gdx.files.internal("fonts/thefont.fnt"), Gdx.files.internal("fonts/thefont_0.png"), false);
+        _bigFont = new BitmapFont(Gdx.files.internal("fonts/thefont.fnt"),
+                Gdx.files.internal("fonts/thefont_0.png"), false);
+        _smallFont = new BitmapFont(Gdx.files.internal("fonts/thefont.fnt"),
+                Gdx.files.internal("fonts/thefont_0.png"), false);
         _skin = new Skin(new TextureAtlas(UI_PATH));
         loadAssets();
     }
 
     public static void loadAssets(){
-        // Runner animation
         loadTexture(PLATFORM_NAME);
-
-        // Enemy sprite
         loadAnimation(0.2f, ENEMY_ANIMATION_NAME, 4);
-
-        // Obstacle
         loadTexture(OBSTACLE_NAME);
-
-        // ground/platform
-
-        _scoreFont.setScale(0.5f);
-
         for (String runnerName : RUNNER_ANIMATION_NAMES){
             loadAnimation(0.2f, runnerName, 11);
             loadTexture(runnerName + "-jump");
         }
-
-        // background
         for (String bgName : GAME_BACKGROUND_NAMES){
             loadBackground(bgName, bgName + ".png");
         }
-
-
-
-
+        _smallFont.setScale(0.5f);
     }
 
     private static void loadBackground(String key, String fileHandle){
@@ -84,14 +71,11 @@ public class AssetsManager {
     }
 
     private static void loadAnimation(float animationStep, String key, int numberOfFrames){
-
-
         Array<TextureRegion> frames = new Array<TextureRegion>(numberOfFrames);
         for (int i = 0; i < numberOfFrames; i++){
             frames.add(_atlas.findRegion(key + "-" + i));
         }
         _animationMap.put(key, new SpriteAnimation(animationStep, frames, Animation.PlayMode.LOOP));
-
     }
 
     private static void loadTexture(String key){
@@ -100,11 +84,10 @@ public class AssetsManager {
 
     public static void dispose() {
         _atlas.dispose();
-        _buttonFont.dispose();
-        _scoreFont.dispose();
+        _bigFont.dispose();
+        _smallFont.dispose();
         _skin.dispose();
         disposeMap(_backgroundMap);
-
     }
 
     public static void disposeMap(HashMap map){
@@ -129,18 +112,15 @@ public class AssetsManager {
     }
 
     public static BitmapFont getLargeFont(){
-        return _buttonFont;
+        return _bigFont;
     }
 
     public static BitmapFont getSmallFont(){
-        return _scoreFont;
+        return _smallFont;
     }
 
     public static Texture getBackground(String key){ return _backgroundMap.get(key); }
 
     public static Skin getSkin(){ return _skin; }
-
-
-
 
 }

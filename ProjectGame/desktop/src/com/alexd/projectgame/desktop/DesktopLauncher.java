@@ -1,8 +1,9 @@
 package com.alexd.projectgame.desktop;
 
+import com.alexd.projectgame.TheGame;
+import com.alexd.projectgame.utils.DekstopGoogleServicesDummy;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.alexd.projectgame.TheGame;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
@@ -12,6 +13,8 @@ public class DesktopLauncher {
 		config.vSyncEnabled = true;
 
 
-		new LwjglApplication(new TheGame(), config);
+
+
+		new LwjglApplication(new TheGame(new DekstopGoogleServicesDummy()), config);
 	}
 }

@@ -40,6 +40,7 @@ public class GameScreen implements Screen {
         GameManager.getInstance().setRunning();
         GameManager.getInstance().resetDifficulty();
         setUp();
+
     }
 
     private void setupCamera() {
@@ -106,6 +107,7 @@ public class GameScreen implements Screen {
             case GAMEOVER:
                 _game.getBatch().setColor(0.5f, 0.5f, 0.5f, 1f);
                 _game.getPrefs().saveHighScore(_gameHudStage.getScore());
+                _game.getGoogleServices().submitScore(_gameHudStage.getScore());
         }
         draw(delta);
     }

@@ -18,6 +18,8 @@ android {
             exclude 'LICENSE.txt'
         }
     }
+
+
 }
 // needed to add JNI shared libraries to APK when compiling on CLI
 tasks.withType(com.android.build.gradle.tasks.PackageApplication) { pkgTask ->
@@ -119,5 +121,5 @@ idea {
         }
     }
 }
-dependencies {
-}
+
+

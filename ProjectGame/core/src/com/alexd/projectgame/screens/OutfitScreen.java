@@ -19,6 +19,7 @@ public class OutfitScreen implements Screen {
         _stage = new OutfitStage(_game);
         Gdx.input.setInputProcessor(_stage);
         Gdx.input.setCatchBackKey(true);
+        _game.getGoogleServices().signIn();
 
     }
 

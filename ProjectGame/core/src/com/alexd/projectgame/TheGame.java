@@ -4,6 +4,7 @@ package com.alexd.projectgame;
 import com.alexd.projectgame.utils.AssetsManager;
 import com.alexd.projectgame.screens.MainMenuScreen;
 import com.alexd.projectgame.utils.GamePreferences;
+import com.alexd.projectgame.utils.IGoogleServices;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
@@ -19,6 +20,12 @@ public class TheGame extends Game {
 
 	private GamePreferences _prefs;
 	private SpriteBatch _batch;
+	private IGoogleServices _googleServices;
+
+	public TheGame(IGoogleServices googleServices){
+		super();
+		_googleServices = googleServices;
+	}
 
 	@Override
 	public void create(){
@@ -51,6 +58,9 @@ public class TheGame extends Game {
 	}
 
 
+	public IGoogleServices getGoogleServices(){
+		return _googleServices;
+	}
 
 
 }
