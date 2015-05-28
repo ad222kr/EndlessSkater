@@ -1,4 +1,4 @@
-package com.alexd.projectgame.gameinterface.mainmenu.actors;
+package com.alexd.projectgame.gameinterface.shared;
 
 import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.gameinterface.shared.GameButton;
@@ -17,8 +17,8 @@ public class MusicButton extends GameButton {
     private final String MUSIO_OFF_UP_DRAWABLE_KEY = "musicoff-unpressed";
     private final String MUSIC_OFF_DOWN_DRAWABLE_KEY = "musicoff-pressed";
 
-    public MusicButton(TheGame game, float x, float y, float width, float height) {
-        super(game, x, y, width, height);
+    public MusicButton(TheGame game) {
+        super(game);
 
     }
 

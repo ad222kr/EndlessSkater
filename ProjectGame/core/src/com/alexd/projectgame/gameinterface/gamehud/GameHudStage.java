@@ -1,24 +1,16 @@
 package com.alexd.projectgame.gameinterface.gamehud;
 
-import com.alexd.projectgame.TheGame;
-import com.alexd.projectgame.entities.Runner;
 import com.alexd.projectgame.gameinterface.gamehud.actors.*;
-import com.alexd.projectgame.gameinterface.mainmenu.actors.MusicButton;
-import com.alexd.projectgame.gameinterface.mainmenu.actors.PlayButton;
-import com.alexd.projectgame.gameinterface.mainmenu.actors.SoundButton;
-import com.alexd.projectgame.gameinterface.shared.BaseStage;
+import com.alexd.projectgame.gameinterface.shared.*;
 import com.alexd.projectgame.screens.BaseScreen;
 import com.alexd.projectgame.utils.AssetsManager;
 import com.alexd.projectgame.utils.GameManager;
 import com.alexd.projectgame.screens.GameScreen;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
  * Created by Alex on 2015-05-01.
@@ -67,8 +59,8 @@ public class GameHudStage extends BaseStage {
 
         _pauseTable.add(new Label("PAUSED", labelStyle)).colspan(2);
         _pauseTable.row();
-        _pauseTable.add(new SoundButton(_screen.getGame(), 0,0,0, 0)).left().pad(0, 200, 20, 0);
-        _pauseTable.add(new MusicButton(_screen.getGame(), 0, 0,0, 0)).right().pad(0, 0, 20, 200);
+        _pauseTable.add(getSoundButton()).left().pad(0, 200, 20, 0);
+        _pauseTable.add(getMusicButton()).right().pad(0, 0, 20, 200);
 
         _pauseTable.row();
         _pauseTable.add(new ExitButton("EXIT", exitStyle, _screen.getGame())).left().pad(0, 0, 0, 50);

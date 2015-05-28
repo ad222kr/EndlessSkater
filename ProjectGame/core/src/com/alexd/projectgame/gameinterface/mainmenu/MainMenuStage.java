@@ -1,19 +1,11 @@
 package com.alexd.projectgame.gameinterface.mainmenu;
 
-import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.gameinterface.mainmenu.actors.*;
 import com.alexd.projectgame.gameinterface.shared.BaseStage;
 import com.alexd.projectgame.screens.BaseScreen;
-import com.alexd.projectgame.utils.AssetsManager;
-
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import javafx.scene.control.Tab;
 
 
@@ -22,56 +14,35 @@ import javafx.scene.control.Tab;
  */
 public class MainMenuStage extends BaseStage{
 
-    private PlayButton _playButton;
-    private SoundButton _soundButton;
-    private MusicButton _musicButton;
-    private OutfitsButton _outfitsButton;
-    private Background _background;
     private Table _table;
-
-
-
-
+    private Background _background;
 
     public MainMenuStage(BaseScreen screen){
         super(screen);
+        _background = getBackground("menubg");
 
-        _soundButton = new SoundButton(_screen.getGame(), 0,0,0,0);
-        _musicButton = new MusicButton(_screen.getGame(), 0,0,0,0);
-        _background = new Background("menubg");
-
-        Label.LabelStyle titleStyle = getLabelStyle(true);
-        Label.LabelStyle labelStyle = getLabelStyle(false);
-
-        Label titleLabel = new Label("ENDLESS SKATER", titleStyle);
-        Label hsLabel = new Label("High Score: " + Integer.toString(_screen.getGame().getPrefs().getHighScore()), labelStyle);
-
-        TextButton.TextButtonStyle style = getTextButtonStyle("greenbutton-unpressed", "greenbutton-pressed", true);
-        TextButton.TextButtonStyle outfitstyle = getTextButtonStyle("standardbutton-unpressed", "standardbutton-pressed", true);
-
-        _playButton = new PlayButton("PLAY", style, _screen.getGame());
-        _outfitsButton = new OutfitsButton("OUTFITS", outfitstyle, _screen.getGame());
-
-        _table = new Table();
-        _table.setFillParent(true);
-
-        _table.add(titleLabel).colspan(4).pad(0,0,20,0).center();
-        _table.row();
-        _table.add(hsLabel).colspan(4).pad(0,0,20,0).center();
-        _table.row();
-        _table.add(_playButton).colspan(4).pad(0, 0, 20, 0);
-        _table.row();
-        _table.add(_outfitsButton).colspan(4).pad(0, 0, 20, 0);
-        _table.row();
-        _table.add(_soundButton).center().pad(0, 0, 0, 0);
-        _table.add(new RateButton(_screen.getGame())).center().pad(0, 0, 0, 0);
-        _table.add(new LeaderboardButton(_screen.getGame())).center().pad(0,0,0,0);
-        _table.add(new MusicButton(_screen.getGame(),0,0,0,0)).center().pad(0, 0, 0, 0);
-
-
-        _table.setTouchable(Touchable.enabled);
+        _table = getTable();
         addActor(_background);
         addActor(_table);
+    }
+
+    private Table getTable(){
+        Table table = new Table();
+        table.setFillParent(true);
+
+        table.add(getLabel("ENDLESS SKATER", true)).colspan(4).pad(0,0,20,0).center().row();
+        table.add(getLabel("High Score: " + Integer.toString(_screen.getGame().getPrefs().getHighScore()), false))
+                .colspan(4).pad(0,0,20,0).center().row();
+        table.add(getPlayButton("PLAY")).colspan(4).pad(0, 0, 20, 0).row();
+        table.add(getOutfitsButton()).colspan(4).pad(0, 0, 20, 0).row();
+        table.add(getSoundButton()).center().pad(0, 0, 0, 0);
+        table.add(getRateButton()).center().pad(0, 0, 0, 0);
+        table.add(getLeaderboardButton()).center().pad(0,0,0,0);
+        table.add(getMusicButton()).center().pad(0, 0, 0, 0);
+
+        table.setTouchable(Touchable.enabled);
+
+        return table;
     }
 
     public void draw(Batch batch){
@@ -81,5 +52,4 @@ public class MainMenuStage extends BaseStage{
         _table.draw(batch, 0);
         batch.end();
     }
-
 }

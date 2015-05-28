@@ -1,4 +1,4 @@
-package com.alexd.projectgame.gameinterface.mainmenu.actors;
+package com.alexd.projectgame.gameinterface.shared;
 
 import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.gameinterface.mainmenu.MainMenuStage;
@@ -17,8 +17,8 @@ public class SoundButton extends GameButton {
     private final String SOUND_OFF_UP_DRAWABLE_KEY = "soundoff-unpressed";
     private final String SOUND_OFF_DOWN_DRAWABLE_KEY = "soundoff-pressed";
 
-    public SoundButton(TheGame game, float x, float y, float width, float height) {
-        super(game, x, y, width, height);
+    public SoundButton(TheGame game) {
+        super(game);
     }
 
     @Override

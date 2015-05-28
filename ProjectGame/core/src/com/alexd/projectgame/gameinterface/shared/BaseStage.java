@@ -1,6 +1,10 @@
 package com.alexd.projectgame.gameinterface.shared;
 
 import com.alexd.projectgame.TheGame;
+import com.alexd.projectgame.gameinterface.mainmenu.actors.Background;
+import com.alexd.projectgame.gameinterface.mainmenu.actors.LeaderboardButton;
+import com.alexd.projectgame.gameinterface.mainmenu.actors.OutfitsButton;
+import com.alexd.projectgame.gameinterface.mainmenu.actors.RateButton;
 import com.alexd.projectgame.screens.BaseScreen;
 import com.alexd.projectgame.utils.AssetsManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -37,4 +41,41 @@ public abstract class BaseStage extends Stage {
         style.font = hasLargeFont ? AssetsManager.getLargeFont() : AssetsManager.getSmallFont();
         return style;
     }
+
+    protected Label getLabel(String labelText, boolean largeFont){
+        return new Label(labelText, getLabelStyle(largeFont));
+    }
+
+    protected SoundButton getSoundButton(){
+        return new SoundButton(_screen.getGame());
+    }
+
+    protected MusicButton getMusicButton(){
+        return new MusicButton(_screen.getGame());
+    }
+
+    protected RateButton getRateButton(){
+        return new RateButton(_screen.getGame());
+    }
+
+    protected LeaderboardButton getLeaderboardButton(){
+        return new LeaderboardButton(_screen.getGame());
+    }
+
+    protected Background getBackground(String backgroundImageKey){
+        return new Background(backgroundImageKey);
+    }
+
+    protected PlayButton getPlayButton(String labelText){
+        return new PlayButton(labelText, getTextButtonStyle("greenbutton-unpressed", "greenbutton-pressed", true),
+                _screen.getGame());
+    }
+
+    protected OutfitsButton getOutfitsButton(){
+        return new OutfitsButton("OUTFITS", getTextButtonStyle("standardbutton-unpressed", "standardbutton-pressed",
+                true), _screen.getGame());
+    }
+
+
+
 }

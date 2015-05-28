@@ -1,4 +1,4 @@
-package com.alexd.projectgame.gameinterface.gamehud.actors;
+package com.alexd.projectgame.gameinterface.shared;
 
 import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.gameinterface.shared.TextGameButton;

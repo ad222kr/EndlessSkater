@@ -1,22 +1,16 @@
 package com.alexd.projectgame.gameinterface.skinmenu;
 
-import com.alexd.projectgame.TheGame;
-import com.alexd.projectgame.gameinterface.gamehud.actors.ExitButton;
+import com.alexd.projectgame.gameinterface.shared.ExitButton;
 import com.alexd.projectgame.gameinterface.mainmenu.actors.Background;
-import com.alexd.projectgame.gameinterface.mainmenu.actors.PlayButton;
+import com.alexd.projectgame.gameinterface.shared.PlayButton;
 import com.alexd.projectgame.gameinterface.shared.BaseStage;
 import com.alexd.projectgame.gameinterface.skinmenu.actors.SkinButton;
 import com.alexd.projectgame.screens.BaseScreen;
 import com.alexd.projectgame.screens.MainMenuScreen;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Array;
 
 /**
  * Created by Alex on 2015-05-24.
