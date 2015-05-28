@@ -1,11 +1,6 @@
 package com.alexd.projectgame.gameinterface.shared;
 
 import com.alexd.projectgame.TheGame;
-import com.alexd.projectgame.gameinterface.mainmenu.MainMenuStage;
-import com.alexd.projectgame.gameinterface.shared.GameButton;
-
-import com.alexd.projectgame.utils.GamePreferences;
-import com.badlogic.gdx.Game;
 
 /**
  * Created by Alex on 2015-05-13.

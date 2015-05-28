@@ -6,7 +6,6 @@ import com.alexd.projectgame.screens.BaseScreen;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import javafx.scene.control.Tab;
 
 
 /**
@@ -51,5 +50,18 @@ public class MainMenuStage extends BaseStage{
         _background.draw(batch, 0);
         _table.draw(batch, 0);
         batch.end();
+    }
+
+    private OutfitsButton getOutfitsButton(){
+        return new OutfitsButton("OUTFITS", getTextButtonStyle("standardbutton-unpressed", "standardbutton-pressed",
+                true), _screen.getGame());
+    }
+
+    private RateButton getRateButton(){
+        return new RateButton(_screen.getGame());
+    }
+
+    private LeaderboardButton getLeaderboardButton(){
+        return new LeaderboardButton(_screen.getGame());
     }
 }

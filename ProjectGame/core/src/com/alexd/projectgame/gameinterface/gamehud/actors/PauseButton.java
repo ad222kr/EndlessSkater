@@ -16,9 +16,14 @@ public class PauseButton extends GameButton {
 
     private final String DRAWABLE_KEY = "pause-button";
 
-    public PauseButton(TheGame game, float x, float y, float width, float height) {
-        super(game, x, y, width, height);
-        setBounds(x, y, width, height);
+    private final float X = 20;
+    private final float Y = 650;
+    private final float WIDTH = 50;
+    private final float HEIGHT = WIDTH;
+
+    public PauseButton(TheGame game) {
+        super(game);
+        setBounds(X, Y, WIDTH, HEIGHT);
     }
 
     @Override

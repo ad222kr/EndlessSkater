@@ -34,6 +34,10 @@ public abstract class BaseStage extends Stage {
         return style;
     }
 
+    protected Label getLabel(String labelText, boolean largeFont){
+        return new Label(labelText, getLabelStyle(largeFont));
+    }
+
     protected TextButtonStyle getTextButtonStyle(String drawableUp, String drawableDown, boolean hasLargeFont){
         TextButtonStyle style = new TextButtonStyle();
         style.up = new TextureRegionDrawable(AssetsManager.getSkin().getRegion(drawableUp));
@@ -42,9 +46,6 @@ public abstract class BaseStage extends Stage {
         return style;
     }
 
-    protected Label getLabel(String labelText, boolean largeFont){
-        return new Label(labelText, getLabelStyle(largeFont));
-    }
 
     protected SoundButton getSoundButton(){
         return new SoundButton(_screen.getGame());
@@ -54,13 +55,7 @@ public abstract class BaseStage extends Stage {
         return new MusicButton(_screen.getGame());
     }
 
-    protected RateButton getRateButton(){
-        return new RateButton(_screen.getGame());
-    }
 
-    protected LeaderboardButton getLeaderboardButton(){
-        return new LeaderboardButton(_screen.getGame());
-    }
 
     protected Background getBackground(String backgroundImageKey){
         return new Background(backgroundImageKey);
@@ -71,10 +66,12 @@ public abstract class BaseStage extends Stage {
                 _screen.getGame());
     }
 
-    protected OutfitsButton getOutfitsButton(){
-        return new OutfitsButton("OUTFITS", getTextButtonStyle("standardbutton-unpressed", "standardbutton-pressed",
-                true), _screen.getGame());
+    protected ExitButton getMainMenyButton(){
+        return new ExitButton("MENU", getTextButtonStyle("standardbutton-unpressed", "standardbutton-pressed", true),
+                _screen.getGame());
     }
+
+
 
 
 

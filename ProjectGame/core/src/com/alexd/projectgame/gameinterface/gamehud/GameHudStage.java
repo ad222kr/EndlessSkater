@@ -17,91 +17,65 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  */
 public class GameHudStage extends BaseStage {
 
-
     private Score _score;
     private Health _health;
     private PauseButton _pauseButton;
     private Table _pauseTable;
     private Table _gameOverTable;
-    private Label _gameOverScoreLabel; // need to have ref to this
-
-
+    private Label _gameOverScoreLabel;
 
     public GameHudStage(BaseScreen screen){
         super(screen);
-
-
         setupPauseMenu();
         setupGameHud();
         setupGameOver();
-
-
     }
 
     public void setupPauseMenu(){
-
-        TextButton.TextButtonStyle exitStyle = new TextButton.TextButtonStyle();
-        exitStyle.up = new TextureRegionDrawable(AssetsManager.getSkin().getRegion("standardbutton-unpressed"));
-        exitStyle.down = new TextureRegionDrawable(AssetsManager.getSkin().getRegion("standardbutton-pressed"));
-        exitStyle.font = AssetsManager.getLargeFont();
-
-        TextButton.TextButtonStyle resumeStyle = new TextButton.TextButtonStyle();
-        resumeStyle.up = new TextureRegionDrawable(AssetsManager.getSkin().getRegion("greenbutton-unpressed"));
-        resumeStyle.down = new TextureRegionDrawable(AssetsManager.getSkin().getRegion("greenbutton-pressed"));
-        resumeStyle.font = AssetsManager.getLargeFont();
-
-        Label.LabelStyle labelStyle = new Label.LabelStyle();
-        labelStyle.font = AssetsManager.getLargeFont();
         _pauseTable = new Table();
 
         _pauseTable.pad(200, 0, 0, 0);
         _pauseTable.setFillParent(true);
 
-        _pauseTable.add(new Label("PAUSED", labelStyle)).colspan(2);
-        _pauseTable.row();
+        _pauseTable.add(getLabel("PAUSED", true)).colspan(2).row();
         _pauseTable.add(getSoundButton()).left().pad(0, 200, 20, 0);
-        _pauseTable.add(getMusicButton()).right().pad(0, 0, 20, 200);
-
-        _pauseTable.row();
-        _pauseTable.add(new ExitButton("EXIT", exitStyle, _screen.getGame())).left().pad(0, 0, 0, 50);
-
-        _pauseTable.add(new ResumeButton("RESUME", resumeStyle, _screen.getGame())).right().pad(0, 50, 0, 0);
+        _pauseTable.add(getMusicButton()).right().pad(0, 0, 20, 200).row();
+        _pauseTable.add(getMainMenyButton()).left().pad(0, 0, 0, 50);
+        _pauseTable.add(getResumeButton()).right().pad(0, 50, 0, 0);
+        toggleTable(_pauseTable, false);
         addActor(_pauseTable);
+    }
 
-        _pauseTable.setVisible(false);
-        _pauseTable.setTouchable(Touchable.disabled);
+    private void toggleTable(Table table, boolean show){
+        table.setVisible(show);
+        if (show){
+            table.setTouchable(Touchable.enabled);
+        }
+        else {
+            table.setTouchable(Touchable.disabled);
+        }
+    }
+
+    private ResumeButton getResumeButton(){
+        return new ResumeButton("RESUME", getTextButtonStyle("greenbutton-unpressed", "greenbutton-pressed", true),
+                _screen.getGame());
+    }
+
+    private PauseButton getPauseButton(){
+        return new PauseButton(_screen.getGame());
     }
 
     public void setupGameOver(){
-        Label.LabelStyle gameoverStyle = new Label.LabelStyle();
-        gameoverStyle.font = AssetsManager.getLargeFont();
-
-        Label.LabelStyle scoreStyle = new Label.LabelStyle();
-        scoreStyle.font = AssetsManager.getSmallFont();
-
-
-
-        TextButton.TextButtonStyle exitStyle = new TextButton.TextButtonStyle();
-        exitStyle.up = new TextureRegionDrawable(AssetsManager.getSkin().getRegion("standardbutton-unpressed"));
-        exitStyle.down = new TextureRegionDrawable(AssetsManager.getSkin().getRegion("standardbutton-pressed"));
-        exitStyle.font = AssetsManager.getLargeFont();
-
-        TextButton.TextButtonStyle playAgainStyle = new TextButton.TextButtonStyle();
-        playAgainStyle.up = new TextureRegionDrawable(AssetsManager.getSkin().getRegion("greenbutton-unpressed"));
-        playAgainStyle.down = new TextureRegionDrawable(AssetsManager.getSkin().getRegion("greenbutton-pressed"));
-        playAgainStyle.font = AssetsManager.getLargeFont();
-
-        _gameOverScoreLabel = new Label("SCORE: "+ getScore(), scoreStyle);
         _gameOverTable = new Table();
         _gameOverTable.pad(100,0,0,0);
         _gameOverTable.setFillParent(true);
-        _gameOverTable.add(new Label("GAME OVER", gameoverStyle)).colspan(2).row();
+        _gameOverScoreLabel = getLabel("SCORE", true);
+        _gameOverTable.add(getLabel("GAME OVER", true)).colspan(2).row();
         _gameOverTable.add(_gameOverScoreLabel).pad(50, 0, 160, 0).colspan(2).row();
-        _gameOverTable.add(new ExitButton("MENU", exitStyle, _screen.getGame())).left().pad(0, 0, 0, 50);
-        _gameOverTable.add(new PlayButton("RETRY", playAgainStyle, _screen.getGame())).right().pad(0, 50, 0, 0);
+        _gameOverTable.add(getMainMenyButton()).left().pad(0, 0, 0, 50);
+        _gameOverTable.add(getPlayButton("RETRY")).right().pad(0, 50, 0, 0);
 
-        _gameOverTable.setVisible(false);
-        _gameOverTable.setTouchable(Touchable.enabled);
+        toggleTable(_gameOverTable, false);
 
         addActor(_gameOverTable);
     }
@@ -109,13 +83,10 @@ public class GameHudStage extends BaseStage {
     public void setupGameHud(){
         _score = new Score();
         _health = new Health(((GameScreen)_screen).getRunner().getHealth());
-        _pauseButton = new PauseButton(_screen.getGame(), 20,650, 50, 50);
-        Label.LabelStyle diffStyle = new Label.LabelStyle();
-        diffStyle.font = AssetsManager.getSmallFont();
-        addActor(_score);
+        _pauseButton = getPauseButton();
+        addActor(new Score());
         addActor(_health);
         addActor(_pauseButton);
-
     }
 
     public void draw(Batch batch){
@@ -124,12 +95,10 @@ public class GameHudStage extends BaseStage {
         batch.begin();
         switch (GameManager.getInstance().getState()){
             case RUNNING:
-
-                _gameOverTable.setVisible(false);
-                _gameOverTable.setTouchable(Touchable.enabled);
                 _pauseButton.enable();
-                _pauseTable.setVisible(false);
-                _pauseTable.setTouchable(Touchable.disabled);
+
+                toggleTable(_gameOverTable, false);
+                toggleTable(_pauseTable, false);
 
                 _gameOverTable.draw(batch, 0);
                 _pauseButton.draw(batch, 0);
@@ -138,34 +107,36 @@ public class GameHudStage extends BaseStage {
                 break;
             case PAUSED:
                 _pauseButton.hide();
-                _gameOverTable.setVisible(false);
-                _gameOverTable.setTouchable(Touchable.enabled);
-                _pauseTable.setVisible(true);
-                _pauseTable.setTouchable(Touchable.enabled);
+
+                toggleTable(_pauseTable, true);
+                toggleTable(_gameOverTable, false);
 
                 _pauseTable.draw(batch, 0);
-
                 break;
             case GAMEOVER:
                 _pauseButton.hide();
-                _health.setVisible(false);
-                _score.setVisible(false);
                 _gameOverScoreLabel.setText("SCORE: " + getScore());
-                _gameOverTable.setVisible(true);
-                _gameOverTable.setTouchable(Touchable.enabled);
                 _gameOverTable.draw(batch, 0);
 
+                toggleTable(_pauseTable, false);
+                toggleTable(_gameOverTable, true);
+                hideGameHUD();
                 break;
         }
         batch.end();
+    }
 
+    private void hideGameHUD(){
+        _pauseButton.hide();
+        _health.setVisible(false);
+        _score.setVisible(false);
     }
 
     @Override
     public void act(float delta){
         super.act(delta);
-
         _health.updateHealthArray(((GameScreen)_screen).getRunner().getHealth());
+        _score.act(delta);
     }
 
     public int getScore(){
@@ -175,34 +146,4 @@ public class GameHudStage extends BaseStage {
     public void addScore(float amount){
         _score.addScore(amount);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
