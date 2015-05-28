@@ -9,14 +9,14 @@ import com.badlogic.gdx.graphics.GL20;
 /**
  * Created by Alex on 2015-05-19.
  */
-public class OutfitScreen implements Screen {
+public class OutfitScreen extends BaseScreen {
 
     private OutfitStage _stage;
-    private TheGame _game;
+
 
     public OutfitScreen(TheGame game){
-        _game = game;
-        _stage = new OutfitStage(_game);
+        super(game);
+        _stage = new OutfitStage(this);
         Gdx.input.setInputProcessor(_stage);
         Gdx.input.setCatchBackKey(true);
         _game.getGoogleServices().signIn();

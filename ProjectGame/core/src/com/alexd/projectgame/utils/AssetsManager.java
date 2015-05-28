@@ -26,8 +26,8 @@ public class AssetsManager {
     private static final String RUNNER_JUMP_NAME = "playerjump";
     private static final String PLATFORM_NAME = "platform";
 
-    private static final String[] RUNNER_ANIMATION_NAMES = new String[]{ "player-swe", "player-rus" };
-    private static final String[] GAME_BACKGROUND_NAMES = new String[]{ "bg1", "bg2", "bg3", "menubg"};
+    private static final String[] RUNNER_ANIMATION_NAMES = new String[]{ "player-swe", "player-rus", "player-can", "player-usa" };
+    private static final String[] GAME_BACKGROUND_NAMES = new String[]{ "bg1", "bg2", "bg3", "menubg", "splash"};
 
     private static HashMap<String, SpriteAnimation> _animationMap;
     private static HashMap<String, AtlasRegion> _atlasRegionMap;
@@ -36,6 +36,7 @@ public class AssetsManager {
     private static BitmapFont _smallFont;
     private static TextureAtlas _atlas;
     private static Skin _skin;
+    private static boolean _hasLoaded = false;
 
 
 
@@ -63,7 +64,12 @@ public class AssetsManager {
         for (String bgName : GAME_BACKGROUND_NAMES){
             loadBackground(bgName, bgName + ".png");
         }
-        _smallFont.setScale(0.5f);
+        _smallFont.setScale(0.6f);
+        _hasLoaded = true;
+    }
+
+    public static boolean hasLoaded(){
+        return _hasLoaded;
     }
 
     private static void loadBackground(String key, String fileHandle){

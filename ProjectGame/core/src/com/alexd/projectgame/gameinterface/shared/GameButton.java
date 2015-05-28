@@ -1,6 +1,7 @@
 package com.alexd.projectgame.gameinterface.shared;
 
 import com.alexd.projectgame.TheGame;
+import com.alexd.projectgame.gameinterface.gamehud.actors.PauseButton;
 import com.alexd.projectgame.utils.AssetsManager;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -35,6 +36,12 @@ public abstract class GameButton extends Button {
         setUp();
         setButtonStyle();
 
+
+    }
+
+    public GameButton(TheGame game){
+        // used when the button is inside a table, dont need to specify bounds then
+        this(game, 0, 0, 0, 0);
     }
 
     protected void setUp(){
@@ -42,7 +49,18 @@ public abstract class GameButton extends Button {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+
                 onClick();
+
+            }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                super.touchDown(event, x, y, pointer, button);
+                if (_game.getPrefs().isSoundEnabled()){
+                    _game.getAudioManager().playClickSound();
+                }
+                return true;
             }
         });
 

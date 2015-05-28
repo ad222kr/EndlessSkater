@@ -1,10 +1,13 @@
 package com.alexd.projectgame.gameinterface.gamehud;
 
 import com.alexd.projectgame.TheGame;
+import com.alexd.projectgame.entities.Runner;
 import com.alexd.projectgame.gameinterface.gamehud.actors.*;
 import com.alexd.projectgame.gameinterface.mainmenu.actors.MusicButton;
 import com.alexd.projectgame.gameinterface.mainmenu.actors.PlayButton;
 import com.alexd.projectgame.gameinterface.mainmenu.actors.SoundButton;
+import com.alexd.projectgame.gameinterface.shared.BaseStage;
+import com.alexd.projectgame.screens.BaseScreen;
 import com.alexd.projectgame.utils.AssetsManager;
 import com.alexd.projectgame.utils.GameManager;
 import com.alexd.projectgame.screens.GameScreen;
@@ -20,9 +23,9 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 /**
  * Created by Alex on 2015-05-01.
  */
-public class GameHudStage extends Stage {
+public class GameHudStage extends BaseStage {
 
-    private GameScreen _screen;
+
     private Score _score;
     private Health _health;
     private PauseButton _pauseButton;
@@ -31,14 +34,15 @@ public class GameHudStage extends Stage {
     private Label _gameOverScoreLabel; // need to have ref to this
 
 
-    public GameHudStage(GameScreen screen){
-        super(new StretchViewport(TheGame.APP_WIDTH, TheGame.APP_HEIGHT, new OrthographicCamera(TheGame.APP_WIDTH, TheGame.APP_HEIGHT)));
 
-        _screen = screen;
+    public GameHudStage(BaseScreen screen){
+        super(screen);
+
 
         setupPauseMenu();
         setupGameHud();
         setupGameOver();
+
 
     }
 
@@ -112,8 +116,8 @@ public class GameHudStage extends Stage {
 
     public void setupGameHud(){
         _score = new Score();
-        _health = new Health(_screen.getRunner().getHealth());
-        _pauseButton = new PauseButton(_screen.getGame(), 20,630, 60, 60);
+        _health = new Health(((GameScreen)_screen).getRunner().getHealth());
+        _pauseButton = new PauseButton(_screen.getGame(), 20,650, 50, 50);
         Label.LabelStyle diffStyle = new Label.LabelStyle();
         diffStyle.font = AssetsManager.getSmallFont();
         addActor(_score);
@@ -169,11 +173,15 @@ public class GameHudStage extends Stage {
     public void act(float delta){
         super.act(delta);
 
-        _health.updateHealthArray(_screen.getRunner().getHealth());
+        _health.updateHealthArray(((GameScreen)_screen).getRunner().getHealth());
     }
 
     public int getScore(){
         return _score.getScore();
+    }
+
+    public void addScore(float amount){
+        _score.addScore(amount);
     }
 
 

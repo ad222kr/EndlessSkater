@@ -12,8 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  */
 public class Score extends Actor {
     private final int SCORE_MULTIPLIER = 20;
-    private final float Y = 690f;
-    private final float X = 1160f;
+    private final float Y = 700f;
+    private final float X = 1140f;
 
     private BitmapFont _font;
     private float _score;

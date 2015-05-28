@@ -21,6 +21,7 @@ public class EntityManager {
     private Platform _currentPlatform;
     private Array<Entity> _entities;
     private Array<Body> _bodies;
+    private ContactHandler _contactHandler;
     private float accumulator = 0;
     private float _lastEnemySpawnTime;
     private float _timeBetweenEnemies;
@@ -46,7 +47,8 @@ public class EntityManager {
         _runner = new Runner(_world, Box2DConstants.RUNNER_X, Box2DConstants.RUNNER_Y, Box2DConstants.RUNNER_WIDTH,
                 Box2DConstants.RUNNER_HEIGHT);
 
-        _world.setContactListener(new ContactHandler(_runner));
+        _contactHandler = new ContactHandler(_runner);
+        _world.setContactListener(_contactHandler);
 
         addEntity(_runner);
         addEntity(_currentPlatform);
@@ -239,5 +241,9 @@ public class EntityManager {
 
     public void dispose(){
         _world.dispose();
+    }
+
+    public void setWorldEventListener(IWorldEventListener worldEventListener){
+        _contactHandler.setWorldEventListener(worldEventListener);
     }
 }

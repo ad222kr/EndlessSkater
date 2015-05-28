@@ -27,6 +27,15 @@ public abstract class TextGameButton extends TextButton {
                 super.clicked(event, x, y);
                 onClick();
             }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                super.touchDown(event, x, y, pointer, button);
+                if (_game.getPrefs().isSoundEnabled()){
+                    _game.getAudioManager().playClickSound();
+                }
+                return true;
+            }
         });
 
 

@@ -12,19 +12,22 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 /**
  * Created by Alex on 2015-05-02.
  */
-public class MainMenuScreen implements Screen {
+public class MainMenuScreen extends BaseScreen {
     private MainMenuStage _stage;
-    private TheGame _game;
+
 
 
     public MainMenuScreen(TheGame game){
-        _game = game;
-        _stage = new MainMenuStage(_game);
+        super(game);
+        _stage = new MainMenuStage(this);
+
         Gdx.input.setInputProcessor(_stage);
     }
 
     @Override
-    public void show() {}
+    public void show() {
+        _game.getAudioManager().stopMusic();
+    }
 
     @Override
     public void render(float delta) {

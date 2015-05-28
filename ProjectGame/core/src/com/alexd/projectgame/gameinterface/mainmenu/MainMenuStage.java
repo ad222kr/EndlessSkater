@@ -3,6 +3,7 @@ package com.alexd.projectgame.gameinterface.mainmenu;
 import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.gameinterface.mainmenu.actors.*;
 import com.alexd.projectgame.gameinterface.shared.BaseStage;
+import com.alexd.projectgame.screens.BaseScreen;
 import com.alexd.projectgame.utils.AssetsManager;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -32,38 +33,41 @@ public class MainMenuStage extends BaseStage{
 
 
 
-    public MainMenuStage(TheGame game){
-        super(game);
+    public MainMenuStage(BaseScreen screen){
+        super(screen);
 
-        _soundButton = new SoundButton(_game, 0,0,0,0);
-        _musicButton = new MusicButton(_game, 0,0,0,0);
+        _soundButton = new SoundButton(_screen.getGame(), 0,0,0,0);
+        _musicButton = new MusicButton(_screen.getGame(), 0,0,0,0);
         _background = new Background("menubg");
 
         Label.LabelStyle titleStyle = getLabelStyle(true);
         Label.LabelStyle labelStyle = getLabelStyle(false);
 
-        Label titleLabel = new Label("BRUNK RUNNER", titleStyle);
-        Label hsLabel = new Label("High Score: " + Integer.toString(_game.getPrefs().getHighScore()), labelStyle);
+        Label titleLabel = new Label("ENDLESS SKATER", titleStyle);
+        Label hsLabel = new Label("High Score: " + Integer.toString(_screen.getGame().getPrefs().getHighScore()), labelStyle);
 
         TextButton.TextButtonStyle style = getTextButtonStyle("greenbutton-unpressed", "greenbutton-pressed", true);
         TextButton.TextButtonStyle outfitstyle = getTextButtonStyle("standardbutton-unpressed", "standardbutton-pressed", true);
 
-        _playButton = new PlayButton("PLAY", style, _game);
-        _outfitsButton = new OutfitsButton("OUTFITS", outfitstyle, _game);
+        _playButton = new PlayButton("PLAY", style, _screen.getGame());
+        _outfitsButton = new OutfitsButton("OUTFITS", outfitstyle, _screen.getGame());
 
         _table = new Table();
         _table.setFillParent(true);
 
-        _table.add(titleLabel).colspan(2).pad(0,0,20,0).center();
+        _table.add(titleLabel).colspan(4).pad(0,0,20,0).center();
         _table.row();
-        _table.add(hsLabel).colspan(2).pad(0,0,20,0).center();
+        _table.add(hsLabel).colspan(4).pad(0,0,20,0).center();
         _table.row();
-        _table.add(_playButton).colspan(2).pad(0, 0, 20, 0);
+        _table.add(_playButton).colspan(4).pad(0, 0, 20, 0);
         _table.row();
-        _table.add(_outfitsButton).colspan(2).pad(0, 0, 20, 0);
+        _table.add(_outfitsButton).colspan(4).pad(0, 0, 20, 0);
         _table.row();
-        _table.add(_soundButton).center().pad(0, 90,0,0);
-        _table.add(_musicButton).center().pad(0,0,0,90);
+        _table.add(_soundButton).center().pad(0, 0, 0, 0);
+        _table.add(new RateButton(_screen.getGame())).center().pad(0, 0, 0, 0);
+        _table.add(new LeaderboardButton(_screen.getGame())).center().pad(0,0,0,0);
+        _table.add(new MusicButton(_screen.getGame(),0,0,0,0)).center().pad(0, 0, 0, 0);
+
 
         _table.setTouchable(Touchable.enabled);
         addActor(_background);
@@ -78,7 +82,4 @@ public class MainMenuStage extends BaseStage{
         batch.end();
     }
 
-    public TheGame getGame(){
-        return _game;
-    }
 }

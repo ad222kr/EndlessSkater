@@ -4,56 +4,70 @@ filter: Linear,Linear
 repeat: none
 greenbutton-pressed
   rotate: false
-  xy: 2, 147
+  xy: 2, 841
   size: 413, 143
   orig: 413, 143
   offset: 0, 0
   index: -1
 greenbutton-unpressed
   rotate: false
-  xy: 417, 147
+  xy: 417, 841
   size: 413, 143
   orig: 413, 143
   offset: 0, 0
   index: -1
 heart-depleted
   rotate: false
-  xy: 77, 2
+  xy: 2, 2
   size: 72, 59
   orig: 72, 59
   offset: 0, 0
   index: -1
 heart-filled
   rotate: false
-  xy: 2, 2
+  xy: 76, 2
   size: 73, 59
   orig: 73, 59
   offset: 0, 0
   index: -1
-musicoff-pressed
-  rotate: false
-  xy: 953, 2
-  size: 141, 141
-  orig: 141, 141
-  offset: 0, 0
-  index: -1
-musicoff-unpressed
+leaderboard-pressed
   rotate: false
   xy: 1239, 2
   size: 141, 141
   orig: 141, 141
   offset: 0, 0
   index: -1
+leaderboard-unpressed
+  rotate: false
+  xy: 2, 145
+  size: 141, 141
+  orig: 141, 141
+  offset: 0, 0
+  index: -1
+musicoff-pressed
+  rotate: false
+  xy: 288, 145
+  size: 141, 141
+  orig: 141, 141
+  offset: 0, 0
+  index: -1
+musicoff-unpressed
+  rotate: false
+  xy: 145, 145
+  size: 141, 141
+  orig: 141, 141
+  offset: 0, 0
+  index: -1
 musicon-pressed
   rotate: false
-  xy: 810, 2
+  xy: 953, 2
   size: 141, 141
   orig: 141, 141
   offset: 0, 0
   index: -1
 musicon-unpressed
   rotate: false
-  xy: 524, 2
+  xy: 810, 2
   size: 141, 141
   orig: 141, 141
   offset: 0, 0
@@ -65,58 +79,114 @@ pause-button
   orig: 85, 97
   offset: 0, 0
   index: -1
-player-rus
+player-can-pressed
   rotate: false
-  xy: 1247, 147
-  size: 226, 272
-  orig: 226, 272
+  xy: 271, 493
+  size: 267, 346
+  orig: 267, 346
   offset: 0, 0
   index: -1
-player-swe
+player-can-unpressed
   rotate: false
-  xy: 1475, 147
-  size: 225, 272
-  orig: 225, 272
+  xy: 969, 145
+  size: 267, 346
+  orig: 267, 346
   offset: 0, 0
   index: -1
-soundoff-pressed
+player-rus-pressed
   rotate: false
-  xy: 1096, 2
-  size: 141, 141
-  orig: 141, 141
+  xy: 2, 493
+  size: 267, 346
+  orig: 267, 346
   offset: 0, 0
   index: -1
-soundoff-unpressed
+player-rus-unpressed
   rotate: false
-  xy: 238, 2
-  size: 141, 141
-  orig: 141, 141
+  xy: 809, 493
+  size: 267, 346
+  orig: 267, 346
   offset: 0, 0
   index: -1
-soundon-pressed
+player-swe-pressed
+  rotate: false
+  xy: 540, 493
+  size: 267, 346
+  orig: 267, 346
+  offset: 0, 0
+  index: -1
+player-swe-unpressed
+  rotate: false
+  xy: 1238, 145
+  size: 267, 346
+  orig: 267, 346
+  offset: 0, 0
+  index: -1
+player-usa-pressed
+  rotate: false
+  xy: 700, 145
+  size: 267, 346
+  orig: 267, 346
+  offset: 0, 0
+  index: -1
+player-usa-unpressed
+  rotate: false
+  xy: 431, 145
+  size: 267, 346
+  orig: 267, 346
+  offset: 0, 0
+  index: -1
+rate-pressed
   rotate: false
   xy: 667, 2
   size: 141, 141
   orig: 141, 141
   offset: 0, 0
   index: -1
-soundon-unpressed
+rate-unpressed
   rotate: false
   xy: 381, 2
   size: 141, 141
   orig: 141, 141
   offset: 0, 0
   index: -1
-standardbutton-pressed
+soundoff-pressed
+  rotate: false
+  xy: 238, 2
+  size: 141, 141
+  orig: 141, 141
+  offset: 0, 0
+  index: -1
+soundoff-unpressed
   rotate: false
   xy: 1382, 2
+  size: 141, 141
+  orig: 141, 141
+  offset: 0, 0
+  index: -1
+soundon-pressed
+  rotate: false
+  xy: 1096, 2
+  size: 141, 141
+  orig: 141, 141
+  offset: 0, 0
+  index: -1
+soundon-unpressed
+  rotate: false
+  xy: 524, 2
+  size: 141, 141
+  orig: 141, 141
+  offset: 0, 0
+  index: -1
+standardbutton-pressed
+  rotate: false
+  xy: 1078, 493
   size: 413, 143
   orig: 413, 143
   offset: 0, 0
   index: -1
 standardbutton-unpressed
   rotate: false
-  xy: 832, 147
+  xy: 832, 841
   size: 413, 143
   orig: 413, 143
   offset: 0, 0

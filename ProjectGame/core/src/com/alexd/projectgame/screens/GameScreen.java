@@ -19,13 +19,12 @@ import com.badlogic.gdx.utils.viewport.*;
 /**
  * Created by Alex on 2015-04-07.
  */
-public class GameScreen implements Screen {
+public class GameScreen extends BaseScreen implements IWorldEventListener {
     private final int VIEWPORT_WIDTH = Helpers.convertToMeters(TheGame.APP_WIDTH);
     private final int VIEWPORT_HEIGHT = Helpers.convertToMeters(TheGame.APP_HEIGHT);
 
     private boolean isDebug = false;// Set to false to hide debugrender
 
-    private TheGame _game;
     private EntityManager _entityManager;
     private OrthographicCamera _camera;
     private Viewport _viewport;
@@ -36,10 +35,11 @@ public class GameScreen implements Screen {
     private float _timeForDifficultyChange = 30;
 
     public GameScreen(TheGame game) {
-        _game = game;
+        super(game);
         GameManager.getInstance().setRunning();
         GameManager.getInstance().resetDifficulty();
         setUp();
+        _game.getAudioManager().toggleMusic();
 
     }
 
@@ -51,8 +51,9 @@ public class GameScreen implements Screen {
         _camera.update();
     }
 
-    private void setUp(){
+    private void setUp() {
         _entityManager = new EntityManager();
+        _entityManager.setWorldEventListener(this);
         _gameHudStage = new GameHudStage(this);
         setupCamera();
         setupRendering();
@@ -60,11 +61,12 @@ public class GameScreen implements Screen {
     }
 
     private void setupInput() {
-        InputProcessor gameInputProcessor = new GameInputHandler(_entityManager.getRunner());
+        GameInputHandler gameInputProcessor = new GameInputHandler(_entityManager.getRunner());
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
 
         inputMultiplexer.addProcessor(_gameHudStage);
         inputMultiplexer.addProcessor(gameInputProcessor);
+        gameInputProcessor.setWorldEventListener(this);
 
         Gdx.input.setInputProcessor(inputMultiplexer);
         Gdx.input.setCatchBackKey(true);
@@ -73,7 +75,7 @@ public class GameScreen implements Screen {
     private void setupRendering() {
         _renderer = new GameRenderer(_game.getPrefs());
         _game.getBatch().setProjectionMatrix(_camera.combined);
-        if (isDebug){
+        if (isDebug) {
             _debugRenderer = new Box2DDebugRenderer();
         }
     }
@@ -89,7 +91,7 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(41 / 255f, 171 / 255f, 226 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        switch (GameManager.getInstance().getState()){
+        switch (GameManager.getInstance().getState()) {
             case RUNNING:
                 _game.getBatch().setColor(Color.WHITE);
                 _totalTime += delta;
@@ -97,7 +99,7 @@ public class GameScreen implements Screen {
                 updateEntities(delta);
                 updateDifficulty();
 
-                if(isGameOver()){
+                if (isGameOver()) {
                     GameManager.getInstance().setState(GameState.GAMEOVER);
                 }
                 break;
@@ -121,30 +123,30 @@ public class GameScreen implements Screen {
         _entityManager.doStep(delta);
     }
 
-    private void updateDifficulty(){
-        if (_totalTime > _timeForDifficultyChange && !GameManager.getInstance().isMaxDifficulty()){
+    private void updateDifficulty() {
+        if (_totalTime > _timeForDifficultyChange && !GameManager.getInstance().isMaxDifficulty()) {
             GameManager.getInstance().nextDifficulty();
             _timeForDifficultyChange += 30;
             _entityManager.updateMovingSpeed();
         }
     }
 
-    private void draw(float delta){
-       if (GameManager.getInstance().getState() == GameState.RUNNING){
+    private void draw(float delta) {
+        if (GameManager.getInstance().getState() == GameState.RUNNING) {
             _renderer.updateAnimation(delta);
         }
 
         _game.getBatch().begin();
         _renderer.drawBackground(_game.getBatch(), delta);
-        for (Entity entity : _entityManager.getEntities()){
-            switch (entity.getEntityType()){
+        for (Entity entity : _entityManager.getEntities()) {
+            switch (entity.getEntityType()) {
                 case GROUND:
                     _renderer.drawPlatform(_game.getBatch(), entity.getPosition().x - entity.getWidth() / 2,
                             entity.getPosition().y - entity.getHeight() / 2, entity.getWidth());
                     break;
                 case ENEMY:
                     _renderer.drawEnemy(_game.getBatch(), entity.getPosition().x - entity.getWidth() / 2,
-                            entity.getPosition().y - entity.getHeight() / 2, ((Enemy)entity).getIsFlipped());
+                            entity.getPosition().y - entity.getHeight() / 2, ((Enemy) entity).getIsFlipped());
                     break;
                 case LIFE:
                     _renderer.drawHeart(_game.getBatch(), entity.getPosition().x - entity.getWidth() / 2,
@@ -158,13 +160,12 @@ public class GameScreen implements Screen {
         }
 
 
-
         _renderer.drawRunner(_game.getBatch(), getRunner().getPosition().x - getRunner().getWidth() / 2,
                 getRunner().getPosition().y - getRunner().getHeight() / 2, _entityManager.getRunner().getIsJumping());
         _game.getBatch().end();
         _gameHudStage.draw(_game.getBatch());
 
-        if (isDebug ){
+        if (isDebug) {
             _debugRenderer.render(_entityManager.getWorld(), _camera.combined);
         }
     }
@@ -184,13 +185,14 @@ public class GameScreen implements Screen {
     public void pause() {
         // If i's game over and player exits game (press homebutton),
         // don't want to show the pausemenu but the gameover menu instead
-        if (GameManager.getInstance().getState() != GameState.GAMEOVER){
+        if (GameManager.getInstance().getState() != GameState.GAMEOVER) {
             GameManager.getInstance().setState(GameState.PAUSED);
         }
     }
 
     @Override
-    public void resume() {}
+    public void resume() {
+    }
 
     @Override
     public void hide() {
@@ -201,17 +203,39 @@ public class GameScreen implements Screen {
     public void dispose() {
         // cleans up resources not handled by the GC
         _entityManager.dispose();
-        if (isDebug){
+        if (isDebug) {
             _debugRenderer.dispose();
         }
         _gameHudStage.dispose();
     }
 
-    public TheGame getGame(){ return _game; }
+    public TheGame getGame() {
+        return _game;
+    }
 
-    public Runner getRunner(){
+    public Runner getRunner() {
         return _entityManager.getRunner();
     }
 
+    @Override
+    public void onEnemyContact() {
 
+    }
+
+    @Override
+    public void onEnemyKill() {
+        _gameHudStage.addScore(100);
+    }
+
+    @Override
+    public void onPickupHealth() {
+        _gameHudStage.addScore(100);
+    }
+
+    @Override
+    public void onPlayerJump() {
+        _game.getAudioManager().playJumpSound();
+    }
 }
+
+

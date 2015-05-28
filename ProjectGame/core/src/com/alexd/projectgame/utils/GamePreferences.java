@@ -72,7 +72,8 @@ public class GamePreferences {
     }
 
     public boolean isMusicEnabled(){
-        return getPrefs().getBoolean(MUSIC);
+        Preferences pref = getPrefs();
+        return pref.getBoolean(MUSIC);
     }
 
     private Preferences getPrefs(){

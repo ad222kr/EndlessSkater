@@ -16,8 +16,7 @@ public class OutfitsButton extends TextGameButton {
 
     @Override
     protected void onClick() {
-        //_game.setScreen(new OutfitScreen(_game));
-        _game.getGoogleServices().showScores();
+        _game.setScreen(new OutfitScreen(_game));
     }
 
 

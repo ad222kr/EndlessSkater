@@ -6,6 +6,7 @@ import com.alexd.projectgame.enums.EntityType;
 import com.alexd.projectgame.entities.Enemy;
 import com.alexd.projectgame.entities.Runner;
 import com.alexd.projectgame.utils.Box2DConstants;
+import com.alexd.projectgame.utils.IWorldEventListener;
 import com.badlogic.gdx.physics.box2d.*;
 
 /**
@@ -14,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.*;
 public class ContactHandler implements ContactListener {
 
     private Runner _runner;
+    private IWorldEventListener _worldEventListener;
 
     public ContactHandler(Runner runner){
         _runner = runner;
@@ -50,7 +52,13 @@ public class ContactHandler implements ContactListener {
         }
 
         if (shouldTrigger(fixtureA, fixtureB, Box2DConstants.RUNNER_BIT, Box2DConstants.LIFE_BIT)){
-            _runner.addHealth();
+            // If max hp, add 100 points to score
+            if (_runner.hasMaxHealth()){
+                _worldEventListener.onPickupHealth();
+            }
+            else {
+                _runner.addHealth();
+            }
             Life life = fixtureA.getBody().getUserData() instanceof Life ? (Life)fixtureA.getBody().getUserData() :
                     (Life)fixtureB.getBody().getUserData();
             life.setFlaggedForDeath(true);
@@ -66,13 +74,11 @@ public class ContactHandler implements ContactListener {
         if (shouldTrigger(fixtureA, fixtureB, Box2DConstants.RUNNER_BIT, Box2DConstants.ENEMY_SENSOR_BIT) &&
                 _runner.isFalling() && isRunnerAboveEnemy(fixtureA, fixtureB)){
             _runner.bumpOffEnemy();
+            _worldEventListener.onEnemyKill();
         }
 
         else if (shouldTrigger(fixtureA, fixtureB, Box2DConstants.RUNNER_BIT, Box2DConstants.ENEMY_BIT)){
-
-
                 _runner.removeHealth();
-
         }
     }
 
@@ -108,4 +114,7 @@ public class ContactHandler implements ContactListener {
                 (b.isExpectedType(typeA) && a.isExpectedType(typeB)));
     }
 
+    public void setWorldEventListener(IWorldEventListener worldEventListener) {
+        _worldEventListener = worldEventListener;
+    }
 }

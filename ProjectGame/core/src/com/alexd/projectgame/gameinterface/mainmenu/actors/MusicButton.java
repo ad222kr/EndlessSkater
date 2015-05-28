@@ -2,6 +2,8 @@ package com.alexd.projectgame.gameinterface.mainmenu.actors;
 
 import com.alexd.projectgame.TheGame;
 import com.alexd.projectgame.gameinterface.shared.GameButton;
+import com.alexd.projectgame.screens.GameScreen;
+import com.alexd.projectgame.utils.GameManager;
 import com.alexd.projectgame.utils.GamePreferences;
 import com.badlogic.gdx.Game;
 
@@ -23,12 +25,16 @@ public class MusicButton extends GameButton {
     @Override
     protected void onClick() {
         if (_game.getPrefs().isMusicEnabled()){
+
             _game.getPrefs().disableMusic();
         }
-        else{
+        else {
             _game.getPrefs().enableMusic();
-        }
 
+        }
+        if (_game.getScreen() instanceof GameScreen){
+            _game.getAudioManager().toggleMusic();
+        }
         setButtonStyle();
     }
 

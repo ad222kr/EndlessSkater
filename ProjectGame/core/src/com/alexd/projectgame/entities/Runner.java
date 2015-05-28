@@ -50,11 +50,14 @@ public class Runner extends Entity {
 
 
     public void jump(){
-        if(!_isJumping && _isOnGround){
-            _isJumping = true;
-            _isOnGround = false;
-            _body.applyLinearImpulse(Box2DConstants.RUNNER_JUMPING_IMPULSE, _body.getWorldCenter(), true);
-        }
+        _isJumping = true;
+        _isOnGround = false;
+        _body.applyLinearImpulse(Box2DConstants.RUNNER_JUMPING_IMPULSE, _body.getWorldCenter(), true);
+
+    }
+
+    public boolean canJump(){
+        return !_isJumping && _isOnGround;
     }
 
     public void bumpOffEnemy(){
@@ -73,10 +76,12 @@ public class Runner extends Entity {
         }
     }
 
+    public boolean hasMaxHealth(){
+        return _health == MAX_HEALTH;
+    }
+
     public void addHealth(){
-        if (_health < MAX_HEALTH){
-            _health++;
-        }
+        _health++;
     }
 
     public boolean isFalling() {

@@ -16,7 +16,9 @@
 
 package com.google.example.games.basegameutils;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -58,6 +60,7 @@ public abstract class BaseGameActivity extends FragmentActivity implements
 
     private final static String TAG = "BaseGameActivity";
     protected boolean mDebugLog = false;
+    private SharedPreferences googlePlaySharedPref;
 
     /** Constructs a BaseGameActivity with default client (GamesClient). */
     protected BaseGameActivity() {
@@ -92,6 +95,7 @@ public abstract class BaseGameActivity extends FragmentActivity implements
         if (mHelper == null) {
             mHelper = new GameHelper(this, mRequestedClients);
             mHelper.enableDebugLog(mDebugLog);
+
         }
         return mHelper;
     }

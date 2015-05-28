@@ -1,6 +1,7 @@
 package com.alexd.projectgame.gameinterface.shared;
 
 import com.alexd.projectgame.TheGame;
+import com.alexd.projectgame.screens.BaseScreen;
 import com.alexd.projectgame.utils.AssetsManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -14,12 +15,13 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
  * Base class for Stages used in the game
  */
 public abstract class BaseStage extends Stage {
-    protected TheGame _game;
+    protected BaseScreen _screen;
 
-    public BaseStage(TheGame game){
+    public BaseStage(BaseScreen screen){
         super(new StretchViewport(TheGame.APP_WIDTH, TheGame.APP_HEIGHT,
                 new OrthographicCamera(TheGame.APP_WIDTH, TheGame.APP_HEIGHT)));
-        _game = game;
+        _screen = screen;
+
     }
 
     protected LabelStyle getLabelStyle(boolean hasLargeFont){

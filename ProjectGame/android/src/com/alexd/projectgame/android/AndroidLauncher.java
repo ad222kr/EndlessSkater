@@ -2,6 +2,7 @@ package com.alexd.projectgame.android;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -17,6 +18,7 @@ import com.alexd.projectgame.TheGame;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.search.SearchAuth;
 import com.google.example.games.basegameutils.GameHelper;
 
 import static com.google.android.gms.common.GooglePlayServicesUtil.isGooglePlayServicesAvailable;
@@ -36,9 +38,12 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 		cfg.useGLSurfaceView20API18 = true;
 		cfg.useImmersiveMode = true;
 
-		_playServiceCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
+
 		_gameHelper = new GameHelper(this, GameHelper.CLIENT_GAMES);
-		_gameHelper.enableDebugLog(true);
+		//_gameHelper.enableDebugLog(true);
+		if (!isPlayServiceAvailable()){
+			_gameHelper.setConnectOnStart(false);
+		}
 
 
 
@@ -82,17 +87,20 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 	public void signIn() {
 
 
-			try{
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        _gameHelper.beginUserInitiatedSignIn();
-                    }
-                });
-            }
-            catch (Exception e){
-                Gdx.app.log("Mainactivity: ", "Login failed: " + e.getMessage() + ".");
-            }
+
+		try{
+			runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+
+					_gameHelper.beginUserInitiatedSignIn();
+				}
+			});
+		}
+		catch (Exception e){
+			Gdx.app.log("Mainactivity: ", "Login failed: " + e.getMessage() + ".");
+		}
+
 
 
 	}
@@ -116,8 +124,7 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 	@Override
 	public void rateGame() {
 		String str = "https://play.google.com/store/apps/details?id=com.alex.projectgame";
-		startActivityForResult(Games.Leaderboards.getLeaderboardIntent(_gameHelper.getApiClient(),
-				getString(R.string.leaderboard_id)), REQUEST_CODE_UNUSED);
+		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(str)));
 	}
 
 	@Override
@@ -125,9 +132,6 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 		if (isSignedIn()){
 			Games.Leaderboards.submitScore(_gameHelper.getApiClient(), getString(R.string.leaderboard_id), score);
 
-		}
-		else {
-			// sign in here later?
 		}
 	}
 
@@ -172,5 +176,11 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 	@Override
 	public void onSignInSucceeded() {
 
+	}
+
+	public boolean isPlayServiceAvailable() {
+		int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getContext());
+
+		return status == ConnectionResult.SUCCESS;
 	}
 }

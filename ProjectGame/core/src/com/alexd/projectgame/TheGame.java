@@ -1,8 +1,10 @@
 package com.alexd.projectgame;
 
 
+import com.alexd.projectgame.screens.SplashScreen;
 import com.alexd.projectgame.utils.AssetsManager;
 import com.alexd.projectgame.screens.MainMenuScreen;
+import com.alexd.projectgame.utils.AudioManager;
 import com.alexd.projectgame.utils.GamePreferences;
 import com.alexd.projectgame.utils.IGoogleServices;
 import com.badlogic.gdx.Game;
@@ -21,19 +23,24 @@ public class TheGame extends Game {
 	private GamePreferences _prefs;
 	private SpriteBatch _batch;
 	private IGoogleServices _googleServices;
+	private AudioManager _audioManager;
 
 	public TheGame(IGoogleServices googleServices){
 		super();
 		_googleServices = googleServices;
+
 	}
+
+
 
 	@Override
 	public void create(){
 		AssetsManager.initiate();
+		_audioManager = new AudioManager(getPrefs());
 		Gdx.graphics.setVSync(true);
 		_batch = new SpriteBatch();
 
-		setScreen(new MainMenuScreen(this));
+		setScreen(new SplashScreen(this));
 
 	}
 
@@ -60,6 +67,10 @@ public class TheGame extends Game {
 
 	public IGoogleServices getGoogleServices(){
 		return _googleServices;
+	}
+
+	public AudioManager getAudioManager(){
+		return _audioManager;
 	}
 
 

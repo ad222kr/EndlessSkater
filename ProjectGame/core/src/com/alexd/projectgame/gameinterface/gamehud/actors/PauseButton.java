@@ -6,6 +6,7 @@ import com.alexd.projectgame.utils.GameManager;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 
 /**
@@ -34,6 +35,8 @@ public class PauseButton extends GameButton {
     protected String getDownDrawableKey() {
         return DRAWABLE_KEY;
     }
+
+
 
 
 
