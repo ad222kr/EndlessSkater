@@ -29,7 +29,6 @@ public class SoundButton extends GameButton {
 
     @Override
     protected String getUpDrawableKey() {
-
         return _game.getPrefs().isSoundEnabled() ? SOUND_ON_UP_DRAWABLE_KEY : SOUND_OFF_UP_DRAWABLE_KEY;
     }
 

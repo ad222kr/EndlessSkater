@@ -19,7 +19,6 @@ public class MainMenuStage extends BaseStage{
     public MainMenuStage(BaseScreen screen){
         super(screen);
         _background = getBackground("menubg");
-
         _table = getTable();
         addActor(_background);
         addActor(_table);

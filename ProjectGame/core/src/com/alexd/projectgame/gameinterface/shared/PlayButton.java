@@ -17,9 +17,6 @@ public class PlayButton extends TextGameButton {
 
     @Override
     protected void onClick() {
-
         _game.setScreen(new GameScreen(_game));
     }
-
-
 }

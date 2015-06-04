@@ -11,27 +11,24 @@ import com.badlogic.gdx.physics.box2d.*;
  */
 public class Enemy extends Entity {
 
-    private boolean _isFliped;
-
+    private boolean _isFlipped;
 
     public Enemy(World world, float x, float y, float width, float height){
         super(world, x, y, width, height);
         initiate();
-
     }
-
 
     @Override
     protected void initiate() {
         _entityType = EntityType.ENEMY;
         _body = PhysicsFactory.createEnemy(_world, this);
-        _isFliped = false;
+        _isFlipped = false;
 
     }
 
     public void flip(){
-        if (!_isFliped){
-            _isFliped = true;
+        if (!_isFlipped){
+            _isFlipped = true;
             _body.setLinearVelocity(new Vector2(getNewVelocityX(), 0));
         }
     }
@@ -44,6 +41,6 @@ public class Enemy extends Entity {
     }
 
     public boolean getIsFlipped(){
-        return _isFliped;
+        return _isFlipped;
     }
 }

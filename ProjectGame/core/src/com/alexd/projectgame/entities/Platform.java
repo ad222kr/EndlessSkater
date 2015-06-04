@@ -16,11 +16,7 @@ public class Platform extends Entity {
 
     @Override
     protected void initiate() {
-
         _entityType = EntityType.GROUND;
         _body = PhysicsFactory.createPlatform(_world, this);
     }
-
-
-
 }

@@ -22,7 +22,6 @@ public class SpriteAnimation extends Animation {
         _scaling = value;
     }
 
-
     public void draw(float stateTime, Batch batch, float x, float y, boolean flip){
         TextureRegion region = getKeyFrame(stateTime);
 

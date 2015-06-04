@@ -12,7 +12,6 @@ import com.badlogic.gdx.Gdx;
  */
 public class ExitButton extends TextGameButton {
 
-
     public ExitButton(String text, TextButtonStyle style, TheGame game) {
         super(text, style, game);
     }
@@ -21,7 +20,4 @@ public class ExitButton extends TextGameButton {
     protected void onClick() {
         _game.setScreen(new MainMenuScreen(_game));
     }
-
-
-
 }

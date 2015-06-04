@@ -17,14 +17,11 @@ import java.util.concurrent.TimeUnit;
 public class GameInputHandler implements InputProcessor {
 
     private Runner _runner;
-
     private IWorldEventListener _worldEventListener;
-
 
     public GameInputHandler(Runner runner){
         _runner = runner;
     }
-
 
     public void setWorldEventListener(IWorldEventListener worldEventListener) {
         _worldEventListener = worldEventListener;

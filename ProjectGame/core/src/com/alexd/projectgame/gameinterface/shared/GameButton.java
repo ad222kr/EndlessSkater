@@ -35,8 +35,6 @@ public abstract class GameButton extends Button {
         _skin = AssetsManager.getSkin();
         setUp();
         setButtonStyle();
-
-
     }
 
     public GameButton(TheGame game){
@@ -49,9 +47,7 @@ public abstract class GameButton extends Button {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-
                 onClick();
-
             }
 
             @Override
@@ -63,8 +59,6 @@ public abstract class GameButton extends Button {
                 return true;
             }
         });
-
-
     }
 
     protected abstract void onClick();
@@ -78,7 +72,6 @@ public abstract class GameButton extends Button {
         setStyle(style);
     }
 
-
     public void enable(){
         setVisible(true);
         setTouchable(Touchable.enabled);
@@ -88,10 +81,4 @@ public abstract class GameButton extends Button {
         setVisible(false);
         setTouchable(Touchable.disabled);
     }
-
-    public void disableClick(){
-        setTouchable(Touchable.disabled);
-    }
-
-
 }

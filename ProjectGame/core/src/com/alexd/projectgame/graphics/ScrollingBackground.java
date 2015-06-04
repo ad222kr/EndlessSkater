@@ -35,6 +35,4 @@ public class ScrollingBackground {
             layer.draw(batch);
         }
     }
-
-
 }

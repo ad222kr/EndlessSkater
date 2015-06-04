@@ -56,7 +56,5 @@ public class Health extends Actor {
             batch.draw(isFilled ? _filledHeart : _depletedHeart, x, Y, 50, 50);
             x += 50;
         }
-
     }
-
 }

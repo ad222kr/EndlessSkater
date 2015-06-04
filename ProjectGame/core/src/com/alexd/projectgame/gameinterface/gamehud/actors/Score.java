@@ -18,7 +18,6 @@ public class Score extends Actor {
     private BitmapFont _font;
     private float _score;
 
-
     public Score(){
         _font = AssetsManager.getSmallFont();
         _score = 0;

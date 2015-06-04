@@ -47,7 +47,6 @@ public class ScrollingBackgroundLayer {
         resetBounds();
     }
 
-
     public void resetBounds(){
         if (_bounds2.x + _width  < _width){
             _bounds1 = _bounds2;
@@ -58,7 +57,5 @@ public class ScrollingBackgroundLayer {
     public void draw(Batch batch){
         batch.draw(_texture, _bounds2.x, _bounds2.y, _width, _height);
         batch.draw(_texture, _bounds1.x, _bounds1.y, _width, _height);
-
     }
-
 }

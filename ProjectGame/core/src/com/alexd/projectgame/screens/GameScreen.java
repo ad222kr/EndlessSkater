@@ -24,7 +24,6 @@ public class GameScreen extends BaseScreen implements IWorldEventListener {
     private final int VIEWPORT_HEIGHT = Helpers.convertToMeters(TheGame.APP_HEIGHT);
 
     private boolean isDebug = false;// Set to false to hide debugrender
-
     private EntityManager _entityManager;
     private OrthographicCamera _camera;
     private Viewport _viewport;
@@ -40,7 +39,6 @@ public class GameScreen extends BaseScreen implements IWorldEventListener {
         GameManager.getInstance().resetDifficulty();
         setUp();
         _game.getAudioManager().toggleMusic();
-
     }
 
     private void setupCamera() {
@@ -158,7 +156,6 @@ public class GameScreen extends BaseScreen implements IWorldEventListener {
                     break;
             }
         }
-
 
         _renderer.drawRunner(_game.getBatch(), getRunner().getPosition().x - getRunner().getWidth() / 2,
                 getRunner().getPosition().y - getRunner().getHeight() / 2, _entityManager.getRunner().getIsJumping());

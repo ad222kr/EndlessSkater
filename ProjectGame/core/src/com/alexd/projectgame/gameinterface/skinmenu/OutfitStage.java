@@ -46,11 +46,10 @@ public class OutfitStage extends BaseStage{
         _table.row();
 
 
-
         _table.add(new ExitButton("MENU", getTextButtonStyle("standardbutton-unpressed", "standardbutton-pressed",
-                true), _screen.getGame())).colspan(2).pad(0,0,50,50);
+                true), _screen.getGame())).colspan(2).center().pad(0,0,50,0);
         _table.add(new PlayButton("PLAY", getTextButtonStyle("greenbutton-unpressed", "greenbutton-pressed",
-                true), _screen.getGame())).colspan(2).pad(0,50,50,0);
+                true), _screen.getGame())).colspan(2).center().pad(0,0,50,0);
 
         addActor(_background);
         addActor(_table);

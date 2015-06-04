@@ -17,8 +17,6 @@ public abstract class Entity {
     protected World _world;
     protected Body _body;
     protected EntityType _entityType;
-    protected float _x;
-    protected float _y;
     protected float _width;
     protected float _height;
     protected boolean _flaggedForDeath;
@@ -34,21 +32,13 @@ public abstract class Entity {
     }
 
 
-    public void update(){
-        _previousPosition.x = _body.getPosition().x;
-        _previousPosition.y = _body.getPosition().y;
 
-        _position.x = _previousPosition.x;
-        _position.y = _previousPosition.y;
-    }
 
     /**
      * Constructors
      */
     public Entity(World world, float x, float y, float width, float height){
         _world = world;
-        _x = x;
-        _y = y;
         _previousPosition = new Vector2(x, y);
         _position = new Vector2(x, y);
         _width = width;
@@ -59,13 +49,26 @@ public abstract class Entity {
 
     protected abstract void initiate();
 
+    public void update(){
+        _previousPosition.x = _body.getPosition().x;
+        _previousPosition.y = _body.getPosition().y;
+
+        _position.x = _previousPosition.x;
+        _position.y = _previousPosition.y;
+    }
+
     public boolean isExpectedType(EntityType type){
         return _entityType == type;
     }
 
-    /**
-     * Getters and setters
-     */
+    public boolean isFlaggedForDeath(){
+        return _flaggedForDeath;
+    }
+
+    public void setFlaggedForDeath(boolean value){
+        _flaggedForDeath = value;
+    }
+
     public Body getBody(){
         return _body;
     }
@@ -90,12 +93,5 @@ public abstract class Entity {
         return _height;
     }
 
-    public boolean getFlaggedForDeath(){
-        return _flaggedForDeath;
-    }
-
-    public void setFlaggedForDeath(boolean value){
-        _flaggedForDeath = value;
-    }
 
 }

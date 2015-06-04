@@ -13,7 +13,6 @@ public class OutfitScreen extends BaseScreen {
 
     private OutfitStage _stage;
 
-
     public OutfitScreen(TheGame game){
         super(game);
         _stage = new OutfitStage(this);

@@ -2,7 +2,6 @@ package com.alexd.projectgame.utils;
 
 import com.alexd.projectgame.entities.*;
 import com.alexd.projectgame.handlers.ContactHandler;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -217,7 +216,7 @@ public class EntityManager {
                 ((Entity)body.getUserData()).setFlaggedForDeath(true);
             }
             // Then remove it from the world
-            if(((Entity)body.getUserData()).getFlaggedForDeath())  {
+            if(((Entity)body.getUserData()).isFlaggedForDeath())  {
                 removeEntity((Entity)body.getUserData());
                 _world.destroyBody(body);
             }

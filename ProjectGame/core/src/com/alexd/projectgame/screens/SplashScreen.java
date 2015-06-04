@@ -44,9 +44,6 @@ public class SplashScreen extends BaseScreen {
         _splashImage.addAction(Actions.sequence(Actions.fadeOut(0.0001f), Actions.fadeIn(2f), Actions.fadeOut(2f),  Actions.run(_splashFinished)));
     }
 
-
-
-
     @Override
     public void show() {
 
@@ -63,22 +60,6 @@ public class SplashScreen extends BaseScreen {
         if (Gdx.input.isTouched()){
             _game.setScreen(new MainMenuScreen(_game));
         }
-
-
-        /*if (!_timerOn){
-            _timerOn = true;
-
-            Timer.schedule(new Timer.Task() {
-                @Override
-                public void run() {
-                    _game.setScreen(new MainMenuScreen(_game));
-                }
-            }, SPLASH_TIME);
-        }
-        else if(Gdx.input.isTouched() && AssetsManager.hasLoaded()){
-            Timer.instance().clear();
-            _game.setScreen(new MainMenuScreen(_game));
-        }*/
     }
 
     @Override

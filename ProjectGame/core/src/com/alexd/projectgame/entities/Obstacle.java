@@ -9,20 +9,14 @@ import com.badlogic.gdx.physics.box2d.*;
  */
 public class Obstacle extends Entity {
 
-
     public Obstacle(World world, float x, float y, float width, float height){
         super(world, x, y, width, height);
         initiate();
-
-
     }
 
     @Override
     protected void initiate() {
         _entityType = EntityType.OBSTACLE;
         _body = PhysicsFactory.createObstacle(_world, this);
-
     }
-
-
 }

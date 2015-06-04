@@ -19,19 +19,17 @@ public class MusicButton extends GameButton {
 
     public MusicButton(TheGame game) {
         super(game);
-
     }
 
     @Override
     protected void onClick() {
         if (_game.getPrefs().isMusicEnabled()){
-
             _game.getPrefs().disableMusic();
         }
         else {
             _game.getPrefs().enableMusic();
-
         }
+        // Only want to toggle the music when playing, no in the main menu.
         if (_game.getScreen() instanceof GameScreen){
             _game.getAudioManager().toggleMusic();
         }

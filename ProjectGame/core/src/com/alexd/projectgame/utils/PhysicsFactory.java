@@ -24,13 +24,14 @@ public class PhysicsFactory {
         shape.setAsBox(enemy.getWidth() / 2, enemy.getHeight() / 2);
         Body body = world.createBody(bodyDef);
         FixtureDef fixtureDef = getFixtureDef(false, shape, Box2DConstants.ENEMY_DENSITY);
-        fixtureDef.filter.categoryBits = Box2DConstants.ENEMY_BIT; // I am
-        fixtureDef.filter.maskBits = Box2DConstants.PLATFORM_BIT | Box2DConstants.RUNNER_BIT | Box2DConstants.PLATFORM_SENSOR_BIT; // I collide with
+        fixtureDef.filter.categoryBits = Box2DConstants.ENEMY_BIT;
+        fixtureDef.filter.maskBits = Box2DConstants.PLATFORM_BIT | Box2DConstants.RUNNER_BIT |
+                Box2DConstants.PLATFORM_SENSOR_BIT;
 
         PolygonShape sensorShape = new PolygonShape();
         sensorShape.setAsBox(enemy.getWidth() / 2, 0.025f, new Vector2(0, enemy.getHeight() / 2 + 0.025f), 0f);
         FixtureDef sensorDef = getFixtureDef(true, sensorShape, 0);
-        sensorDef.filter.categoryBits = Box2DConstants.ENEMY_SENSOR_BIT; // I am
+        sensorDef.filter.categoryBits = Box2DConstants.ENEMY_SENSOR_BIT;
         sensorDef.filter.maskBits = Box2DConstants.RUNNER_BIT;
 
         body.createFixture(sensorDef);

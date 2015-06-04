@@ -25,7 +25,6 @@ public abstract class BaseStage extends Stage {
         super(new StretchViewport(TheGame.APP_WIDTH, TheGame.APP_HEIGHT,
                 new OrthographicCamera(TheGame.APP_WIDTH, TheGame.APP_HEIGHT)));
         _screen = screen;
-
     }
 
     protected LabelStyle getLabelStyle(boolean hasLargeFont){
@@ -46,7 +45,6 @@ public abstract class BaseStage extends Stage {
         return style;
     }
 
-
     protected SoundButton getSoundButton(){
         return new SoundButton(_screen.getGame());
     }
@@ -54,8 +52,6 @@ public abstract class BaseStage extends Stage {
     protected MusicButton getMusicButton(){
         return new MusicButton(_screen.getGame());
     }
-
-
 
     protected Background getBackground(String backgroundImageKey){
         return new Background(backgroundImageKey);
@@ -70,9 +66,4 @@ public abstract class BaseStage extends Stage {
         return new ExitButton("MENU", getTextButtonStyle("standardbutton-unpressed", "standardbutton-pressed", true),
                 _screen.getGame());
     }
-
-
-
-
-
 }

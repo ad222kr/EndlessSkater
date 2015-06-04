@@ -9,36 +9,20 @@ import com.badlogic.gdx.physics.box2d.World;
  * Created by Alex on 2015-04-11.
  */
 public class Runner extends Entity {
-    /* CONSTANTS */
 
     public static final int MAX_HEALTH = 3;
 
     private int _health;
     private boolean _isJumping;
     private boolean _isOnGround;
-    private float _score;
-
-    public int getHealth(){ return _health; }
-
-    public void setHealth(int value){ _health = value; }
-
-    public boolean getIsJumping(){ return _isJumping; }
-
-    public void setIsOnGround(boolean value){
-        _isOnGround = value;
-    }
-
 
     /* Constructor */
     public Runner(World world, float x, float y, float width, float height){
         super(world, x, y, width, height);
         initiate();
-
     }
 
-    public Runner(){
-
-    }
+    public Runner(){}
 
     @Override
     protected void initiate() {
@@ -53,7 +37,6 @@ public class Runner extends Entity {
         _isJumping = true;
         _isOnGround = false;
         _body.applyLinearImpulse(Box2DConstants.RUNNER_JUMPING_IMPULSE, _body.getWorldCenter(), true);
-
     }
 
     public boolean canJump(){
@@ -86,5 +69,15 @@ public class Runner extends Entity {
 
     public boolean isFalling() {
        return _body.getLinearVelocity().y < 0;
+    }
+
+    public int getHealth(){ return _health; }
+
+    public void setHealth(int value){ _health = value; }
+
+    public boolean getIsJumping(){ return _isJumping; }
+
+    public void setIsOnGround(boolean value){
+        _isOnGround = value;
     }
 }

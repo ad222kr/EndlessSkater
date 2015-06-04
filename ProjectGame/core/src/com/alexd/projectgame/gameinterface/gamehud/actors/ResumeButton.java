@@ -13,7 +13,6 @@ public class ResumeButton extends TextGameButton {
 
     public ResumeButton(String text, TextButtonStyle style, TheGame game) {
         super(text, style, game);
-
     }
     @Override
     protected void onClick() {

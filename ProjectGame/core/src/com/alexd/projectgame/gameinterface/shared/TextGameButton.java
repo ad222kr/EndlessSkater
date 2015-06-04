@@ -19,7 +19,6 @@ public abstract class TextGameButton extends TextButton {
         setUp();
     }
 
-
     public void setUp(){
         addListener(new ClickListener() {
             @Override
@@ -37,13 +36,7 @@ public abstract class TextGameButton extends TextButton {
                 return true;
             }
         });
-
-
     }
 
-
     protected abstract void onClick();
-
-
-
 }

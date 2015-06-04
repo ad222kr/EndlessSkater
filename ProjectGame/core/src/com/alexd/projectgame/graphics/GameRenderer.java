@@ -39,7 +39,6 @@ public class GameRenderer {
                 new ScrollingBackgroundLayer(0.25f, AssetsManager.getBackground("bg2")),
                 new ScrollingBackgroundLayer(0.5f, AssetsManager.getBackground("bg3"))
         }, 2f, 25, 14); // fix this hardcode
-
     }
 
     public void updateAnimation(float delta){
@@ -71,24 +70,18 @@ public class GameRenderer {
         if (platformWidth == Box2DConstants.PLATFORM_WIDTH){
             batch.draw(_platformSprite, x, y, Helpers.convertToMeters(_platformSprite.getRegionWidth()),
                     Helpers.convertToMeters(_platformSprite.getRegionHeight()));
-
         }
         else {
             batch.draw(_platformSprite, x + Box2DConstants.PLATFORM_WIDTH , y,
                     Helpers.convertToMeters(_platformSprite.getRegionWidth()), Helpers.convertToMeters(_platformSprite.getRegionHeight()));
-
         }
-
     }
 
     public void drawHeart(Batch batch, float x, float y){
-        batch.draw(_heartSprite, x, y, 1f, 1); // TODO: Fix hardcode
-
-
+        batch.draw(_heartSprite, x, y, 1, 1); // TODO: Fix hardcode
     }
 
     public void drawBackground(SpriteBatch batch, float delta) {
         _background.draw(batch, delta);
-
     }
 }

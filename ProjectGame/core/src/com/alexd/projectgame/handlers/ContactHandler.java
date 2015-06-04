@@ -33,6 +33,7 @@ public class ContactHandler implements ContactListener {
         Enemy enemy = fixtureA.getBody().getUserData() instanceof Enemy ?
                 (Enemy) fixtureA.getBody().getUserData() :
                 (Enemy) fixtureB.getBody().getUserData();
+
         float runnerPos = _runner.getBody().getPosition().y - _runner.getHeight() / 2;
         float enemyPos = enemy.getBody().getPosition().y + enemy.getHeight() / 2;
 
@@ -70,7 +71,6 @@ public class ContactHandler implements ContactListener {
             enemy.flip();
         }
 
-
         if (shouldTrigger(fixtureA, fixtureB, Box2DConstants.RUNNER_BIT, Box2DConstants.ENEMY_SENSOR_BIT) &&
                 _runner.isFalling() && isRunnerAboveEnemy(fixtureA, fixtureB)){
             _runner.bumpOffEnemy();
@@ -84,13 +84,7 @@ public class ContactHandler implements ContactListener {
 
     @Override
     public void endContact(Contact contact) {
-        Entity objA = (Entity) contact.getFixtureA().getBody().getUserData();
-        Entity objB = (Entity) contact.getFixtureB().getBody().getUserData();
 
-        if (checkTypes(objA, objB, EntityType.RUNNER, EntityType.GROUND)){
-            _runner.setIsOnGround(false); // no idea why i do this
-
-        }
     }
 
     @Override
