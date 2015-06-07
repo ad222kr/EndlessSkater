@@ -11,9 +11,6 @@ import com.badlogic.gdx.physics.box2d.World;
  */
 public abstract class Entity {
 
-    /**
-     * Members
-     */
     protected World _world;
     protected Body _body;
     protected EntityType _entityType;
@@ -31,12 +28,6 @@ public abstract class Entity {
         return _previousPosition;
     }
 
-
-
-
-    /**
-     * Constructors
-     */
     public Entity(World world, float x, float y, float width, float height){
         _world = world;
         _previousPosition = new Vector2(x, y);

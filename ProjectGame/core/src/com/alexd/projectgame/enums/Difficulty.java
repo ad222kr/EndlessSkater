@@ -5,7 +5,7 @@ import com.alexd.projectgame.utils.Box2DConstants;
 import com.badlogic.gdx.Gdx;
 
 /**
- * Created by Alex on 2015-05-09.
+  Difficultys used in the game. Changes to one higher every 30 seconds.
  */
 public enum Difficulty {
     FIRST (1f, 4, 8),

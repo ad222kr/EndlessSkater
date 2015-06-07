@@ -26,8 +26,6 @@ public class GameRenderer {
     public GameRenderer(GamePreferences preferences){
 
         _preferences = preferences;
-        //_preferences.setChosenSkin("player-rus");
-        // Animation with textureatlas test
         _runnerAnimation = AssetsManager.getAnimation(_preferences.getChosenSkin());
         _obstacleSprite = AssetsManager.getSprite("obstacle");
         _playerJumpSprite = new Sprite(AssetsManager.getAtlasRegion(_preferences.getChosenSkin() + "-jump"));
@@ -38,7 +36,7 @@ public class GameRenderer {
                 new ScrollingBackgroundLayer(0.1f, AssetsManager.getBackground("bg1")),
                 new ScrollingBackgroundLayer(0.25f, AssetsManager.getBackground("bg2")),
                 new ScrollingBackgroundLayer(0.5f, AssetsManager.getBackground("bg3"))
-        }, 2f, 25, 14); // fix this hardcode
+        }, 2f, 25, 14); // this is scroll-speed and width/height of game in meters
     }
 
     public void updateAnimation(float delta){
