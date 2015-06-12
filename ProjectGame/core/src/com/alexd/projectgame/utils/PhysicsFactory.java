@@ -11,12 +11,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
  */
 public class PhysicsFactory {
 
-    /**
-     * Creates a body for an enemy
-     * @param world - the world that will hold the body
-     * @param enemy - instance of Enemy class that's tied to the body
-     * @return - a body
-     */
+
     public static Body createEnemy(World world, Enemy enemy){
         BodyDef bodyDef = getBodyDef(enemy.getX(), enemy.getY(), BodyType.DynamicBody);
         bodyDef.fixedRotation = true;
@@ -49,7 +44,7 @@ public class PhysicsFactory {
     }
 
     public static Body createLife(World world, Life life){
-        // TODO: replace hardcvoded values woith constants
+
         BodyDef bodyDef = getBodyDef(life.getX(), life.getY(), BodyType.KinematicBody);
         PolygonShape shape = getBox(life.getWidth(), life.getHeight());
         Body body = world.createBody(bodyDef);
@@ -68,12 +63,7 @@ public class PhysicsFactory {
 
     }
 
-    /**
-     * Creates a body for an obstacle
-     * @param world - the world the body will inhabit
-     * @param obstacle - instance of Obstacle class that's tied to the body
-     * @return
-     */
+
     public static Body createObstacle(World world, Obstacle obstacle){
         BodyDef bodyDef = getBodyDef(obstacle.getX(), obstacle.getY(), BodyType.KinematicBody);
         PolygonShape shape = getBox(obstacle.getWidth(), obstacle.getHeight());
@@ -90,12 +80,7 @@ public class PhysicsFactory {
         return body;
     }
 
-    /**
-     * Creates a body for a platform
-     * @param world - the world the body will inhabit
-     * @param platform - instance of Platform class that's tied to the body
-     * @return
-     */
+
     public static Body createPlatform(World world, Platform platform ){
         BodyDef bodyDef = getBodyDef(platform.getX(), platform.getY(), BodyType.KinematicBody);
         PolygonShape shape = getBox(platform.getWidth(), platform.getHeight());
@@ -125,12 +110,7 @@ public class PhysicsFactory {
         return body;
     }
 
-    /**
-     * Creates a body for a runner
-     * @param world - the world the body will inhabit
-     * @param runner - instance of Runner class that's tied to the body
-     * @return
-     */
+
     public static Body createRunner(World world, Runner runner){
         BodyDef bodyDef = getBodyDef(runner.getX(), runner.getY(), BodyType.DynamicBody);
         bodyDef.fixedRotation = true;
@@ -153,13 +133,7 @@ public class PhysicsFactory {
     }
 
 
-    /**
-     * Helper for creating a FixtureDef
-     * @param isSensor - if the body will collide with other bodies
-     * @param shape - Shape object of the body
-     * @param density - Density of the body
-     * @return
-     */
+
     private static FixtureDef getFixtureDef(boolean isSensor, Shape shape, float density ){
         FixtureDef fixtureDef = new FixtureDef();
 
@@ -170,12 +144,7 @@ public class PhysicsFactory {
         return fixtureDef;
     }
 
-    /**
-     * Creates a shape for the body
-     * @param width - width of the shape
-     * @param height - height of the shape
-     * @return - an instance of a PolygonShape
-     */
+
     private static PolygonShape getBox(float width, float height){
         PolygonShape shape = new PolygonShape();
 
@@ -184,13 +153,7 @@ public class PhysicsFactory {
         return shape;
     }
 
-    /**
-     * Helper for creating a BodyDef
-     * @param x - x-position for the body
-     * @param y - y-position for the body
-     * @param type - the type of the body
-     * @return - an instance of a BodyDef
-     */
+
     private static BodyDef getBodyDef(float x, float y, BodyType type){
         BodyDef bodyDef = new BodyDef();
 
